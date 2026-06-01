@@ -1,0 +1,1321 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ENUMS ────────────────────────────────────────────────────────────────────
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserStatus {
+  PENDING_VERIFICATION
+  PENDING_PROFILE
+  PENDING_KYC
+  PENDING_APPROVAL
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+  DELETION_REQUESTED
+  DELETED
+}
+
+enum KYCStatus {
+  NOT_SUBMITTED
+  PENDING
+  APPROVED
+  REJECTED
+  ESCALATED
+}
+
+enum KYCMode {
+  MODE_A_SELFIE
+  MODE_B_MANUAL_ID
+  MODE_C_DIGIO
+}
+
+enum KYCDocumentType {
+  PAN_CARD
+  VOTER_ID
+  PASSPORT
+  DRIVING_LICENSE
+}
+
+enum KYCRejectionReason {
+  CODE_NOT_VISIBLE
+  ID_UNCLEAR
+  FACE_MISMATCH
+  SUSPICIOUS
+  EXPIRED_DOCUMENT
+}
+
+enum ImageCategory {
+  PROFILE
+  GALLERY
+  KYC_SELFIE
+  KYC_DOCUMENT
+  HOROSCOPE
+}
+
+enum ImageStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum InterestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  WITHDRAWN
+  EXPIRED
+}
+
+enum MatchTicketStatus {
+  OPEN
+  IN_REVIEW
+  SCHEDULED
+  COMPLETED
+  CLOSED
+}
+
+enum MatchOutcome {
+  PROCEEDING
+  NOT_PROCEEDING
+  ENGAGED
+  MARRIED
+}
+
+enum SubscriptionTier {
+  FREE
+  PREMIUM
+  VIP
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  GRACE_PERIOD
+  CANCELLED
+  PAUSED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum CouponType {
+  PERCENTAGE
+  FLAT_INR
+  FREE_DAYS
+  FIRST_TIME
+  COMMUNITY_SPECIFIC
+}
+
+enum NotificationChannel {
+  EMAIL
+  IN_APP
+  SMS
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  BOUNCED
+  FAILED
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+  SCHEDULED
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+  SUBSCRIPTION_MGR
+  CMS_MANAGER
+  SUPPORT_EXEC
+  COMMUNITY_MGR
+}
+
+enum FamilyType {
+  NUCLEAR
+  JOINT
+}
+
+enum FamilyStatus {
+  MIDDLE_CLASS
+  UPPER_MIDDLE_CLASS
+  AFFLUENT
+}
+
+enum FamilyValues {
+  TRADITIONAL
+  MODERATE
+  LIBERAL
+}
+
+enum MaritalStatus {
+  NEVER_MARRIED
+  DIVORCED
+  WIDOWED
+  AWAITING_DIVORCE
+}
+
+enum Dosham {
+  MANGAL_DOSHAM
+  NADI_DOSHAM
+  CHEVVAI_DOSHAM
+  NO_DOSHAM
+}
+
+enum CommunityMemberStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AuditAction {
+  USER_APPROVED
+  USER_SUSPENDED
+  USER_DELETED
+  KYC_APPROVED
+  KYC_REJECTED
+  IMAGE_APPROVED
+  IMAGE_REJECTED
+  SUBSCRIPTION_CHANGED
+  PAYMENT_REFUNDED
+  MATCH_TICKET_UPDATED
+  COMMUNITY_MEMBER_APPROVED
+  ROLE_CREATED
+  ROLE_UPDATED
+  SETTINGS_CHANGED
+  ADMIN_LOGIN
+  FORCE_LOGOUT
+  DATA_EXPORT_GENERATED
+  BREACH_REPORTED
+}
+
+enum EmailProvider {
+  AWS_SES
+  SENDGRID
+}
+
+enum RefundType {
+  FULL
+  PRORATED
+  NO_REFUND
+}
+
+enum GSTType {
+  CGST_SGST
+  IGST
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+enum PhysicalStatus {
+  NORMAL
+  PHYSICALLY_CHALLENGED
+}
+
+enum Diet {
+  VEGETARIAN
+  NON_VEGETARIAN
+  EGGETARIAN
+  VEGAN
+}
+
+enum Smoking {
+  NO
+  YES
+  OCCASIONALLY
+}
+
+enum Drinking {
+  NO
+  YES
+  OCCASIONALLY
+  SOCIAL
+}
+
+enum FitnessLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  VERY_ACTIVE
+  ATHLETE
+}
+
+enum SleepSchedule {
+  EARLY_BIRD
+  NIGHT_OWL
+  IRREGULAR
+}
+
+enum PersonalityType {
+  INTROVERT
+  EXTROVERT
+  AMBIVERT
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  SELF_EMPLOYED
+  FREELANCE
+  CONTRACT
+  BUSINESS_OWNER
+  RETIRED
+  STUDENT
+  HOMEMAKER
+  UNEMPLOYED
+}
+
+enum ProfileCreatedBy {
+  SELF
+  PARENT
+  SIBLING
+  RELATIVE
+  FRIEND
+}
+
+enum VerificationStatus {
+  NOT_VERIFIED
+  PENDING
+  VERIFIED
+  FAILED
+}
+
+// ─── PERMISSIONS & ROLES ──────────────────────────────────────────────────────
+
+model Permission {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  description String
+  module      String
+  createdAt   DateTime @default(now())
+
+  rolePermissions RolePermission[]
+}
+
+model Role {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  isDefault   Boolean   @default(false)
+  isEditable  Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  rolePermissions RolePermission[]
+  adminUsers      AdminUser[]
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+}
+
+// ─── ADMIN USERS ──────────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  roleId       String
+  role         Role      @relation(fields: [roleId], references: [id])
+  isActive     Boolean   @default(true)
+  totpSecret   String?
+  totpEnabled  Boolean   @default(false)
+  lastLoginAt  DateTime?
+  lastLoginIp  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  auditLogs         AuditLog[]
+  matchTicketNotes  MatchTicketNote[]
+  notifications     ManualNotification[]
+}
+
+// ─── USERS ────────────────────────────────────────────────────────────────────
+
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  phone         String     @unique
+  passwordHash  String
+  gender        Gender?
+  dateOfBirth   DateTime?
+  status        UserStatus @default(PENDING_VERIFICATION)
+  emailVerified Boolean    @default(false)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
+  deactivatedAt DateTime?
+  deletionRequestedAt DateTime?
+
+  profile            UserProfile?
+  kycSubmissions     KYCSubmission[]
+  images             ProfileImage[]
+  interests          Interest[]        @relation("InterestSender")
+  receivedInterests  Interest[]        @relation("InterestReceiver")
+  wishlist           Wishlist[]
+  mutualMatchesA     MutualMatch[]     @relation("MatchUserA")
+  mutualMatchesB     MutualMatch[]     @relation("MatchUserB")
+  sessions           Session[]
+  consentRecords     ConsentRecord[]
+  notifications      Notification[]
+  profileViews       ProfileView[]     @relation("ProfileViewer")
+  profileViewedBy    ProfileView[]     @relation("ProfileViewed")
+  blocksSent         BlockList[]       @relation("Blocker")
+  blocksReceived     BlockList[]       @relation("Blocked")
+  subscriptions      UserSubscription[]
+  payments           Payment[]
+  communityMembers   CommunityMember[]
+  dataExportRequests DataExportRequest[]
+  notifPreferences   NotificationPreference[]
+  grievances         Grievance[]
+  nomination         Nomination?
+}
+
+model UserProfile {
+  id               String        @id @default(cuid())
+  userId           String        @unique
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 1. Basic Personal Information
+  profileCreatedBy ProfileCreatedBy?
+  firstName        String?
+  middleName       String?
+  lastName         String?
+  fullName         String?
+  height           Int?
+  weight           Int?
+  bloodGroup       BloodGroup?
+  physicalStatus   PhysicalStatus?
+  complexion       String?
+  aboutMe          String?
+  maritalStatus    MaritalStatus?
+
+  // 2. Contact Information
+  alternatePhone   String?
+  currentAddress   String?
+  permanentAddress String?
+  city             String?
+  state            String?
+  country          String?
+  postalCode       String?
+
+  // 3. Religion & Community
+  motherTongue     String?
+  religion         String?
+  community        String?
+  caste            String?
+  subCaste         String?
+  gothram          String?
+  languagesKnown   String[]
+
+  // 4. Horoscope / Astrology
+  timeOfBirth      String?
+  placeOfBirth     String?
+  nakshatra        String?
+  rashi            String?
+  lagna            String?
+  dosham           Dosham[]
+  nadi             String?
+  gana             String?
+  yoni             String?
+  rajju            String?
+  mahendra         String?
+  vedha            String?
+  dasaDetails      String?
+  horoscopeNotes   String?
+
+  // 5. Education (moved to separate model)
+  // 6. Professional (moved to separate model)
+  qualification    String?
+  university       String?
+  occupationType   String?
+  employerName     String?
+  annualIncome     String?
+  workCity         String?
+  workState        String?
+
+  // 7. Family Details
+  fatherName       String?
+  fatherOccupation String?
+  fatherIncome     String?
+  motherName       String?
+  motherOccupation String?
+  brothersCount    Int?
+  marriedBrothers  Int?
+  sistersCount     Int?
+  marriedSisters   Int?
+  familyType       FamilyType?
+  familyStatus     FamilyStatus?
+  familyValues     FamilyValues?
+
+  // 8. Lifestyle
+  diet             Diet?
+  smoking          Smoking?
+  drinking         Drinking?
+  fitnessLevel     FitnessLevel?
+  exerciseHabits   String?
+  sleepSchedule    SleepSchedule?
+  hasPets          Boolean?
+  petsDetails      String?
+
+  // 9. Interests (moved to separate model)
+  // 10. Hobbies (moved to separate model)
+  // 11. Favorites (moved to separate model)
+  // 12. Personality & Values
+  personalityType  PersonalityType?
+  isIntrovert      Boolean?
+  isExtrovert      Boolean?
+  isFamilyOriented Boolean?
+  isCareerOriented Boolean?
+  religiousBeliefs String?
+  futureGoals      String?
+  lifePriorities   String?
+  partnerExpectations String?
+
+  // 13. Assets (moved to separate model)
+  // 14. Verification (moved to separate model)
+  // 15. Photos (already in ProfileImage)
+  // 16. Partner Preferences (separate model)
+
+  // Meta
+  profileCompletionPct Int      @default(0)
+  isAnonymousBrowse    Boolean  @default(false)
+  adminOverrideVisibility Boolean @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  partnerPreferences PartnerPreference?
+  education         EducationDetail[]
+  career            CareerDetail[]
+  assets            AssetDetail[]
+  interests         UserInterest[]
+  hobbies           UserHobby[]
+  favorites         UserFavorite[]
+  verifications     UserVerification[]
+}
+
+model PartnerPreference {
+  id              String       @id @default(cuid())
+  profileId       String       @unique
+  profile         UserProfile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  // Basic Preferences
+  ageMin          Int?
+  ageMax          Int?
+  heightMin       Int?
+  heightMax       Int?
+  maritalStatus   MaritalStatus?
+  
+  // Community Preferences
+  religion         String?
+  caste           String?
+  subCaste        String?
+  motherTongue    String?
+  
+  // Education Preferences
+  educationPref   String?
+  degreePref      String?
+  
+  // Career Preferences
+  occupationPref  String?
+  incomeMin       String?
+  incomeMax       String?
+  
+  // Location Preferences
+  countryPref     String?
+  statePref       String?
+  cityPref        String?
+  
+  // Lifestyle Preferences
+  dietPref        Diet?
+  smokingPref     Smoking?
+  drinkingPref    Drinking?
+  
+  // Astrology Preferences
+  doshamPref      String?
+  manglikPref     String?
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+// ─── EDUCATION DETAILS ─────────────────────────────────────────────────────────
+
+model EducationDetail {
+  id               String      @id @default(cuid())
+  profileId        String
+  profile          UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  highestQualification String?
+  degree           String?
+  specialization   String?
+  collegeName      String?
+  universityName   String?
+  passingYear      Int?
+  additionalCerts  String[]
+  
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+// ─── CAREER DETAILS ───────────────────────────────────────────────────────────
+
+model CareerDetail {
+  id               String      @id @default(cuid())
+  profileId        String
+  profile          UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  occupation       String?
+  designation      String?
+  companyName      String?
+  industry         String?
+  employmentType   EmploymentType?
+  workLocation     String?
+  experience       String?
+  annualIncome     String?
+  currency         String?
+  
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+// ─── ASSET DETAILS ─────────────────────────────────────────────────────────────
+
+model AssetDetail {
+  id               String      @id @default(cuid())
+  profileId        String
+  profile          UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  ownHouse         Boolean?
+  ownFlat          Boolean?
+  agriculturalLand Boolean?
+  commercialProperty Boolean?
+  vehicleDetails   String?
+  investments      String?
+  familyBusinessDetails String?
+  
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+// ─── USER INTERESTS ────────────────────────────────────────────────────────────
+
+model UserInterest {
+  id               String      @id @default(cuid())
+  profileId        String
+  profile          UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  interest         String
+  category         String?
+  
+  createdAt        DateTime    @default(now())
+  
+  @@unique([profileId, interest])
+}
+
+// ─── USER HOBBIES ──────────────────────────────────────────────────────────────
+
+model UserHobby {
+  id               String      @id @default(cuid())
+  profileId        String
+  profile          UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  hobby            String
+  category         String?
+  
+  createdAt        DateTime    @default(now())
+  
+  @@unique([profileId, hobby])
+}
+
+// ─── USER FAVORITES ────────────────────────────────────────────────────────────
+
+model UserFavorite {
+  id               String      @id @default(cuid())
+  profileId        String
+  profile          UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  category         String
+  value            String
+  
+  createdAt        DateTime    @default(now())
+  
+  @@unique([profileId, category, value])
+}
+
+// ─── USER VERIFICATIONS ───────────────────────────────────────────────────────
+
+model UserVerification {
+  id               String            @id @default(cuid())
+  profileId        String
+  profile          UserProfile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  verificationType String
+  status           VerificationStatus @default(NOT_VERIFIED)
+  verifiedAt       DateTime?
+  verifiedBy       String?
+  notes            String?
+  
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  
+  @@unique([profileId, verificationType])
+}
+
+// ─── SESSIONS & OTPs ─────────────────────────────────────────────────────────
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshToken String   @unique
+  deviceInfo   String?
+  ipAddress    String?
+  userAgent    String?
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  revokedAt    DateTime?
+}
+
+model OTP {
+  id          String   @id @default(cuid())
+  email       String
+  code        String
+  purpose     String
+  attempts    Int      @default(0)
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([email, purpose])
+}
+
+// ─── CONSENT & DPDP ──────────────────────────────────────────────────────────
+
+model ConsentRecord {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    String
+  purpose     String
+  version     String
+  granted     Boolean
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, category])
+}
+
+model DataExportRequest {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      String    @default("PENDING")
+  fileUrl     String?
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+}
+
+model Grievance {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  subject     String
+  description String
+  status      String   @default("OPEN")
+  resolution  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Nomination {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nomineeName  String
+  nomineeEmail String?
+  nomineePhone String?
+  relation     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model DataBreachRecord {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  discoveredAt DateTime
+  reportedToDpbAt DateTime?
+  affectedCount Int      @default(0)
+  remediation  String?
+  status       String   @default("OPEN")
+  createdBy    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── KYC ─────────────────────────────────────────────────────────────────────
+
+model KYCSubmission {
+  id              String              @id @default(cuid())
+  userId          String
+  user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status          KYCStatus           @default(PENDING)
+  verificationCode String?
+  codeGeneratedAt  DateTime?
+  codeExpiresAt    DateTime?
+  selfieUrl       String?
+  documentType    KYCDocumentType?
+  documentUrl     String?
+  digioRequestId  String?
+  digioResult     Json?
+  rejectionReason KYCRejectionReason?
+  rejectionNotes  String?
+  attempts        Int                 @default(0)
+  reviewedBy      String?
+  reviewedAt      DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@index([userId])
+}
+
+// ─── IMAGES ──────────────────────────────────────────────────────────────────
+
+model ProfileImage {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category       ImageCategory
+  status         ImageStatus   @default(PENDING)
+  originalUrl    String
+  watermarkedUrl String?
+  thumbnailUrl   String?
+  fileName       String
+  fileSize       Int
+  mimeType       String
+  width          Int?
+  height         Int?
+  rejectionReason String?
+  reviewedBy     String?
+  reviewedAt     DateTime?
+  isPrimary      Boolean       @default(false)
+  sortOrder      Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([userId, category, status])
+}
+
+// ─── MATCHING & INTERESTS ────────────────────────────────────────────────────
+
+model Interest {
+  id          String         @id @default(cuid())
+  senderId    String
+  receiverId  String
+  sender      User           @relation("InterestSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    User           @relation("InterestReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  status      InterestStatus @default(PENDING)
+  message     String?
+  expiresAt   DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  mutualMatch MutualMatch?
+
+  @@unique([senderId, receiverId])
+  @@index([senderId, status])
+  @@index([receiverId, status])
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profileId String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, profileId])
+}
+
+model MutualMatch {
+  id          String    @id @default(cuid())
+  userAId     String
+  userBId     String
+  userA       User      @relation("MatchUserA", fields: [userAId], references: [id])
+  userB       User      @relation("MatchUserB", fields: [userBId], references: [id])
+  interestId  String?   @unique
+  interest    Interest? @relation(fields: [interestId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  ticket MatchTicket?
+
+  @@unique([userAId, userBId])
+}
+
+model MatchTicket {
+  id           String            @id @default(cuid())
+  matchId      String            @unique
+  match        MutualMatch       @relation(fields: [matchId], references: [id])
+  status       MatchTicketStatus @default(OPEN)
+  outcome      MatchOutcome?
+  closeReason  String?
+  meetingLink  String?
+  meetingTime  DateTime?
+  meetingType  String?
+  userAConsent Boolean           @default(false)
+  userBConsent Boolean           @default(false)
+  assignedTo   String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  notes MatchTicketNote[]
+}
+
+model MatchTicketNote {
+  id        String      @id @default(cuid())
+  ticketId  String
+  ticket    MatchTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  adminId   String
+  admin     AdminUser   @relation(fields: [adminId], references: [id])
+  note      String
+  createdAt DateTime    @default(now())
+}
+
+model ProfileView {
+  id         String   @id @default(cuid())
+  viewerId   String
+  viewedId   String
+  viewer     User     @relation("ProfileViewer", fields: [viewerId], references: [id], onDelete: Cascade)
+  viewed     User     @relation("ProfileViewed", fields: [viewedId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([viewedId, createdAt])
+  @@index([viewerId])
+}
+
+model BlockList {
+  id        String   @id @default(cuid())
+  blockerId String
+  blockedId String
+  blocker   User     @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked   User     @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
+}
+
+// ─── SUBSCRIPTIONS & PAYMENTS ─────────────────────────────────────────────────
+
+model SubscriptionPlan {
+  id               String           @id @default(cuid())
+  name             String
+  tier             SubscriptionTier
+  description      String?
+  priceMonthly     Float?
+  priceQuarterly   Float?
+  priceYearly      Float?
+  durationDays     Int?
+  wishlistLimit    Int?
+  interestLimit    Int?
+  isActive         Boolean          @default(true)
+  isDefault        Boolean          @default(false)
+  communityId      String?
+  community        Community?       @relation(fields: [communityId], references: [id])
+  features         Json?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  subscriptions    UserSubscription[]
+  coupons          CouponPlanMap[]
+}
+
+model UserSubscription {
+  id           String             @id @default(cuid())
+  userId       String
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId       String
+  plan         SubscriptionPlan   @relation(fields: [planId], references: [id])
+  status       SubscriptionStatus @default(ACTIVE)
+  startDate    DateTime
+  endDate      DateTime
+  gracePeriodEnd DateTime?
+  autoRenew    Boolean            @default(true)
+  cancelledAt  DateTime?
+  pausedAt     DateTime?
+  razorpaySubId String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  payments     Payment[]
+
+  @@index([userId, status])
+}
+
+model Coupon {
+  id              String     @id @default(cuid())
+  code            String     @unique
+  type            CouponType
+  discountValue   Float
+  usageLimit      Int?
+  usedCount       Int        @default(0)
+  isUserSpecific  Boolean    @default(false)
+  specificUserId  String?
+  validFrom       DateTime
+  validUntil      DateTime
+  minPurchase     Float?
+  communityId     String?
+  isActive        Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  planMappings    CouponPlanMap[]
+  usages          CouponUsage[]
+}
+
+model CouponPlanMap {
+  couponId  String
+  planId    String
+  coupon    Coupon           @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  plan      SubscriptionPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@id([couponId, planId])
+}
+
+model CouponUsage {
+  id        String   @id @default(cuid())
+  couponId  String
+  coupon    Coupon   @relation(fields: [couponId], references: [id])
+  userId    String
+  paymentId String?
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id               String             @id @default(cuid())
+  userId           String
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId   String?
+  subscription     UserSubscription?  @relation(fields: [subscriptionId], references: [id])
+  razorpayOrderId  String?            @unique
+  razorpayPaymentId String?           @unique
+  amount           Float
+  gstAmount        Float              @default(0)
+  totalAmount      Float
+  status           PaymentStatus      @default(PENDING)
+  invoiceId        String?
+  refundId         String?
+  refundAmount     Float?
+  refundReason     String?
+  refundedAt       DateTime?
+  refundedBy       String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  invoice          Invoice?
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  paymentId       String   @unique
+  payment         Payment  @relation(fields: [paymentId], references: [id])
+  invoiceNumber   String   @unique
+  invoiceDate     DateTime @default(now())
+  fileUrl         String?
+  userId          String
+  planName        String
+  baseAmount      Float
+  gstRate         Float
+  cgst            Float?
+  sgst            Float?
+  igst            Float?
+  totalAmount     Float
+  customerName    String
+  customerEmail   String
+  customerState   String?
+  createdAt       DateTime @default(now())
+}
+
+// ─── COMMUNITIES ──────────────────────────────────────────────────────────────
+
+model Community {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logo        String?
+  banner      String?
+  description String?
+  category    String?
+  metaTitle   String?
+  metaDesc    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members           CommunityMember[]
+  subscriptionPlans SubscriptionPlan[]
+  managers          CommunityManagerAssignment[]
+  successStories    SuccessStory[]
+  announcements     CommunityAnnouncement[]
+}
+
+model CommunityMember {
+  id          String                @id @default(cuid())
+  userId      String
+  communityId String
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community   Community             @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  status      CommunityMemberStatus @default(PENDING)
+  rejectionReason String?
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime              @default(now())
+
+  @@unique([userId, communityId])
+}
+
+model CommunityManagerAssignment {
+  id          String    @id @default(cuid())
+  communityId String
+  adminUserId String
+  community   Community @relation(fields: [communityId], references: [id])
+  assignedAt  DateTime  @default(now())
+
+  @@unique([communityId, adminUserId])
+}
+
+model CommunityAnnouncement {
+  id          String    @id @default(cuid())
+  communityId String
+  community   Community @relation(fields: [communityId], references: [id])
+  title       String
+  content     String
+  postedBy    String
+  createdAt   DateTime  @default(now())
+}
+
+// ─── NOTIFICATIONS ────────────────────────────────────────────────────────────
+
+model NotificationTemplate {
+  id         String   @id @default(cuid())
+  eventKey   String   @unique
+  label      String
+  emailSubject String?
+  emailBody  String?
+  smsBody    String?
+  inAppBody  String?
+  variables  Json?
+  version    Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Notification {
+  id         String              @id @default(cuid())
+  userId     String
+  user       User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel    NotificationChannel
+  eventKey   String
+  subject    String?
+  body       String
+  status     NotificationStatus  @default(PENDING)
+  isRead     Boolean             @default(false)
+  sentAt     DateTime?
+  deliveredAt DateTime?
+  failureReason String?
+  createdAt  DateTime            @default(now())
+
+  @@index([userId, isRead])
+}
+
+model NotificationPreference {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventKey String
+  email    Boolean  @default(true)
+  inApp    Boolean  @default(true)
+  sms      Boolean  @default(true)
+
+  @@unique([userId, eventKey])
+}
+
+model ManualNotification {
+  id         String   @id @default(cuid())
+  sentBy     String
+  admin      AdminUser @relation(fields: [sentBy], references: [id])
+  targetType String
+  targetId   String?
+  channel    NotificationChannel
+  subject    String?
+  body       String
+  sentAt     DateTime @default(now())
+}
+
+// ─── CMS ──────────────────────────────────────────────────────────────────────
+
+model CmsPage {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  content      String
+  status       ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  scheduledAt  DateTime?
+  metaTitle    String?
+  metaDesc     String?
+  ogTitle      String?
+  ogDesc       String?
+  ogImage      String?
+  robots       String?
+  canonicalUrl String?
+  version      Int           @default(1)
+  createdBy    String?
+  updatedBy    String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Blog {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  content      String
+  excerpt      String?
+  featuredImage String?
+  author       String?
+  category     String?
+  tags         String[]
+  status       ContentStatus @default(DRAFT)
+  publishedAt  DateTime?
+  scheduledAt  DateTime?
+  metaTitle    String?
+  metaDesc     String?
+  ogTitle      String?
+  ogDesc       String?
+  ogImage      String?
+  canonicalUrl String?
+  createdBy    String?
+  updatedBy    String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model FAQ {
+  id        String        @id @default(cuid())
+  question  String
+  answer    String
+  category  String?
+  sortOrder Int           @default(0)
+  status    ContentStatus @default(PUBLISHED)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model SuccessStory {
+  id          String    @id @default(cuid())
+  coupleName  String
+  photo       String?
+  story       String
+  communityId String?
+  community   Community? @relation(fields: [communityId], references: [id])
+  isFeatured  Boolean   @default(false)
+  date        DateTime?
+  ticketRef   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model SeoRedirect {
+  id         String   @id @default(cuid())
+  fromPath   String   @unique
+  toPath     String
+  statusCode Int      @default(301)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+// ─── FIELD VISIBILITY ────────────────────────────────────────────────────────
+
+model FieldVisibilityConfig {
+  id           String   @id @default(cuid())
+  fieldKey     String
+  guestVisible Boolean  @default(false)
+  registeredVisible Boolean @default(true)
+  communityVisible Boolean @default(true)
+  premiumVisible Boolean @default(true)
+  updatedBy    String?
+  updatedAt    DateTime @updatedAt
+
+  @@unique([fieldKey])
+}
+
+// ─── PLATFORM SETTINGS ───────────────────────────────────────────────────────
+
+model PlatformSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  isSecret  Boolean  @default(false)
+  updatedBy String?
+  updatedAt DateTime @updatedAt
+}
+
+// ─── AUDIT LOGS ──────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  adminId    String?
+  admin      AdminUser?  @relation(fields: [adminId], references: [id])
+  action     AuditAction
+  targetType String?
+  targetId   String?
+  details    Json?
+  ipAddress  String?
+  createdAt  DateTime    @default(now())
+
+  @@index([adminId, createdAt])
+  @@index([action, createdAt])
+}
