@@ -113,7 +113,7 @@ export default function PrivacyPage() {
         </div>
 
         <div className="glass p-6 mb-6 text-white/60 text-sm leading-relaxed">
-          This policy explains how Premium Matrimony (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) collects, uses, and protects your personal
+          This policy explains how Jasmine Matrimony (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) collects, uses, and protects your personal
           data in compliance with the <strong className="text-[#E8C76A]">Digital Personal Data Protection Act 2023 (DPDP Act)</strong>.
           By using our platform, you consent to the practices described herein.
         </div>

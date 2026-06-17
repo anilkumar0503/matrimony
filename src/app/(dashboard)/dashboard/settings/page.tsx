@@ -1,11 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
   Bell, Shield, Lock, Trash2, Download, Eye, EyeOff,
-  CheckCircle, AlertTriangle, ExternalLink
+  CheckCircle, AlertTriangle, ExternalLink, Monitor, X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,10 +39,63 @@ export default function SettingsPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [exported, setExported] = useState(false);
+  const [sessions, setSessions] = useState<any[]>([]);
+  const [loadingSessions, setLoadingSessions] = useState(false);
+  const [nomination, setNomination] = useState({ name: "", relationship: "", phone: "", email: "" });
+  const [savingNomination, setSavingNomination] = useState(false);
 
   const pwForm = useForm<{ currentPassword: string; newPassword: string; confirmPassword: string }>();
   const deleteForm = useForm<{ password: string; reason: string }>();
   const token = () => localStorage.getItem("accessToken");
+
+  const loadSessions = async () => {
+    setLoadingSessions(true);
+    try {
+      const res = await fetch("/api/user/sessions", { headers: { Authorization: `Bearer ${token()}` } });
+      const json = await res.json();
+      if (json.success) setSessions(json.data.sessions || []);
+    } catch (err) {
+      console.error("Failed to load sessions", err);
+    }
+    setLoadingSessions(false);
+  };
+
+  const revokeSession = async (sessionId: string) => {
+    try {
+      await fetch(`/api/user/sessions/${sessionId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token()}` },
+      });
+      loadSessions();
+    } catch (err) {
+      console.error("Failed to revoke session", err);
+    }
+  };
+
+  useEffect(() => {
+    if (tab === "security") loadSessions();
+  }, [tab]);
+
+  const saveNomination = async () => {
+    setSavingNomination(true);
+    try {
+      const res = await fetch("/api/user/nomination", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+        body: JSON.stringify(nomination),
+      });
+      const json = await res.json();
+      if (json.success) {
+        alert("Nomination saved successfully");
+      } else {
+        alert(json.error || "Failed to save nomination");
+      }
+    } catch (err) {
+      console.error("Failed to save nomination", err);
+      alert("Failed to save nomination");
+    }
+    setSavingNomination(false);
+  };
 
   const saveNotifications = async () => {
     setSaving(true);
@@ -210,16 +263,50 @@ export default function SettingsPage() {
           <hr className="border-white/[0.07]" />
           <div>
             <h3 className="font-semibold text-white mb-2">Active Sessions</h3>
-            <p className="text-white/50 text-sm mb-3">Log out all other devices for security.</p>
-            <Button variant="glass" size="sm" onClick={async () => {
-              await fetch("/api/auth/logout", {
-                method: "POST",
-                headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
-                body: JSON.stringify({ allDevices: true }),
-              });
-            }}>
-              Logout All Other Devices
-            </Button>
+            <p className="text-white/50 text-sm mb-4">Manage your active login sessions across devices.</p>
+            {loadingSessions ? (
+              <div className="text-white/40 text-sm">Loading sessions...</div>
+            ) : sessions.length === 0 ? (
+              <div className="text-white/40 text-sm">No active sessions found.</div>
+            ) : (
+              <div className="space-y-3">
+                {sessions.map((s) => (
+                  <div key={s.id} className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]">
+                    <div className="flex items-center gap-3">
+                      <Monitor size={16} className="text-white/40" />
+                      <div>
+                        <div className="text-white text-sm">{s.deviceInfo || "Unknown Device"}</div>
+                        <div className="text-white/40 text-xs">
+                          {s.ipAddress} • {new Date(s.createdAt).toLocaleDateString()}
+                          {s.isCurrent && <span className="ml-2 text-[#C9972C] text-[10px]">(Current)</span>}
+                        </div>
+                      </div>
+                    </div>
+                    {!s.isCurrent && (
+                      <button
+                        onClick={() => revokeSession(s.id)}
+                        className="text-white/30 hover:text-red-400 transition-colors p-1"
+                        title="Revoke session"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="mt-4">
+              <Button variant="glass" size="sm" onClick={async () => {
+                await fetch("/api/auth/logout", {
+                  method: "POST",
+                  headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+                  body: JSON.stringify({ allDevices: true }),
+                });
+                loadSessions();
+              }}>
+                Logout All Other Devices
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -278,6 +365,46 @@ export default function SettingsPage() {
 
           <div className="glass-dark p-4 rounded-xl text-white/30 text-xs">
             Data Protection Officer: dpo@matrimony.com · Grievance redressal within 30 days per DPDP Act 2023
+          </div>
+
+          <hr className="border-white/[0.07]" />
+
+          <div>
+            <h3 className="font-semibold text-white flex items-center gap-2 mb-1">
+              <Shield size={16} className="text-[#C9972C]" /> Nomination (DPDP Right)
+            </h3>
+            <p className="text-white/50 text-sm mb-4">
+              Nominate a person to manage your account in case of death or incapacity.
+            </p>
+            <div className="space-y-3">
+              <Input
+                label="Nominee Name"
+                placeholder="Full name of nominee"
+                value={nomination.name}
+                onChange={(e) => setNomination((n) => ({ ...n, name: e.target.value }))}
+              />
+              <Input
+                label="Relationship"
+                placeholder="e.g., Spouse, Parent, Sibling"
+                value={nomination.relationship}
+                onChange={(e) => setNomination((n) => ({ ...n, relationship: e.target.value }))}
+              />
+              <Input
+                label="Phone Number"
+                placeholder="10-digit mobile number"
+                value={nomination.phone}
+                onChange={(e) => setNomination((n) => ({ ...n, phone: e.target.value }))}
+              />
+              <Input
+                label="Email Address"
+                placeholder="nominee@example.com"
+                value={nomination.email}
+                onChange={(e) => setNomination((n) => ({ ...n, email: e.target.value }))}
+              />
+              <Button variant="gold" size="sm" onClick={saveNomination} loading={savingNomination}>
+                Save Nomination
+              </Button>
+            </div>
           </div>
         </div>
       )}

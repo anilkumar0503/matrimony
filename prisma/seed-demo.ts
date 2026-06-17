@@ -25,6 +25,12 @@ const demoUsers = [
     annualIncome: "15-20 LPA",
     maritalStatus: "NEVER_MARRIED" as const,
     aboutMe: "Ambitious and family-oriented. Looking for someone who values education and career growth.",
+    nakshatra: "Rohini",
+    rashi: "Taurus",
+    lagna: "Leo",
+    nadi: "Madhya",
+    gana: "Manush",
+    dosham: [],
   },
   {
     fullName: "Rahul Verma",
@@ -43,6 +49,12 @@ const demoUsers = [
     annualIncome: "20-25 LPA",
     maritalStatus: "NEVER_MARRIED" as const,
     aboutMe: "Tech enthusiast who loves traveling and reading. Seeking a partner with similar interests.",
+    nakshatra: "Punarvasu",
+    rashi: "Gemini",
+    lagna: "Virgo",
+    nadi: "Adi",
+    gana: "Dev",
+    dosham: [],
   },
   {
     fullName: "Ananya Patel",
@@ -61,6 +73,12 @@ const demoUsers = [
     annualIncome: "10-15 LPA",
     maritalStatus: "NEVER_MARRIED" as const,
     aboutMe: "Simple and grounded. Love cooking and spending time with family.",
+    nakshatra: "Pushya",
+    rashi: "Cancer",
+    lagna: "Libra",
+    nadi: "Antya",
+    gana: "Dev",
+    dosham: [],
   },
   {
     fullName: "Arjun Singh",
@@ -79,6 +97,12 @@ const demoUsers = [
     annualIncome: "25-30 LPA",
     maritalStatus: "NEVER_MARRIED" as const,
     aboutMe: "Entrepreneur with a passion for fitness and outdoor activities.",
+    nakshatra: "Ashwini",
+    rashi: "Aries",
+    lagna: "Aries",
+    nadi: "Madhya",
+    gana: "Rakshas",
+    dosham: ["MANGAL_DOSHAM"],
   },
   {
     fullName: "Sneha Reddy",
@@ -97,6 +121,12 @@ const demoUsers = [
     annualIncome: "15-20 LPA",
     maritalStatus: "NEVER_MARRIED" as const,
     aboutMe: "Dedicated doctor looking for a supportive and understanding partner.",
+    nakshatra: "Hasta",
+    rashi: "Virgo",
+    lagna: "Scorpio",
+    nadi: "Madhya",
+    gana: "Manush",
+    dosham: [],
   },
   {
     fullName: "Vikram Krishnan",
@@ -433,6 +463,12 @@ async function main() {
         annualIncome: userData.annualIncome,
         profileCompletionPct: 85,
         adminOverrideVisibility: true,
+        nakshatra: (userData as any).nakshatra,
+        rashi: (userData as any).rashi,
+        lagna: (userData as any).lagna,
+        nadi: (userData as any).nadi,
+        gana: (userData as any).gana,
+        dosham: (userData as any).dosham,
       },
       update: {},
     });
@@ -631,6 +667,60 @@ async function main() {
     }
   }
   console.log(`  ✅ Created ${matchCount} mutual matches`);
+
+  // Create match tickets
+  console.log("  Creating match tickets...");
+  const adminUser = await prisma.adminUser.findFirst({ where: { isActive: true } });
+  if (!adminUser) {
+    console.log("  ⚠️  No active admin user found, skipping match tickets");
+  } else {
+    const mutualMatches = await prisma.mutualMatch.findMany({ take: 8 });
+    const statuses = ["OPEN", "IN_REVIEW", "SCHEDULED", "COMPLETED", "CLOSED"] as const;
+    let ticketCount = 0;
+
+    for (const match of mutualMatches) {
+      const existingTicket = await prisma.matchTicket.findUnique({ where: { matchId: match.id } });
+      if (!existingTicket) {
+        const status = statuses[Math.floor(Math.random() * statuses.length)];
+        const ticketData: any = {
+          matchId: match.id,
+          status,
+          assignedTo: adminUser.id,
+        };
+
+        // Add meeting details for scheduled tickets
+        if (status === "SCHEDULED") {
+          ticketData.meetingType = "GOOGLE_MEET";
+          ticketData.meetingTime = new Date(Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000);
+          ticketData.meetingLink = "https://meet.google.com/demo-" + Math.random().toString(36).substring(7);
+        }
+
+        // Add outcome for completed/closed tickets
+        if (status === "COMPLETED") {
+          ticketData.outcome = "PROCEEDING";
+        } else if (status === "CLOSED") {
+          ticketData.outcome = "NOT_PROCEEDING";
+          ticketData.closeReason = "Not compatible after review";
+        }
+
+        const ticket = await prisma.matchTicket.create({ data: ticketData });
+
+        // Add a note to some tickets
+        if (Math.random() > 0.5) {
+          await prisma.matchTicketNote.create({
+            data: {
+              ticketId: ticket.id,
+              adminId: adminUser.id,
+              note: "Initial review - profiles look compatible. Recommend scheduling a meeting.",
+            },
+          });
+        }
+
+        ticketCount++;
+      }
+    }
+    console.log(`  ✅ Created ${ticketCount} match tickets`);
+  }
 
   console.log("\n✅ Demo data seeding complete!");
   console.log("\n📋 Demo User Credentials (all users):");

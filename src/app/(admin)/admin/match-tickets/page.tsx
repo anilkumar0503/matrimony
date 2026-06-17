@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import { Ticket, Calendar, CheckCircle, X, MessageSquare, ChevronLeft, ChevronRight } from "lucide-react";
+import { Ticket, Calendar, CheckCircle, X, MessageSquare, ChevronLeft, ChevronRight, Plus, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTime, calculateAge } from "@/lib/utils";
@@ -18,6 +18,14 @@ interface Ticket {
     userB: { id: string; dateOfBirth: string; profile: { fullName: string; city: string } | null };
   };
   notes: { id: string; note: string; admin: { name: string }; createdAt: string }[];
+}
+
+interface User {
+  id: string;
+  email: string;
+  gender: string;
+  dateOfBirth: string;
+  profile: { fullName: string; city: string; state: string } | null;
 }
 
 const statusColor: Record<string, "warning" | "info" | "gold" | "success" | "danger" | "glass"> = {
@@ -39,7 +47,17 @@ export default function AdminMatchTicketsPage() {
   const [meetingLink, setMeetingLink] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
   const [meetingType, setMeetingType] = useState("GOOGLE_MEET");
+  const [outcome, setOutcome] = useState("PROCEEDING");
   const [processing, setProcessing] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [userSearchA, setUserSearchA] = useState("");
+  const [userSearchB, setUserSearchB] = useState("");
+  const [userResultsA, setUserResultsA] = useState<User[]>([]);
+  const [userResultsB, setUserResultsB] = useState<User[]>([]);
+  const [selectedUserA, setSelectedUserA] = useState<User | null>(null);
+  const [selectedUserB, setSelectedUserB] = useState<User | null>(null);
+  const [createNotes, setCreateNotes] = useState("");
+  const [creating, setCreating] = useState(false);
 
   const token = () => localStorage.getItem("adminAccessToken");
 
@@ -66,6 +84,45 @@ export default function AdminMatchTicketsPage() {
     if ((await res.json()).success) { fetch_(); if (act !== "ADD_NOTE") setSelected(null); setNote(""); }
   };
 
+  const searchUsers = async (query: string, forUser: "A" | "B") => {
+    if (!query.trim()) {
+      if (forUser === "A") setUserResultsA([]);
+      else setUserResultsB([]);
+      return;
+    }
+    const res = await fetch(`/api/admin/users?search=${query}&limit=10`, { headers: { Authorization: `Bearer ${token()}` } });
+    const json = await res.json();
+    if (json.success) {
+      if (forUser === "A") setUserResultsA(json.data.users);
+      else setUserResultsB(json.data.users);
+    }
+  };
+
+  const createMatch = async () => {
+    if (!selectedUserA || !selectedUserB) return;
+    setCreating(true);
+    const res = await fetch("/api/admin/match-tickets", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ userAId: selectedUserA.id, userBId: selectedUserB.id, notes: createNotes }),
+    });
+    const json = await res.json();
+    setCreating(false);
+    if (json.success) {
+      setShowCreateModal(false);
+      setSelectedUserA(null);
+      setSelectedUserB(null);
+      setUserSearchA("");
+      setUserSearchB("");
+      setUserResultsA([]);
+      setUserResultsB([]);
+      setCreateNotes("");
+      fetch_();
+    } else {
+      alert(json.error || "Failed to create match");
+    }
+  };
+
   const totalPages = Math.ceil(total / 20);
 
   return (
@@ -78,6 +135,7 @@ export default function AdminMatchTicketsPage() {
           <p className="text-white/40 text-sm">{total} tickets</p>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <Button variant="gold" onClick={() => setShowCreateModal(true)}><Plus size={16} /> Create Match</Button>
           {["", "OPEN", "IN_REVIEW", "SCHEDULED", "COMPLETED", "CLOSED"].map((s) => (
             <Button key={s} variant={statusFilter === s ? "gold" : "glass"} size="sm"
               onClick={() => { setStatusFilter(s); setPage(1); }}>
@@ -162,10 +220,24 @@ export default function AdminMatchTicketsPage() {
                 {selected.status === "OPEN" && (
                   <Button variant="glass-gold" size="sm" onClick={() => action(selected.id, "START_REVIEW")}>Start Review</Button>
                 )}
-                {selected.status === "IN_REVIEW" && (
-                  <Button variant="glass" size="sm" onClick={() => action(selected.id, "COMPLETE", { outcome: "PROCEEDING" })}>Mark Complete</Button>
+                {(selected.status === "IN_REVIEW" || selected.status === "SCHEDULED") && (
+                  <>
+                    <Button variant="glass" size="sm" onClick={() => action(selected.id, "COMPLETE", { outcome })}>
+                      <CheckCircle size={14} /> Complete
+                    </Button>
+                    <select 
+                      className="input-glass text-sm py-1.5 px-3" 
+                      value={outcome} 
+                      onChange={(e) => setOutcome(e.target.value)}
+                    >
+                      <option value="PROCEEDING">Proceeding</option>
+                      <option value="NOT_PROCEEDING">Not Proceeding</option>
+                      <option value="ENGAGED">Engaged</option>
+                      <option value="MARRIED">Married</option>
+                    </select>
+                  </>
                 )}
-                {(selected.status === "IN_REVIEW" || selected.status === "OPEN") && (
+                {(selected.status === "IN_REVIEW" || selected.status === "OPEN" || selected.status === "SCHEDULED") && (
                   <Button variant="danger" size="sm" onClick={() => action(selected.id, "CLOSE", { closeReason: "Closed by admin", outcome: "NOT_PROCEEDING" })}>Close</Button>
                 )}
               </div>
@@ -211,6 +283,118 @@ export default function AdminMatchTicketsPage() {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Match Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setShowCreateModal(false)}>
+          <div className="glass-dark p-6 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-semibold text-white">Create Match Ticket</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-white/40 hover:text-white"><X size={18} /></button>
+            </div>
+
+            <div className="space-y-5">
+              {/* User A Selection */}
+              <div>
+                <label className="block text-xs text-white/50 mb-2">Profile A</label>
+                <div className="relative">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                  <input
+                    className="input-glass input-glass-with-icon"
+                    placeholder="Search by name, email, phone..."
+                    value={userSearchA}
+                    onChange={(e) => { setUserSearchA(e.target.value); searchUsers(e.target.value, "A"); }}
+                  />
+                </div>
+                {selectedUserA && (
+                  <div className="glass-dark p-3 mt-2 rounded-lg flex items-center justify-between">
+                    <div>
+                      <div className="text-white text-sm font-medium">{selectedUserA.profile?.fullName || "—"}</div>
+                      <div className="text-white/40 text-xs">{selectedUserA.email} · {selectedUserA.gender}</div>
+                    </div>
+                    <button onClick={() => setSelectedUserA(null)} className="text-white/40 hover:text-red-400"><X size={14} /></button>
+                  </div>
+                )}
+                {userResultsA.length > 0 && !selectedUserA && (
+                  <div className="glass-dark mt-2 rounded-lg max-h-40 overflow-y-auto">
+                    {userResultsA.map((user) => (
+                      <div
+                        key={user.id}
+                        className="p-3 hover:bg-white/[0.05] cursor-pointer border-b border-white/[0.04] last:border-0"
+                        onClick={() => { setSelectedUserA(user); setUserResultsA([]); setUserSearchA(""); }}
+                      >
+                        <div className="text-white text-sm">{user.profile?.fullName || "—"}</div>
+                        <div className="text-white/40 text-xs">{user.email} · {user.gender} · {user.profile?.city}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* User B Selection */}
+              <div>
+                <label className="block text-xs text-white/50 mb-2">Profile B</label>
+                <div className="relative">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                  <input
+                    className="input-glass input-glass-with-icon"
+                    placeholder="Search by name, email, phone..."
+                    value={userSearchB}
+                    onChange={(e) => { setUserSearchB(e.target.value); searchUsers(e.target.value, "B"); }}
+                  />
+                </div>
+                {selectedUserB && (
+                  <div className="glass-dark p-3 mt-2 rounded-lg flex items-center justify-between">
+                    <div>
+                      <div className="text-white text-sm font-medium">{selectedUserB.profile?.fullName || "—"}</div>
+                      <div className="text-white/40 text-xs">{selectedUserB.email} · {selectedUserB.gender}</div>
+                    </div>
+                    <button onClick={() => setSelectedUserB(null)} className="text-white/40 hover:text-red-400"><X size={14} /></button>
+                  </div>
+                )}
+                {userResultsB.length > 0 && !selectedUserB && (
+                  <div className="glass-dark mt-2 rounded-lg max-h-40 overflow-y-auto">
+                    {userResultsB.map((user) => (
+                      <div
+                        key={user.id}
+                        className="p-3 hover:bg-white/[0.05] cursor-pointer border-b border-white/[0.04] last:border-0"
+                        onClick={() => { setSelectedUserB(user); setUserResultsB([]); setUserSearchB(""); }}
+                      >
+                        <div className="text-white text-sm">{user.profile?.fullName || "—"}</div>
+                        <div className="text-white/40 text-xs">{user.email} · {user.gender} · {user.profile?.city}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Notes */}
+              <div>
+                <label className="block text-xs text-white/50 mb-2">Initial Notes (optional)</label>
+                <textarea
+                  className="input-glass min-h-[70px]"
+                  placeholder="Add any notes about this match..."
+                  value={createNotes}
+                  onChange={(e) => setCreateNotes(e.target.value)}
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <Button variant="glass" onClick={() => setShowCreateModal(false)} className="flex-1">Cancel</Button>
+                <Button
+                  variant="gold"
+                  onClick={createMatch}
+                  disabled={!selectedUserA || !selectedUserB || creating}
+                  loading={creating}
+                  className="flex-1"
+                >
+                  Create Match
+                </Button>
+              </div>
             </div>
           </div>
         </div>

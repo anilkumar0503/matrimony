@@ -3,7 +3,7 @@ import { FileText, ChevronLeft } from "lucide-react";
 
 export const metadata = {
   title: "Terms of Service",
-  description: "Terms and conditions governing your use of the Premium Matrimony platform.",
+  description: "Terms and conditions governing your use of the Jasmine Matrimony platform.",
 };
 
 const LAST_UPDATED = "June 1, 2025";
@@ -11,7 +11,7 @@ const LAST_UPDATED = "June 1, 2025";
 const sections = [
   {
     title: "1. Acceptance of Terms",
-    content: `By registering on or using this platform, you agree to be bound by these Terms of Service. If you do not agree, you must not use the platform. These terms form a legally binding agreement between you and Premium Matrimony ("Company").`,
+    content: `By registering on or using this platform, you agree to be bound by these Terms of Service. If you do not agree, you must not use the platform. These terms form a legally binding agreement between you and Jasmine Matrimony ("Company").`,
   },
   {
     title: "2. Eligibility",
@@ -93,7 +93,7 @@ export default function TermsPage() {
         </div>
 
         <div className="glass p-6 mb-6 text-white/60 text-sm leading-relaxed">
-          Please read these Terms of Service carefully before using the Premium Matrimony platform. These terms govern
+          Please read these Terms of Service carefully before using the Jasmine Matrimony platform. These terms govern
           your access to and use of all features, content, and services provided by us.
         </div>
 
@@ -117,7 +117,7 @@ export default function TermsPage() {
         </div>
 
         <div className="glass p-6 mt-6 text-center">
-          <p className="text-white/40 text-sm mb-3">By using Premium Matrimony, you acknowledge that you have read and understood these terms.</p>
+          <p className="text-white/40 text-sm mb-3">By using Jasmine Matrimony, you acknowledge that you have read and understood these terms.</p>
           <div className="flex gap-3 justify-center flex-wrap">
             <Link href="/privacy" className="badge-glass text-sm">Privacy Policy</Link>
             <Link href="/contact" className="badge-gold text-sm">Contact Us</Link>

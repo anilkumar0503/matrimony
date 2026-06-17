@@ -22,7 +22,7 @@ const SETTING_GROUPS: SettingGroup[] = [
     keys: [
       { key: "gst.rate", label: "GST Rate (%)", placeholder: "18", hint: "Default: 18%" },
       { key: "platform.state", label: "Platform State", placeholder: "Tamil Nadu", hint: "Used for CGST/SGST vs IGST" },
-      { key: "business.name", label: "Business Name", placeholder: "Premium Matrimony Pvt Ltd" },
+      { key: "business.name", label: "Business Name", placeholder: "Jasmine Matrimony Pvt Ltd" },
       { key: "business.gstin", label: "GSTIN", placeholder: "33AABCP1234M1Z5" },
       { key: "business.address", label: "Business Address", placeholder: "No. 1, Chennai, TN 600001" },
       { key: "invoice.prefix", label: "Invoice Number Prefix", placeholder: "INV-" },
@@ -49,7 +49,7 @@ const SETTING_GROUPS: SettingGroup[] = [
       { key: "mail.username", label: "SMTP Username", placeholder: "username" },
       { key: "mail.password", label: "SMTP Password", type: "password" },
       { key: "email.from", label: "From Email", placeholder: "noreply@matrimony.com" },
-      { key: "email.from_name", label: "From Name", placeholder: "Premium Matrimony" },
+      { key: "email.from_name", label: "From Name", placeholder: "Jasmine Matrimony" },
       { key: "sendgrid.api_key", label: "SendGrid API Key", type: "password" },
     ],
   },
@@ -73,7 +73,7 @@ const SETTING_GROUPS: SettingGroup[] = [
       { key: "image.max_per_profile", label: "Max Images Per Profile", placeholder: "10" },
       { key: "image.max_size_mb", label: "Max Image Size (MB)", placeholder: "5" },
       { key: "image.watermark_enabled", label: "Watermark Enabled", placeholder: "true/false" },
-      { key: "image.watermark_text", label: "Watermark Text", placeholder: "Premium Matrimony" },
+      { key: "image.watermark_text", label: "Watermark Text", placeholder: "Jasmine Matrimony" },
       { key: "image.moderation_sla_hours", label: "Moderation SLA (hours)", placeholder: "24" },
       { key: "image.moderation_alert_threshold", label: "Alert Threshold (count)", placeholder: "20" },
     ],
@@ -90,7 +90,7 @@ const SETTING_GROUPS: SettingGroup[] = [
   {
     label: "Platform",
     keys: [
-      { key: "app.name", label: "App Name", placeholder: "Premium Matrimony" },
+      { key: "app.name", label: "App Name", placeholder: "Jasmine Matrimony" },
       { key: "platform.maintenance_mode", label: "Maintenance Mode", placeholder: "true/false" },
       { key: "platform.maintenance_message", label: "Maintenance Message", placeholder: "Under maintenance..." },
     ],

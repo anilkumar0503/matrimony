@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Playfair_Display, DM_Serif_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display, DM_Serif_Display, Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
+import CookieConsent from "@/components/cookie-consent";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -23,19 +25,31 @@ const dmSerif = DM_Serif_Display({
   display: "swap",
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "Premium Matrimony — Verified Matchmaking",
-    template: "%s | Premium Matrimony",
+    default: "Jasmine Matrimony — Verified Matchmaking",
+    template: "%s | Jasmine Matrimony",
   },
   description:
     "India's most trusted verified matrimony platform. Find your perfect life partner with admin-verified profiles, privacy-first design, and DPDP-compliant data protection.",
   keywords: ["matrimony", "verified profiles", "matchmaking", "Indian matrimony", "shaadi"],
   robots: { index: true, follow: true },
+  icons: {
+    icon: "/fevicon.png",
+    shortcut: "/fevicon.png",
+    apple: "/fevicon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    siteName: "Premium Matrimony",
+    siteName: "Jasmine Matrimony",
   },
 };
 
@@ -47,13 +61,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jakarta.variable} ${playfair.variable} ${dmSerif.variable}`}
+      className={`${jakarta.variable} ${playfair.variable} ${dmSerif.variable} ${inter.variable}`}
+      suppressHydrationWarning
     >
       <body className="min-h-screen bg-[#1a0505] text-white antialiased">
         <div className="blob-bg" aria-hidden="true" />
         <div className="page-wrapper">
           {children}
         </div>
+        <Toaster />
+        <CookieConsent />
       </body>
     </html>
   );

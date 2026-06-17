@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     await sendEmailDirect({
       to: email,
-      subject: "Verify your email — Premium Matrimony",
+      subject: "Verify your email — Jasmine Matrimony",
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto">
           <h2 style="color:#7B1D1D">Verify Your Email</h2>

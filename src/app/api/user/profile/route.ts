@@ -3,6 +3,7 @@ import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { requireUser, apiResponse, apiError, handleApiError } from "@/lib/auth";
 import { getProfileCompletionPct } from "@/lib/utils";
+import { getSignedDownloadUrl } from "@/lib/storage";
 
 const personalSchema = z.object({
   fullName: z.string().min(2).max(100).optional(),
@@ -41,7 +42,7 @@ const personalSchema = z.object({
   nakshatra: z.string().optional(),
   rashi: z.string().optional(),
   gothram: z.string().optional(),
-  dosham: z.array(z.enum(["MANGAL_DOSHAM", "NADI_DOSHAM", "CHEVVAI_DOSHAM", "NO_DOSHAM"])).optional(),
+  dosham: z.union([z.string(), z.array(z.string())]).optional(),
   horoscopeNotes: z.string().max(500).optional(),
 });
 
@@ -55,11 +56,12 @@ export async function GET(req: NextRequest) {
 
     const userData = await prisma.user.findUnique({
       where: { id: user.id },
-      select: { 
-        email: true, 
-        phone: true, 
-        gender: true, 
-        dateOfBirth: true, 
+      select: {
+        id: true,
+        email: true,
+        phone: true,
+        gender: true,
+        dateOfBirth: true,
         status: true,
         kycSubmissions: {
           orderBy: { createdAt: 'desc' },
@@ -68,7 +70,25 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return apiResponse({ profile, user: userData });
+    if (!userData) return apiError("User not found", 404);
+
+    const latestKyc = userData.kycSubmissions[0];
+    const kycStatus = latestKyc?.status || null;
+
+    const rawImages = await prisma.profileImage.findMany({
+      where: { userId: user.id },
+      orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
+      select: { id: true, originalUrl: true, watermarkedUrl: true, thumbnailUrl: true, isPrimary: true, status: true, category: true },
+    });
+
+    const images = await Promise.all(
+      rawImages.map(async (img) => ({
+        ...img,
+        signedUrl: await getSignedDownloadUrl(img.watermarkedUrl || img.originalUrl, 3600).catch(() => null),
+      }))
+    );
+
+    return apiResponse({ profile, user: userData, images, kycStatus });
   } catch (err) {
     return handleApiError(err);
   }
@@ -83,10 +103,29 @@ export async function PUT(req: NextRequest) {
 
     const data = parsed.data;
 
+    // Convert dosham from string to array and map to enum values
+    const doshamMap: Record<string, string> = {
+      "Manglik": "MANGAL_DOSHAM",
+      "Mangal Dosham": "MANGAL_DOSHAM",
+      "Nadi Dosha": "NADI_DOSHAM",
+      "Chevvai Dosham": "CHEVVAI_DOSHAM",
+      "No Dosham": "NO_DOSHAM",
+      "MANGAL_DOSHAM": "MANGAL_DOSHAM",
+      "NADI_DOSHAM": "NADI_DOSHAM",
+      "CHEVVAI_DOSHAM": "CHEVVAI_DOSHAM",
+      "NO_DOSHAM": "NO_DOSHAM",
+    };
+
+    let dosham: string[] | undefined = undefined;
+    if (data.dosham) {
+      const doshamArray = typeof data.dosham === 'string' ? [data.dosham] : data.dosham;
+      dosham = doshamArray.map(d => doshamMap[d] || d).filter(d => ["MANGAL_DOSHAM", "NADI_DOSHAM", "CHEVVAI_DOSHAM", "NO_DOSHAM"].includes(d));
+    }
+
     const profile = await prisma.userProfile.upsert({
       where: { userId: user.id },
-      create: { userId: user.id, ...data },
-      update: data,
+      create: { userId: user.id, ...data, dosham: dosham as any },
+      update: { ...data, dosham: dosham as any },
     });
 
     const completionPct = getProfileCompletionPct(profile as unknown as Record<string, unknown>);

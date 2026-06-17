@@ -15,7 +15,10 @@ export async function GET(req: NextRequest) {
     const modeBEnabled = (await getSetting(SETTINGS_KEYS.KYC_MODE_B_ENABLED)) === "true";
     const modeCEnabled = (await getSetting(SETTINGS_KEYS.KYC_MODE_C_ENABLED)) === "true";
 
-    return apiResponse({ kyc, config: { modeBEnabled, modeCEnabled } });
+    return apiResponse({ 
+      kyc: kyc ? { ...kyc, selfieUrl: kyc.selfieUrl, documentUrl: kyc.documentUrl } : null, 
+      config: { modeBEnabled, modeCEnabled } 
+    });
   } catch (err) {
     return handleApiError(err);
   }

@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
   try {
     const user = await requireUser(req);
 
-    const matches = await prisma.match.findMany({
+    const matches = await prisma.mutualMatch.findMany({
       where: { OR: [{ userAId: user.id }, { userBId: user.id }] },
       include: {
         userA: {

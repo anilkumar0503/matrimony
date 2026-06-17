@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import { requireUser, apiResponse, apiError, handleApiError } from "@/lib/auth";
-import { uploadFile, STORAGE_FOLDERS } from "@/lib/storage";
+import { uploadPrivateFile, STORAGE_FOLDERS } from "@/lib/storage";
 import { enqueueImageProcessing } from "@/lib/queues";
 import { getSettingOrDefault, SETTINGS_KEYS } from "@/lib/platform-settings";
 
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const isFirst = existingCount === 0;
     const imgCategory = isFirst ? "PROFILE" : "GALLERY";
     const folder = isFirst ? STORAGE_FOLDERS.profile(user.id) : STORAGE_FOLDERS.gallery(user.id);
-    const url = await uploadFile(buffer, folder, file.name, file.type);
+    const url = await uploadPrivateFile(buffer, folder, file.name, file.type);
 
     if (setPrimary) {
       await prisma.profileImage.updateMany({ where: { userId: user.id, isPrimary: true }, data: { isPrimary: false } });

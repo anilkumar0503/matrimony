@@ -81,7 +81,7 @@ async function main() {
   // 5. Create default platform settings
   console.log("  Creating platform settings...");
   const defaultSettings = [
-    { key: "app.name", value: "Premium Matrimony", isSecret: false },
+    { key: "app.name", value: "Jasmine Matrimony", isSecret: false },
     { key: "gst.rate", value: "18", isSecret: false },
     { key: "gst.type", value: "CGST_SGST", isSecret: false },
     { key: "platform.state", value: "Tamil Nadu", isSecret: false },
@@ -93,7 +93,7 @@ async function main() {
     { key: "kyc.max_attempts", value: "3", isSecret: false },
     { key: "email.provider", value: "SENDGRID", isSecret: false },
     { key: "email.from", value: "noreply@matrimony.local", isSecret: false },
-    { key: "email.from_name", value: "Premium Matrimony", isSecret: false },
+    { key: "email.from_name", value: "Jasmine Matrimony", isSecret: false },
     { key: "sms.enabled", value: "false", isSecret: false },
     { key: "refund.free_window_hours", value: "24", isSecret: false },
     { key: "refund.type_after_window", value: "PRORATED", isSecret: false },
@@ -104,7 +104,7 @@ async function main() {
     { key: "image.max_per_profile", value: "5", isSecret: false },
     { key: "image.max_size_mb", value: "5", isSecret: false },
     { key: "image.watermark_enabled", value: "true", isSecret: false },
-    { key: "image.watermark_text", value: "Premium Matrimony", isSecret: false },
+    { key: "image.watermark_text", value: "Jasmine Matrimony", isSecret: false },
     { key: "image.moderation_sla_hours", value: "24", isSecret: false },
     { key: "image.moderation_alert_threshold", value: "20", isSecret: false },
     { key: "platform.maintenance_mode", value: "false", isSecret: false },

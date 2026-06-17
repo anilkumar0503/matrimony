@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 
     const [submissions, total] = await Promise.all([
       prisma.kYCSubmission.findMany({
-        where: { status },
+        where: { status: status as any },
         include: {
           user: {
             select: {
@@ -30,6 +30,12 @@ export async function GET(req: NextRequest) {
               gender: true,
               dateOfBirth: true,
               profile: { select: { fullName: true } },
+              images: {
+                where: { status: "APPROVED" },
+                select: { id: true, originalUrl: true, watermarkedUrl: true, isPrimary: true },
+                orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
+                take: 3,
+              },
             },
           },
         },
@@ -37,13 +43,30 @@ export async function GET(req: NextRequest) {
         take: limit,
         orderBy: { createdAt: "asc" },
       }),
-      prisma.kYCSubmission.count({ where: { status } }),
+      prisma.kYCSubmission.count({ where: { status: status as any } }),
     ]);
 
-    const submissionsWithSla = submissions.map((s) => ({
-      ...s,
-      isSlaBreach: s.createdAt < slaThreshold && s.status === "PENDING",
-    }));
+    const submissionsWithSla = await Promise.all(
+      submissions.map(async (s) => ({
+        ...s,
+        isSlaBreach: s.createdAt < slaThreshold && s.status === "PENDING",
+        selfieUrl: s.selfieUrl
+          ? await getSignedDownloadUrl(s.selfieUrl, 3600).catch(() => null)
+          : null,
+        idDocumentUrl: s.documentUrl
+          ? await getSignedDownloadUrl(s.documentUrl, 3600).catch(() => null)
+          : null,
+        user: {
+          ...s.user,
+          images: await Promise.all(
+            s.user.images.map(async (img) => ({
+              ...img,
+              signedUrl: await getSignedDownloadUrl(img.watermarkedUrl || img.originalUrl, 3600).catch(() => null),
+            }))
+          ),
+        },
+      }))
+    );
 
     return apiResponse({
       submissions: submissionsWithSla,
@@ -93,6 +116,12 @@ export async function POST(req: NextRequest) {
         reviewedBy: admin.id,
         reviewedAt: new Date(),
       },
+    });
+
+    // Sync KYC_SELFIE ProfileImage status
+    await prisma.profileImage.updateMany({
+      where: { userId: submission.userId, category: "KYC_SELFIE" },
+      data: { status: newStatus },
     });
 
     if (action === "APPROVE") {

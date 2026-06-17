@@ -69,29 +69,41 @@ const STATES_INDIA = [
 ];
 const EXERCISE_HABITS = ["Gym", "Yoga", "Running", "Walking", "Swimming", "Cycling", "Sports", "Home Workout", "None", "Other"];
 const WORK_STATES = STATES_INDIA;
-const CITIES_INDIA = [
-  "Chennai", "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Kolkata", "Pune", "Ahmedabad", "Jaipur",
-  "Lucknow", "Kanpur", "Nagpur", "Indore", "Thane", "Bhopal", "Visakhapatnam", "Pimpri-Chinchwad",
-  "Patna", "Vadodara", "Ghaziabad", "Ludhiana", "Agra", "Nashik", "Ranchi", "Faridabad", "Meerut",
-  "Rajkot", "Varanasi", "Srinagar", "Aurangabad", "Dhanbad", "Amritsar", "Navi Mumbai", "Allahabad",
-  "Howrah", "Jabalpur", "Gwalior", "Vijayawada", "Jodhpur", "Madurai", "Raipur", "Kota", "Guwahati",
-  "Chandigarh", "Solapur", "Hubli-Dharwad", "Bareilly", "Moradabad", "Mysore", "Gurgaon", "Aligarh",
-  "Jalandhar", "Tiruchirappalli", "Bhubaneswar", "Salem", "Warangal", "Mira-Bhayandar", "Thiruvananthapuram",
-  "Bhiwandi", "Saharanpur", "Guntur", "Amravati", "Bikaner", "Noida", "Jamshedpur", "Bhilai", "Cuttack",
-  "Firozabad", "Kochi", "Nellore", "Bhavnagar", "Dehradun", "Durgapur", "Asansol", "Rourkela", "Nanded",
-  "Kolhapur", "Ajmer", "Akola", "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi", "Ulhasnagar",
-  "Jammu", "Sangli-Miraj & Kupwad", "Mangalore", "Erode", "Belgaum", "Ambattur", "Tirunelveli", "Malegaon",
-  "Gaya", "Jalgaon", "Udaipur", "Maheshtala", "Tirupur", "Davanagere", "Kozhikode", "Akbarpur", "Rajpur Sonarpur",
-  "Bokaro", "South Dumdum", "Berhampur", "Agartala", "Bhagalpur", "Muzaffarnagar", "Latur", "Dhule", "Rohtak",
-  "Korba", "Bhilwara", "Berhampore", "Muzaffarpur", "Ahmednagar", "Mathura", "Kollam", "Avadi", "Kadapa",
-  "Kamarhati", "Sambalpur", "Bilaspur", "Shahjahanpur", "Satara", "Bijapur", "Rampur", "Shivamogga", "Chandrapur",
-  "Junagadh", "Thrissur", "Alwar", "Bardhaman", "Kulti", "Nizamabad", "Parbhani", "Tumkur", "Khammam",
-  "Ozhukarai", "Bihar Sharif", "Panipat", "Darbhanga", "Bally", "Aizawl", "Dewas", "Ichalkaranji", "Karnal",
-  "Bathinda", "Jalna", "Eluru", "Barasat", "Kirari Suleman Nagar", "Purnia", "Satna", "Mau", "Sonipat",
-  "Farrukhabad", "Sagar", "Durg", "Imphal", "Ratlam", "Hapur", "Arrah", "Anantapur", "Karimnagar",
-  "Etawah", "Ambarnath", "North Dumdum", "Bharatpur", "Begusarai", "New Delhi", "Gandhidham", "Baran",
-  "Tirupati", "Puducherry", "Sikar", "Thoothukudi", "Rewa", "Miryalaguda", "Dindigul", "Other"
-];
+
+const STATE_CITIES: Record<string, string[]> = {
+  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Tirupati", "Kakinada", "Rajahmundry", "Nellore", "Kurnool", "Anantapur", "Kadapa", "Vizianagaram", "Eluru", "Ongole", "Nandyal", "Machilipatnam", "Proddatur", "Chittoor", "Hindupur", "Bhimavaram", "Madanapalle", "Tadipatri", "Tenali", "Gudivada", "Amalapuram", "Bapatla", "Srikakulam", "Adoni", "Narasaraopet", "Other"],
+  "Arunachal Pradesh": ["Itanagar", "Naharlagun", "Pasighat", "Tezpur", "Tawang", "Bomdila", "Ziro", "Along", "Daporijo", "Anini", "Khonsa", "Seppa", "Yingkiong", "Tezu", "Changlang", "Other"],
+  "Assam": ["Guwahati", "Silchar", "Dibrugarh", "Jorhat", "Nagaon", "Tinsukia", "Tezpur", "Bongaigaon", "Dhubri", "Diphu", "Karimganj", "Sivasagar", "Lakhimpur", "Nalbari", "Barpeta", "Goalpara", "Marigaon", "Hojai", "Morigaon", "Kokrajhar", "Other"],
+  "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Arrah", "Begusarai", "Katihar", "Munger", "Chhapra", "Sasaram", "Hajipur", "Dehri", "Saharsa", "Sitamarhi", "Motihari", "Bettiah", "Gopalganj", "Siwan", "Kishanganj", "Jamui", "Jehanabad", "Aurangabad", "Lakhisarai", "Nawada", "Bagaha", "Araria", "Sheikhpura", "Banka", "Other"],
+  "Chhattisgarh": ["Raipur", "Bhilai", "Korba", "Bilaspur", "Durg", "Rajnandgaon", "Jagdalpur", "Raigarh", "Ambikapur", "Mahasamund", "Dhamtari", "Champa", "Naila", "Janjgir", "Kawardha", "Sakti", "Other"],
+  "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa", "Ponda", "Bicholim", "Curchorem", "Sanquelim", "Cuncolim", "Quepem", "Pernem", "Valpoi", "Canacona", "Sanguem", "Other"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Junagadh", "Gandhinagar", "Anand", "Bharuch", "Navsari", "Porbandar", "Surendranagar", "Bhuj", "Veraval", "Godhra", "Palanpur", "Valsad", "Ankleshwar", "Morbi", "Gandhidham", "Nadiad", "Mehsana", "Dwarka", "Palitana", "Other"],
+  "Haryana": ["Gurgaon", "Faridabad", "Panipat", "Ambala", "Karnal", "Rohtak", "Hisar", "Sonipat", "Yamunanagar", "Panchkula", "Bhiwani", "Bahadurgarh", "Jind", "Sirsa", "Thanesar", "Kaithal", "Rewari", "Hansi", "Narnaul", "Fatehabad", "Palwal", "Other"],
+  "Himachal Pradesh": ["Shimla", "Dharamshala", "Solan", "Mandi", "Palampur", "Kullu", "Manali", "Bilaspur", "Una", "Hamirpur", "Chamba", "Kangra", "Nahan", "Sundarnagar", "Other"],
+  "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Deoghar", "Hazaribagh", "Giridih", "Dumka", "Chaibasa", "Ramgarh", "Jharia", "Medininagar", "Chakradharpur", "Phusro", "Sahebganj", "Jamtara", "Rajmahal", "Godda", "Pakur", "Other"],
+  "Karnataka": ["Bangalore", "Mysore", "Hubli-Dharwad", "Mangalore", "Belgaum", "Gulbarga", "Davanagere", "Bellary", "Vijayapura", "Shimoga", "Tumkur", "Raichur", "Kolar", "Mandya", "Hassan", "Chitradurga", "Udupi", "Ranebennur", "Dharwad", "Koppal", "Other"],
+  "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Kollam", "Thrissur", "Palakkad", "Kannur", "Kottayam", "Alappuzha", "Malappuram", "Kasaragod", "Ernakulam", "Idukki", "Pathanamthitta", "Wayanad", "Other"],
+  "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Rewa", "Murwara", "Singrauli", "Burhanpur", "Khandwa", "Umaria", "Shivpuri", "Chhindwara", "Itarsi", "Guna", "Sehore", "Vidisha", "Sarni", "Mandsaur", "Other"],
+  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Pimpri-Chinchwad", "Nashik", "Kalyan-Dombivli", "Vasai-Virar", "Aurangabad", "Navi Mumbai", "Solapur", "Kolhapur", "Miraj", "Amravati", "Nanded", "Malegaon", "Jalgaon", "Latur", "Dhule", "Akola", "Chandrapur", "Parbhani", "Jalna", "Bhusawal", "Nandurbar", "Yavatmal", "Wardha", "Gondia", "Bhandara", "Hinganghat", "Other"],
+  "Manipur": ["Imphal", "Thoubal", "Bishnupur", "Churachandpur", "Kakching", "Ukhrul", "Senapati", "Tamenglong", "Chandel", "Noney", "Jiribam", "Moirang", "Mayang Imphal", "Other"],
+  "Meghalaya": ["Shillong", "Tura", "Jowai", "Nongpoh", "Baghmara", "Williamnagar", "Resubelpara", "Ampati", "Mawkyrwat", "Khliehriat", "Other"],
+  "Mizoram": ["Aizawl", "Lunglei", "Saiha", "Champhai", "Kolasib", "Serchhip", "Mamit", "Lawngtlai", "Saitual", "Hnahthial", "Khawzawl", "Other"],
+  "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Tuensang", "Wokha", "Zunheboto", "Mon", "Kiphire", "Phek", "Longleng", "Peren", "Other"],
+  "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Berhampur", "Puri", "Sambalpur", "Jharsuguda", "Baripada", "Balasore", "Bhadrak", "Jatani", "Angul", "Kendrapara", "Dhenkanal", "Koraput", "Rayagada", "Other"],
+  "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali", "Batala", "Pathankot", "Moga", "Firozpur", "Abohar", "Kapurthala", "Hoshiarpur", "Nabha", "Malerkotla", "Phagwara", "Rupnagar", "Sangrur", "Khanna", "Other"],
+  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Bikaner", "Ajmer", "Bhilwara", "Alwar", "Sikar", "Pali", "Bharatpur", "Sriganganagar", "Tonk", "Churu", "Baran", "Dholpur", "Nagaur", "Jhunjhunu", "Bundi", "Sawai Madhopur", "Chittorgarh", "Dausa", "Hanumangarh", "Karauli", "Pratapgarh", "Sirohi", "Other"],
+  "Sikkim": ["Gangtok", "Namchi", "Geyzing", "Mangan", "Singtam", "Rangpo", "Jorethang", "Pakyong", "Ravangla", "Other"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Erode", "Vellore", "Thoothukudi", "Dindigul", "Tiruppur", "Rajapalayam", "Sivakasi", "Thanjavur", "Nagercoil", "Kumbakonam", "Cuddalore", "Karur", "Tiruchengode", "Pudukkottai", "Nagapattinam", "Kanchipuram", "Tiruvannamalai", "Ariyalur", "Perambalur", "Viluppuram", "Krishnagiri", "Dharmapuri", "Tirupathur", "Namakkal", "Ramanathapuram", "Virudhunagar", "Theni", "Karaikudi", "Other"],
+  "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Khammam", "Karimnagar", "Ramagundam", "Mahbubnagar", "Nalgonda", "Miryalaguda", "Adilabad", "Suryapet", "Siddipet", "Jagtial", "Mancherial", "Peddapalli", "Nirmal", "Bodhan", "Kothagudem", "Medak", "Jangaon", "Bhongir", "Wanaparthy", "Kamareddy", "Sircilla", "Other"],
+  "Tripura": ["Agartala", "Dharmanagar", "Kailashahar", "Udaipur", "Belonia", "Khowai", "Pratapgarh", "Ranirbazar", "Sonamura", "Other"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi", "Meerut", "Allahabad", "Ghaziabad", "Noida", "Bareilly", "Aligarh", "Moradabad", "Saharanpur", "Gorakhpur", "Firozabad", "Jhansi", "Mathura", "Rampur", "Bulandshahr", "Muzaffarnagar", "Pilibhit", "Fatehpur", "Shahjahanpur", "Sitapur", "Bijnor", "Hapur", "Etawah", "Mirzapur", "Raebareli", "Sultanpur", "Unnao", "Farrukhabad", "Hathras", "Budaun", "Other"],
+  "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Kashipur", "Rishikesh", "Kotdwar", "Rudrapur", "Kichha", "Jaspur", "Ramnagar", "Srinagar", "Pauri", "Almora", "Nainital", "Other"],
+  "West Bengal": ["Kolkata", "Howrah", "Asansol", "Siliguri", "Durgapur", "Bardhaman", "Malda", "Baharampur", "Kharagpur", "Shantipur", "Dankuni", "Haldia", "Berhampur", "Raiganj", "Kulti", "Medinipur", "Jalpaiguri", "Balurghat", "English Bazar", "Bolpur", "Suri", "Kanchrapara", "Barasat", "Other"],
+  "Delhi": ["New Delhi", "South Delhi", "North Delhi", "East Delhi", "West Delhi", "Central Delhi", "North East Delhi", "North West Delhi", "South West Delhi", "Shahdara", "Other"],
+  "Other": ["Other"]
+};
+
+const CITIES_INDIA = Object.values(STATE_CITIES).flat();
 const INCOME_RANGES = [
   "Below 3 LPA", "3-5 LPA", "5-7 LPA", "7-10 LPA", "10-15 LPA", "15-20 LPA", "20-25 LPA",
   "25-30 LPA", "30-40 LPA", "40-50 LPA", "50-75 LPA", "75 LPA+", "Not Disclosing"
@@ -131,6 +143,8 @@ export default function ProfileSetupPage() {
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [userData, setUserData] = useState<{ email?: string; phone?: string }>({});
+  const [selectedState, setSelectedState] = useState("");
   const form = useForm({ mode: "onChange" });
 
   const token = () => typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
@@ -143,14 +157,27 @@ export default function ProfileSetupPage() {
           headers: { Authorization: `Bearer ${token()}` },
         });
         const json = await res.json();
-        if (json.success && json.data.profile) {
+        if (json.success) {
           const profile = json.data.profile;
-          // Populate form with existing data
-          Object.keys(profile).forEach((key) => {
-            if (profile[key] !== null && profile[key] !== undefined) {
-              form.setValue(key, profile[key]);
+          const user = json.data.user;
+          
+          // Store user data for read-only fields
+          if (user) {
+            setUserData({ email: user.email, phone: user.phone });
+          }
+          
+          // Populate form with existing profile data
+          if (profile) {
+            Object.keys(profile).forEach((key) => {
+              if (profile[key] !== null && profile[key] !== undefined) {
+                form.setValue(key, profile[key]);
+              }
+            });
+            // Set selected state if exists
+            if (profile.state) {
+              setSelectedState(profile.state);
             }
-          });
+          }
         }
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -158,6 +185,14 @@ export default function ProfileSetupPage() {
     };
     fetchProfile();
   }, [form]);
+
+  // Watch state changes to update city options
+  const stateValue = form.watch("state");
+  useEffect(() => {
+    if (stateValue) {
+      setSelectedState(stateValue);
+    }
+  }, [stateValue]);
 
   const saveStep = async (stepData: object) => {
     setSaving(true);
@@ -284,10 +319,16 @@ export default function ProfileSetupPage() {
           <div className="space-y-5">
             <h2 className="font-semibold text-white text-lg">Contact Information</h2>
             <div className="grid grid-cols-2 gap-4">
-              <Input label="Mobile Number" type="tel" placeholder="+91 98765 43210" {...form.register("phone")} />
+              <div>
+                <Label>Mobile Number</Label>
+                <Input type="tel" value={userData.phone || ""} disabled className="bg-white/5" />
+              </div>
               <Input label="Alternate Mobile" type="tel" placeholder="+91 98765 43211" {...form.register("alternatePhone")} />
             </div>
-            <Input label="Email Address" type="email" placeholder="you@example.com" {...form.register("email")} />
+            <div>
+              <Label>Email Address</Label>
+              <Input type="email" value={userData.email || ""} disabled className="bg-white/5" />
+            </div>
             <div>
               <Label>Current Address</Label>
               <textarea className="input-glass min-h-[80px] resize-none" placeholder="Your current address" {...form.register("currentAddress")} />
@@ -298,12 +339,12 @@ export default function ProfileSetupPage() {
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <Label>City</Label>
-                <Select name="city" options={CITIES_INDIA} placeholder="Select" />
-              </div>
-              <div>
                 <Label>State</Label>
                 <Select name="state" options={STATES_INDIA} placeholder="Select" />
+              </div>
+              <div>
+                <Label>City</Label>
+                <Select name="city" options={selectedState ? STATE_CITIES[selectedState] || [] : []} placeholder="Select" />
               </div>
               <Input label="Postal Code" placeholder="600001" {...form.register("postalCode")} />
             </div>
@@ -452,10 +493,7 @@ export default function ProfileSetupPage() {
                 <Label>Employment Type</Label>
                 <Select name="employmentType" options={EMPLOYMENT_TYPE} placeholder="Select" />
               </div>
-              <div>
-                <Label>Work Location</Label>
-                <Select name="workLocation" options={CITIES_INDIA} placeholder="Select" />
-              </div>
+              <Input label="Work Location" placeholder="e.g. Bangalore" {...form.register("workLocation")} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <Input label="Experience" placeholder="e.g. 5 years" {...form.register("experience")} />

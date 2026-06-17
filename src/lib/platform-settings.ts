@@ -129,7 +129,7 @@ export async function getGSTRate(): Promise<number> {
 }
 
 export async function getAppName(): Promise<string> {
-  return getSettingOrDefault(SETTINGS_KEYS.APP_NAME, "Premium Matrimony");
+  return getSettingOrDefault(SETTINGS_KEYS.APP_NAME, "Jasmine Matrimony");
 }
 
 export async function isMaintenanceMode(): Promise<boolean> {

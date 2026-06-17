@@ -79,7 +79,7 @@ export default function SubscriptionPage() {
         amount: Math.round(amount * 100),
         currency: "INR",
         order_id: orderId,
-        name: "Premium Matrimony",
+        name: "Jasmine Matrimony",
         description: "Subscription",
         theme: { color: "#C9972C" },
         handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {

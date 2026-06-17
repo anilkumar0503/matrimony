@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   LayoutDashboard, Users, Shield, Image, CreditCard, Settings,
   LogOut, Menu, X, Heart, FileText, BarChart3, Bell, Users2,
-  BookOpen, Ticket, ChevronDown, ScrollText, KeyRound
+  BookOpen, Ticket, ChevronDown, ScrollText, KeyRound, Tag
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +31,7 @@ const navGroups = [
     items: [
       { href: "/admin/subscription-plans", icon: CreditCard, label: "Subscription Plans" },
       { href: "/admin/subscriptions", icon: CreditCard, label: "Subscriptions" },
+      { href: "/admin/coupons", icon: Tag, label: "Coupons" },
       { href: "/admin/payments", icon: BarChart3, label: "Payments" },
     ],
   },
@@ -45,6 +46,7 @@ const navGroups = [
   {
     label: "System",
     items: [
+      { href: "/admin/admin-users", icon: Shield, label: "Admin Users" },
       { href: "/admin/roles", icon: KeyRound, label: "Roles & Permissions" },
       { href: "/admin/settings", icon: Settings, label: "Platform Settings" },
       { href: "/admin/audit-logs", icon: ScrollText, label: "Audit Logs" },
@@ -65,18 +67,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const info = localStorage.getItem("adminInfo");
     if (info) setAdminInfo(JSON.parse(info));
 
-    // Handle 401 errors from API calls
-    const handle401 = (event: MessageEvent) => {
-      if (event.data === 'ADMIN_401') {
-        localStorage.removeItem("adminAccessToken");
-        localStorage.removeItem("adminRefreshToken");
-        localStorage.removeItem("adminInfo");
-        window.location.replace("/admin/login");
+    // Intercept ALL fetch calls — redirect to login on any /api/admin 401
+    const originalFetch = window.fetch;
+    window.fetch = async (...args) => {
+      const response = await originalFetch(...args);
+      if (response.status === 401) {
+        const url = typeof args[0] === "string" ? args[0] : args[0] instanceof URL ? args[0].toString() : args[0] instanceof Request ? args[0].url : "";
+        if (url.includes("/api/admin/")) {
+          localStorage.removeItem("adminAccessToken");
+          localStorage.removeItem("adminRefreshToken");
+          localStorage.removeItem("adminInfo");
+          window.location.replace("/admin/login");
+        }
       }
+      return response;
     };
 
-    window.addEventListener('message', handle401);
-    return () => window.removeEventListener('message', handle401);
+    return () => { window.fetch = originalFetch; };
   }, [pathname]);
 
   if (pathname === "/admin/login") return <>{children}</>;
@@ -111,9 +118,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Logo */}
         <div className="flex items-center justify-between p-4 border-b border-white/[0.06]">
           <Link href="/admin/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#7B1D1D] to-[#C9972C] flex items-center justify-center">
-              <Heart size={12} className="text-white fill-white" />
-            </div>
+            <img src="/logo.png" alt="Jasmine Matrimony" className="h-9 w-auto" />
             <span className="text-white text-xs font-bold">Admin Panel</span>
           </Link>
           <button className="lg:hidden text-white/40" onClick={() => setSidebarOpen(false)}>

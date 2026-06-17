@@ -4,6 +4,7 @@ import { Shield, CheckCircle, XCircle, AlertTriangle, ChevronLeft, ChevronRight,
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTime, calculateAge } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 const REJECTION_REASONS = [
   { value: "CODE_NOT_VISIBLE", label: "Code Not Visible" },
@@ -24,7 +25,14 @@ interface Submission {
   idDocumentUrl: string | null;
   verificationCode: string;
   isSlaBreach: boolean;
-  user: { id: string; email: string; gender: string; dateOfBirth: string; profile: { fullName: string } | null };
+  user: {
+    id: string;
+    email: string;
+    gender: string;
+    dateOfBirth: string;
+    profile: { fullName: string } | null;
+    images: { id: string; signedUrl: string | null; isPrimary: boolean }[];
+  };
 }
 
 export default function AdminKycPage() {
@@ -222,6 +230,30 @@ export default function AdminKycPage() {
                 </div>
               )}
             </div>
+
+            {/* Profile photos for comparison */}
+            {selected.user.images.length > 0 && (
+              <div className="mb-6">
+                <div className="text-white/40 text-xs mb-2">Profile Photos (for comparison)</div>
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                  {selected.user.images.map((img) => (
+                    <div
+                      key={img.id}
+                      className={cn(
+                        "w-20 h-20 rounded-lg overflow-hidden border shrink-0",
+                        img.isPrimary ? "border-[#C9972C] ring-1 ring-[rgba(201,151,44,0.3)]" : "border-white/10"
+                      )}
+                    >
+                      {img.signedUrl ? (
+                        <img src={img.signedUrl} alt="Profile" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-white/20 text-xs">No image</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {selected.status === "PENDING" && (
               <>

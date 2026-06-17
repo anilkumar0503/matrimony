@@ -15,6 +15,8 @@ interface KycData {
   rejectionReason: string | null;
   rejectionNotes: string | null;
   createdAt: string;
+  selfieUrl?: string | null;
+  documentUrl?: string | null;
 }
 
 export default function KycPage() {
@@ -232,26 +234,35 @@ export default function KycPage() {
           {kyc?.verificationCode && (
             <div className="space-y-3">
               <div className="text-white/50 text-xs">Capture Selfie with Code</div>
-              <Button
-                variant="glass"
-                onClick={startCamera}
-                loading={uploading === "selfie"}
-                className="w-full border-2 border-dashed h-24"
-              >
-                {uploading === "selfie" ? (
-                  <span className="text-white/60 text-sm">Uploading...</span>
-                ) : uploaded.selfie ? (
-                  <span className="flex items-center justify-center gap-2 text-emerald-400">
-                    <CheckCircle size={18} /> Selfie captured successfully
-                  </span>
-                ) : (
-                  <span className="space-y-1">
-                    <Camera size={24} className="text-white/30 mx-auto" />
-                    <div className="text-white/50 text-sm">Click to capture selfie with code</div>
-                    <div className="text-white/25 text-xs">Use device camera</div>
-                  </span>
-                )}
-              </Button>
+              {kyc.selfieUrl ? (
+                <div className="relative">
+                  <img 
+                    src={kyc.selfieUrl} 
+                    alt="Selfie with verification code" 
+                    className="w-full aspect-square object-cover rounded-xl border-2 border-emerald-600/60"
+                  />
+                  <div className="absolute top-2 right-2 bg-emerald-500 rounded-full p-1">
+                    <CheckCircle size={16} className="text-white" />
+                  </div>
+                </div>
+              ) : (
+                <Button
+                  variant="glass"
+                  onClick={startCamera}
+                  loading={uploading === "selfie"}
+                  className="w-full border-2 border-dashed h-24"
+                >
+                  {uploading === "selfie" ? (
+                    <span className="text-white/60 text-sm">Uploading...</span>
+                  ) : (
+                    <span className="space-y-1">
+                      <Camera size={24} className="text-white/30 mx-auto" />
+                      <div className="text-white/50 text-sm">Click to capture selfie with code</div>
+                      <div className="text-white/25 text-xs">Use device camera</div>
+                    </span>
+                  )}
+                </Button>
+              )}
             </div>
           )}
         </div>
@@ -294,25 +305,43 @@ export default function KycPage() {
 
           <input ref={idRef} type="file" accept="image/*,application/pdf" className="hidden"
             onChange={(e) => { if (e.target.files?.[0]) uploadFile(e.target.files[0], "id"); }} />
-          <button
-            onClick={() => idRef.current?.click()}
-            className={`w-full border-2 border-dashed rounded-xl p-6 text-center transition-colors
-              ${uploaded.id ? "border-emerald-600/60 bg-emerald-900/10" : "border-white/10 hover:border-[rgba(201,151,44,0.3)]"}`}
-          >
-            {uploading === "id" ? (
-              <div className="text-white/60 text-sm">Uploading...</div>
-            ) : uploaded.id ? (
-              <div className="flex items-center justify-center gap-2 text-emerald-400">
-                <CheckCircle size={18} /> ID document uploaded
+          {kyc?.documentUrl ? (
+            <div className="relative">
+              {kyc.documentUrl.endsWith('.pdf') ? (
+                <div className="w-full aspect-[3/2] bg-white/5 rounded-xl border-2 border-emerald-600/60 flex items-center justify-center">
+                  <div className="text-center">
+                    <FileText size={32} className="text-emerald-400 mx-auto mb-2" />
+                    <div className="text-white/70 text-sm">ID Document (PDF)</div>
+                  </div>
+                </div>
+              ) : (
+                <img 
+                  src={kyc.documentUrl} 
+                  alt="ID document" 
+                  className="w-full aspect-[3/2] object-cover rounded-xl border-2 border-emerald-600/60"
+                />
+              )}
+              <div className="absolute top-2 right-2 bg-emerald-500 rounded-full p-1">
+                <CheckCircle size={16} className="text-white" />
               </div>
-            ) : (
-              <div className="space-y-1">
-                <Upload size={24} className="text-white/30 mx-auto" />
-                <div className="text-white/50 text-sm">Click to upload government ID</div>
-                <div className="text-white/25 text-xs">Aadhaar / PAN / Passport · JPG, PNG, PDF</div>
-              </div>
-            )}
-          </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => idRef.current?.click()}
+              className={`w-full border-2 border-dashed rounded-xl p-6 text-center transition-colors
+                ${uploaded.id ? "border-emerald-600/60 bg-emerald-900/10" : "border-white/10 hover:border-[rgba(201,151,44,0.3)]"}`}
+            >
+              {uploading === "id" ? (
+                <div className="text-white/60 text-sm">Uploading...</div>
+              ) : (
+                <div className="space-y-1">
+                  <Upload size={24} className="text-white/30 mx-auto" />
+                  <div className="text-white/50 text-sm">Click to upload government ID</div>
+                  <div className="text-white/25 text-xs">Aadhaar / PAN / Passport · JPG, PNG, PDF</div>
+                </div>
+              )}
+            </button>
+          )}
         </div>
       )}
 

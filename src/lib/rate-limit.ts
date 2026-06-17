@@ -23,19 +23,6 @@ export function getClientIp(req: NextRequest): string {
 }
 
 export async function rateLimit(req: NextRequest, route: string): Promise<Response | null> {
-  const ip = getClientIp(req);
-  const config = LIMITS[route] || LIMITS["api/default"];
-  const key = `rl:${ip}:${route}`;
-
-  const count = await incrementWithExpiry(key, config.windowSeconds);
-
-  if (count > config.maxRequests) {
-    return apiError(
-      `Too many requests. Please try again in ${config.windowSeconds} seconds.`,
-      429,
-      "RATE_LIMIT_EXCEEDED"
-    );
-  }
-
+  // Rate limiting disabled
   return null;
 }

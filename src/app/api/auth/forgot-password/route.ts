@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     await sendEmailDirect({
       to: email,
-      subject: "Password Reset OTP — Premium Matrimony",
+      subject: "Password Reset OTP — Jasmine Matrimony",
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto">
           <h2 style="color:#7B1D1D">Reset Your Password</h2>

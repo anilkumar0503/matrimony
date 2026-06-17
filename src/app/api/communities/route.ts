@@ -5,6 +5,7 @@ import { requireUser, apiResponse, apiError, handleApiError } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
+    const user = await requireUser(req);
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = 20;
@@ -15,7 +16,7 @@ export async function GET(req: NextRequest) {
     const where: Record<string, unknown> = { isActive: true };
     if (search) where.name = { contains: search, mode: "insensitive" };
 
-    const [communities, total] = await Promise.all([
+    const [communities, total, userMemberships] = await Promise.all([
       prisma.community.findMany({
         where,
         include: { _count: { select: { members: { where: { status: "APPROVED" } } } } },
@@ -24,9 +25,20 @@ export async function GET(req: NextRequest) {
         orderBy: { createdAt: "desc" },
       }),
       prisma.community.count({ where }),
+      prisma.communityMember.findMany({
+        where: { userId: user.id },
+        select: { communityId: true, status: true },
+      }),
     ]);
 
-    return apiResponse({ communities, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });
+    const membershipMap = new Map(userMemberships.map((m) => [m.communityId, m.status]));
+
+    const communitiesWithStatus = communities.map((c) => ({
+      ...c,
+      userStatus: membershipMap.get(c.id) || null,
+    }));
+
+    return apiResponse({ communities: communitiesWithStatus, pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } });
   } catch (err) {
     return handleApiError(err);
   }
@@ -51,11 +63,13 @@ export async function POST(req: NextRequest) {
     });
     if (existing) return apiError("Already a member or request pending", 409);
 
+    const status = community.type === "PUBLIC" ? "APPROVED" : "PENDING";
     const member = await prisma.communityMember.create({
-      data: { communityId, userId: user.id, status: "APPROVED" },
+      data: { communityId, userId: user.id, status },
     });
 
-    return apiResponse({ member, message: "Joined successfully!" }, 201);
+    const message = status === "APPROVED" ? "Joined successfully!" : "Request sent successfully!";
+    return apiResponse({ member, message }, 201);
   } catch (err) {
     return handleApiError(err);
   }

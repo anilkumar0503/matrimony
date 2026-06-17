@@ -79,12 +79,7 @@ export default function RegisterPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7B1D1D] to-[#C9972C] flex items-center justify-center">
-              <Heart size={18} className="text-white fill-white" />
-            </div>
-            <span className="font-display text-xl font-bold text-white">
-              Premium <span className="text-gold">Matrimony</span>
-            </span>
+            <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </Link>
           <h1 className="font-display text-3xl font-bold text-white mb-2">
             {step === "form" ? "Create Your Profile" : "Verify Your Email"}

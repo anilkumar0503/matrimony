@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { User, Shield, Camera, ArrowRight, Video, VideoOff, X, Pencil, Star, Target, BookOpen, Briefcase, Users, Utensils, Heart, Home } from "lucide-react";
+import { User, Shield, Camera, ArrowRight, Video, VideoOff, X, Pencil, Star, Target, BookOpen, Briefcase, Users, Utensils, Heart, Home, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { calculateAge, cmToFeetInches } from "@/lib/utils";
@@ -9,15 +9,16 @@ import { calculateAge, cmToFeetInches } from "@/lib/utils";
 const RELIGIONS = ["Hindu", "Muslim", "Christian", "Sikh", "Jain", "Buddhist", "Other"];
 
 interface ProfileData {
-  user: { 
-    id: string; 
-    status: string; 
-    gender: string; 
-    dateOfBirth: string; 
+  user: {
+    id: string;
+    status: string;
+    gender: string;
+    dateOfBirth: string;
     phone: string;
     email: string;
-    kycSubmissions: { status: string }[] 
+    kycSubmissions: { status: string }[]
   };
+  kycStatus: string | null;
   profile: {
     // Basic Personal
     profileCreatedBy: string | null;
@@ -114,7 +115,7 @@ interface ProfileData {
     familyBusinessDetails: string | null;
     profileCompletionPct: number;
   } | null;
-  images: { id: string; originalUrl: string; watermarkedUrl: string | null; isPrimary: boolean; status: string }[];
+  images: { id: string; originalUrl: string; watermarkedUrl: string | null; signedUrl: string | null; isPrimary: boolean; status: string }[];
   education?: { highestQualification: string | null; degree: string | null; specialization: string | null; collegeName: string | null; universityName: string | null; passingYear: number | null; additionalCerts: string[] | null }[];
   career?: { occupation: string | null; designation: string | null; companyName: string | null; industry: string | null; employmentType: string | null; workLocation: string | null; experience: string | null; annualIncome: string | null; currency: string | null }[];
   interests?: { interest: string; category: string | null }[];
@@ -137,6 +138,8 @@ export default function ProfilePage() {
   const [imgError, setImgError] = useState("");
   const [showCamera, setShowCamera] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null);
+  const [capturedPreviewUrl, setCapturedPreviewUrl] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -146,16 +149,17 @@ export default function ProfilePage() {
     const res = await fetch("/api/user/profile", { headers: { Authorization: `Bearer ${token()}` } });
     const json = await res.json();
     if (json.success) {
-      setData({ 
-        user: json.data.user, 
-        profile: json.data.profile, 
+      setData({
+        user: json.data.user,
+        profile: json.data.profile,
         images: json.data.images || [],
         education: json.data.education || [],
         career: json.data.career || [],
         interests: json.data.interests || [],
         hobbies: json.data.hobbies || [],
         favorites: json.data.favorites || [],
-        partnerPreferences: json.data.partnerPreferences || null
+        partnerPreferences: json.data.partnerPreferences || null,
+        kycStatus: json.data.kycStatus || null,
       });
     }
     setLoading(false);
@@ -175,10 +179,14 @@ export default function ProfilePage() {
         video: { facingMode: 'user', width: 640, height: 640 } 
       });
       setStream(mediaStream);
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-      }
       setShowCamera(true);
+      // Wait for the modal to render before assigning srcObject
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+          videoRef.current.play().catch(err => console.error("Video play error:", err));
+        }
+      }, 100);
     } catch (err) {
       console.error("Camera access denied:", err);
       setImgError("Camera access denied. Please allow camera access.");
@@ -202,15 +210,31 @@ export default function ProfilePage() {
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(async (blob) => {
+        canvas.toBlob((blob) => {
           if (blob) {
-            const file = new File([blob], "selfie.jpg", { type: "image/jpeg" });
-            await uploadImage(file, data?.images.length === 0);
+            const previewUrl = URL.createObjectURL(blob);
+            setCapturedBlob(blob);
+            setCapturedPreviewUrl(previewUrl);
             stopCamera();
           }
         }, 'image/jpeg', 0.9);
       }
     }
+  };
+
+  const confirmUpload = async () => {
+    if (!capturedBlob) return;
+    const file = new File([capturedBlob], "selfie.jpg", { type: "image/jpeg" });
+    await uploadImage(file, data?.images.length === 0);
+    if (capturedPreviewUrl) URL.revokeObjectURL(capturedPreviewUrl);
+    setCapturedBlob(null);
+    setCapturedPreviewUrl(null);
+  };
+
+  const discardCapture = () => {
+    if (capturedPreviewUrl) URL.revokeObjectURL(capturedPreviewUrl);
+    setCapturedBlob(null);
+    setCapturedPreviewUrl(null);
   };
 
   const uploadImage = async (file: File, isPrimary: boolean) => {
@@ -257,6 +281,11 @@ export default function ProfilePage() {
           <p className="text-white/40 text-sm">{completionPct}% complete</p>
         </div>
         <div className="flex gap-2">
+          <Button variant="glass" size="sm" asChild>
+            <Link href={`/profile/${data?.user?.id}`}>
+              <Eye size={14} /> View Public Profile
+            </Link>
+          </Button>
           <Button variant="glass-gold" size="sm" asChild>
             <Link href="/dashboard/profile-setup">
               <Pencil size={14} /> Edit Profile
@@ -288,7 +317,14 @@ export default function ProfilePage() {
       <div className="glass p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-white flex items-center gap-2"><Camera size={16} className="text-[#C9972C]" /> Profile Photos</h3>
-          <Button variant="glass" size="sm" onClick={startCamera} loading={imgUploading}>
+          <Button
+            variant="glass"
+            size="sm"
+            onClick={startCamera}
+            loading={imgUploading}
+            disabled={data?.kycStatus === "APPROVED"}
+            title={data?.kycStatus === "APPROVED" ? "KYC already verified" : undefined}
+          >
             <Camera size={14} /> Take Selfie
           </Button>
         </div>
@@ -303,7 +339,7 @@ export default function ProfilePage() {
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
             {images.map((img) => (
               <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-white/10 group">
-                <img src={img.watermarkedUrl || img.originalUrl} alt="" className="w-full h-full object-cover" />
+                <img src={img.signedUrl || img.watermarkedUrl || img.originalUrl} alt="" className="w-full h-full object-cover" />
                 {img.isPrimary && (
                   <div className="absolute top-1 left-1 bg-[rgba(201,151,44,0.9)] text-[#1a0505] text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                     Primary
@@ -340,6 +376,45 @@ export default function ProfilePage() {
               </Button>
               <Button variant="gold" size="sm" onClick={capturePhoto} className="flex-1">
                 <Camera size={14} className="mr-2" /> Capture
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Captured Photo Preview & Confirm Replace */}
+      {capturedPreviewUrl && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+          <div className="glass p-6 max-w-lg w-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-white">Review Photo</h3>
+              <button onClick={discardCapture} className="text-white/40 hover:text-white"><X size={18} /></button>
+            </div>
+
+            <div className="aspect-square rounded-xl overflow-hidden mb-4 border border-white/10">
+              <img src={capturedPreviewUrl} alt="Captured selfie" className="w-full h-full object-cover" />
+            </div>
+
+            {images.some(img => img.status === "PENDING") && (
+              <div className="glass-dark p-3 rounded-xl mb-4 text-xs text-amber-300 flex items-start gap-2">
+                <span className="shrink-0 mt-0.5">⚠️</span>
+                <span>You already have a photo pending admin review. Uploading this will replace it.</span>
+              </div>
+            )}
+
+            {images.some(img => img.status === "APPROVED") && (
+              <div className="glass-dark p-3 rounded-xl mb-4 text-xs text-white/50 flex items-start gap-2">
+                <span className="shrink-0 mt-0.5">ℹ️</span>
+                <span>This photo will be added alongside your approved photos and reviewed by our team.</span>
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <Button variant="glass" onClick={() => { discardCapture(); startCamera(); }} className="flex-1">
+                <Camera size={14} /> Retake
+              </Button>
+              <Button variant="gold" onClick={confirmUpload} loading={imgUploading} className="flex-1">
+                Upload Photo
               </Button>
             </div>
           </div>

@@ -39,7 +39,7 @@ async function downloadFromS3(key: string): Promise<Buffer> {
 
 async function uploadToS3(buffer: Buffer, key: string, mimeType: string): Promise<void> {
   await s3.send(new PutObjectCommand({
-    Bucket: BUCKET, Key: key, Body: buffer, ContentType: mimeType,
+    Bucket: BUCKET, Key: key, Body: buffer, ContentType: mimeType, ACL: "private",
   }));
 }
 
@@ -53,7 +53,7 @@ async function processImage(job: Job) {
     const buffer = await downloadFromS3(image.originalUrl);
 
     const watermarkEnabled = await getSetting(SETTINGS_KEYS.IMAGE_WATERMARK_ENABLED) === "true";
-    const watermarkText = await getSettingOrDefault(SETTINGS_KEYS.IMAGE_WATERMARK_TEXT, "Premium Matrimony");
+    const watermarkText = await getSettingOrDefault(SETTINGS_KEYS.IMAGE_WATERMARK_TEXT, "Jasmine Matrimony");
 
     let pipeline = sharp(buffer)
       .resize({ width: 1200, height: 1600, fit: "inside", withoutEnlargement: true })

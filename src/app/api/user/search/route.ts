@@ -32,6 +32,7 @@ export async function GET(req: NextRequest) {
     const education = searchParams.get("education");
     const maritalStatus = searchParams.get("maritalStatus");
     const gender = searchParams.get("gender");
+    const search = searchParams.get("search");
 
     if (gender) filters.gender = gender;
     if (state) profileFilters.state = state;
@@ -39,6 +40,16 @@ export async function GET(req: NextRequest) {
     if (caste) profileFilters.caste = caste;
     if (education) profileFilters.qualification = education;
     if (maritalStatus) profileFilters.maritalStatus = maritalStatus;
+
+    // Text search by name or ID
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filters.OR = [
+        { id: { contains: search, mode: "insensitive" } },
+        { profile: { fullName: { contains: search, mode: "insensitive" } } },
+        { profile: { city: { contains: search, mode: "insensitive" } } },
+      ];
+    }
 
     if (ageMin || ageMax) {
       const now = new Date();
@@ -88,6 +99,15 @@ export async function GET(req: NextRequest) {
       filters.id = { ...(typeof filters.id === "object" ? filters.id : {}), notIn: excludeIds };
     }
 
+    // Fetch user's wishlist and sent interests
+    const [wishlist, sentInterests] = await Promise.all([
+      prisma.wishlist.findMany({ where: { userId: user.id }, select: { profileId: true } }),
+      prisma.interest.findMany({ where: { senderId: user.id }, select: { receiverId: true } }),
+    ]);
+
+    const wishlistIds = new Set(wishlist.map((w) => w.profileId));
+    const interestIds = new Set(sentInterests.map((i) => i.receiverId));
+
     const [users, total] = await Promise.all([
       prisma.user.findMany({
         where: filters,
@@ -104,9 +124,17 @@ export async function GET(req: NextRequest) {
               height: true,
               annualIncome: isPremiumPlus ? true : false,
               profileCompletionPct: true,
+              maritalStatus: true,
             },
           },
-          images: { where: { isPrimary: true, status: "APPROVED" }, take: 1 },
+          images: {
+            where: {
+              isPrimary: true,
+              status: "APPROVED",
+              category: { notIn: ["KYC_SELFIE", "KYC_DOCUMENT"] },
+            },
+            take: 1,
+          },
           kycSubmissions: { where: { status: "APPROVED" }, take: 1 },
           subscriptions: { where: { status: "ACTIVE" }, include: { plan: true }, take: 1 },
         },
@@ -141,6 +169,8 @@ export async function GET(req: NextRequest) {
       primaryPhotoUrl: u.images[0]?.watermarkedUrl || u.images[0]?.originalUrl || null,
       isKycVerified: u.kycSubmissions.length > 0,
       subscriptionTier: u.subscriptions[0]?.plan?.tier || "FREE",
+      isInWishlist: wishlistIds.has(u.id),
+      hasInterestSent: interestIds.has(u.id),
     }));
 
     return apiResponse({

@@ -8,11 +8,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 interface DashboardData {
   user: { status: string; gender: string };
   profile: { fullName: string; profileCompletionPct: number } | null;
   subscription: { plan: { name: string; tier: string } } | null;
+  kycStatus: string | null;
   stats: {
     interestsSent: number;
     interestsReceived: number;
@@ -38,10 +40,18 @@ const getStatusBadge = (status: string) => {
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (!token) return;
+    if (!token) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to access your dashboard",
+        variant: "destructive",
+      });
+      return;
+    }
 
     Promise.all([
       fetch("/api/user/profile", { headers: { Authorization: `Bearer ${token}` } }).then((r) => r.json()),
@@ -49,13 +59,30 @@ export default function DashboardPage() {
       fetch("/api/user/interests?type=received", { headers: { Authorization: `Bearer ${token}` } }).then((r) => r.json()),
     ])
       .then(([profileRes, notifRes, interestRes]) => {
+        if (!profileRes.success) {
+          toast({
+            title: "Error loading profile",
+            description: profileRes.error || "Failed to load profile data",
+            variant: "destructive",
+          });
+          return;
+        }
         setData({
           user: profileRes.data?.user || {},
           profile: profileRes.data?.profile || null,
           subscription: profileRes.data?.subscription || null,
+          kycStatus: profileRes.data?.kycStatus || null,
           stats: { interestsSent: 0, interestsReceived: interestRes.data?.interests?.length || 0, wishlists: 0, matches: 0, profileViews: 0 },
           pendingInterests: interestRes.data?.interests?.length || 0,
           unreadNotifications: notifRes.data?.unreadCount || 0,
+        });
+      })
+      .catch((err) => {
+        console.error("Dashboard load error:", err);
+        toast({
+          title: "Error loading dashboard",
+          description: "Failed to load dashboard data. Please try again.",
+          variant: "destructive",
         });
       })
       .finally(() => setLoading(false));
@@ -127,7 +154,7 @@ export default function DashboardPage() {
       )}
 
       {/* KYC banner */}
-      {data?.user?.status === "PENDING_KYC" && (
+      {data?.kycStatus === null && (
         <div className="glass border-blue-700/30 bg-blue-900/10 p-5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Shield size={20} className="text-blue-400" />
@@ -138,6 +165,50 @@ export default function DashboardPage() {
           </div>
           <Button variant="glass" size="sm" asChild>
             <Link href="/dashboard/profile/kyc">Verify Now <ArrowRight size={14} /></Link>
+          </Button>
+        </div>
+      )}
+
+      {/* KYC pending banner */}
+      {data?.kycStatus === "PENDING" && (
+        <div className="glass border-amber-700/30 bg-amber-900/10 p-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Clock size={20} className="text-amber-400" />
+            <div>
+              <div className="text-sm font-medium text-white">KYC Verification Pending</div>
+              <div className="text-xs text-white/50">Your KYC is under review. This usually takes 24-48 hours.</div>
+            </div>
+          </div>
+          <Badge variant="warning">In Review</Badge>
+        </div>
+      )}
+
+      {/* KYC approved banner */}
+      {data?.kycStatus === "APPROVED" && (
+        <div className="glass border-emerald-700/30 bg-emerald-900/10 p-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <CheckCircle size={20} className="text-emerald-400" />
+            <div>
+              <div className="text-sm font-medium text-white">KYC Verified</div>
+              <div className="text-xs text-white/50">Your identity has been verified. You can now access all features.</div>
+            </div>
+          </div>
+          <Badge variant="success">Verified</Badge>
+        </div>
+      )}
+
+      {/* KYC rejected banner */}
+      {data?.kycStatus === "REJECTED" && (
+        <div className="glass border-red-700/30 bg-red-900/10 p-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Shield size={20} className="text-red-400" />
+            <div>
+              <div className="text-sm font-medium text-white">KYC Verification Failed</div>
+              <div className="text-xs text-white/50">Please resubmit your documents for verification.</div>
+            </div>
+          </div>
+          <Button variant="glass" size="sm" asChild>
+            <Link href="/dashboard/profile/kyc">Resubmit <ArrowRight size={14} /></Link>
           </Button>
         </div>
       )}
@@ -163,7 +234,13 @@ export default function DashboardPage() {
         {[
           { icon: Heart, title: "Browse Profiles", desc: "Find your perfect match today", href: "/dashboard/search", cta: "Search Now" },
           { icon: Bell, title: `${data?.pendingInterests || 0} New Interests`, desc: "Someone is interested in you", href: "/dashboard/interests", cta: "View Interests", highlight: (data?.pendingInterests || 0) > 0 },
-          { icon: CheckCircle, title: "Complete KYC", desc: "Get verified and unlock all features", href: "/dashboard/profile/kyc", cta: "Start KYC" },
+          ...(data?.kycStatus === null
+            ? [{ icon: CheckCircle, title: "Complete KYC", desc: "Get verified and unlock all features", href: "/dashboard/profile/kyc", cta: "Start KYC" }]
+            : data?.kycStatus === "PENDING"
+            ? [{ icon: Clock, title: "KYC In Review", desc: "Your verification is under review", href: "/dashboard/profile/kyc", cta: "Check Status" }]
+            : data?.kycStatus === "REJECTED"
+            ? [{ icon: Shield, title: "Resubmit KYC", desc: "Please resubmit your documents", href: "/dashboard/profile/kyc", cta: "Resubmit" }]
+            : []),
         ].map((action) => (
           <div
             key={action.title}

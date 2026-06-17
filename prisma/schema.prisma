@@ -402,6 +402,8 @@ model User {
   profileViewedBy    ProfileView[]     @relation("ProfileViewed")
   blocksSent         BlockList[]       @relation("Blocker")
   blocksReceived     BlockList[]       @relation("Blocked")
+  reportsSent        ProfileReport[]   @relation("ProfileReporter")
+  reportsReceived    ProfileReport[]   @relation("ReportedUser")
   subscriptions      UserSubscription[]
   payments           Payment[]
   communityMembers   CommunityMember[]
@@ -521,6 +523,7 @@ model UserProfile {
   profileCompletionPct Int      @default(0)
   isAnonymousBrowse    Boolean  @default(false)
   adminOverrideVisibility Boolean @default(false)
+  showGalleryPublic    Boolean  @default(true)
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
@@ -947,6 +950,30 @@ model BlockList {
   @@unique([blockerId, blockedId])
 }
 
+model ProfileReport {
+  id            String          @id @default(cuid())
+  reporterId    String
+  reporter      User            @relation("ProfileReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUserId String
+  reportedUser  User            @relation("ReportedUser", fields: [reportedUserId], references: [id], onDelete: Cascade)
+  reason        String
+  status        ReportStatus    @default(PENDING)
+  adminNotes    String?
+  reviewedBy    String?
+  reviewedAt    DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@unique([reporterId, reportedUserId])
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  DISMISSED
+}
+
 // ─── SUBSCRIPTIONS & PAYMENTS ─────────────────────────────────────────────────
 
 model SubscriptionPlan {
@@ -1084,6 +1111,7 @@ model Community {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
+  type        String   @default("PUBLIC")
   logo        String?
   banner      String?
   description String?

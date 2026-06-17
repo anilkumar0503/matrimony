@@ -86,6 +86,7 @@ export default function WishlistPage() {
         <div className="grid sm:grid-cols-2 gap-4">
           {items.map((item) => {
             const p = item.profile;
+            if (!p) return null;
             const prof = p.profile;
             const photo = p.images.find((i) => i.isPrimary) || p.images[0];
             return (

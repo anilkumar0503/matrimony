@@ -173,7 +173,7 @@ export default function HomePage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Heart size={16} className="text-[#C9972C]" />
-                <span className="font-display font-bold text-white">Premium Matrimony</span>
+                <span className="font-display font-bold text-white">Jasmine Matrimony</span>
               </div>
               <p className="text-white/40 text-sm">India's most trusted verified matrimony platform.</p>
             </div>
@@ -210,7 +210,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="border-t border-white/[0.06] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-white/30 text-xs">© 2025 Premium Matrimony. All rights reserved.</p>
+            <p className="text-white/30 text-xs">© 2025 Jasmine Matrimony. All rights reserved.</p>
             <p className="text-white/30 text-xs">Compliant with DPDP Act 2023 • GST Registered • Secured by AES-256</p>
           </div>
         </div>

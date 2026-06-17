@@ -1,10 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Search, Filter, Heart, ChevronRight, User, LogOut } from "lucide-react";
+import { Search, Filter, Heart, ChevronRight, User, LogOut, SlidersHorizontal, Sparkles, X, Check, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { calculateAge } from "@/lib/utils";
+import { calculateAge, cmToFeetInches } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 interface Profile {
   id: string;
@@ -23,12 +24,32 @@ interface Profile {
     qualification: string | null;
     occupationType: string | null;
     annualIncome: string | null;
+    profileCompletionPct: number;
   } | null;
   hasPrimaryPhoto: boolean;
   primaryPhotoUrl: string | null;
   isKycVerified: boolean;
   subscriptionTier: string;
+  matchScore?: number;
+  matchCategory?: string;
+  matchDetails?: any;
 }
+
+const RELIGIONS = ["", "Hindu", "Muslim", "Christian", "Sikh", "Jain", "Buddhist", "Other"];
+const MARITAL = ["", "NEVER_MARRIED", "DIVORCED", "WIDOWED", "AWAITING_DIVORCE"];
+const NAKSHATRAS = [
+  "", "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu",
+  "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta",
+  "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha",
+  "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada",
+  "Uttara Bhadrapada", "Revati"
+];
+const RASHIS = [
+  "", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
+  "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+];
+const NADIS = ["", "Adi", "Madhya", "Antya"];
+const GANAS = ["", "Dev", "Manush", "Rakshas"];
 
 export default function SearchPage() {
   const [showFilters, setShowFilters] = useState(false);
@@ -41,11 +62,35 @@ export default function SearchPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [useHoroscopeMatch, setUseHoroscopeMatch] = useState(false);
+  const [matchModalOpen, setMatchModalOpen] = useState(false);
+  const [selectedMatch, setSelectedMatch] = useState<any>(null);
+  const [userGender, setUserGender] = useState<"MALE" | "FEMALE" | null>(null);
+  const [interests, setInterests] = useState<Record<string, boolean>>({});
+  const [receivedInterests, setReceivedInterests] = useState<Record<string, boolean>>({});
+  const [wishlist, setWishlist] = useState<Record<string, boolean>>({});
+  const [sendingInterest, setSendingInterest] = useState<string | null>(null);
+  const [togglingWishlist, setTogglingWishlist] = useState<string | null>(null);
+  const { toast } = useToast();
   const [filters, setFilters] = useState({
-    ageRange: "",
+    ageMin: "",
+    ageMax: "",
+    gender: "",
     religion: "",
+    caste: "",
+    education: "",
     maritalStatus: "",
-    location: "",
+    state: "",
+    motherTongue: "",
+    occupationType: "",
+    kycOnly: false,
+    heightMin: "",
+    heightMax: "",
+    nakshatra: "",
+    rashi: "",
+    nadi: "",
+    gana: "",
+    minMatchScore: "18",
   });
 
   useEffect(() => {
@@ -60,6 +105,67 @@ export default function SearchPage() {
         setUserName("User");
       }
     }
+
+    // Fetch user's gender to set default opposite gender filter
+    const fetchUserGender = async () => {
+      if (!token) return;
+      try {
+        const res = await fetch("/api/user/profile", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const json = await res.json();
+        if (json.success && json.data?.user?.gender) {
+          setUserGender(json.data.user.gender);
+          const oppositeGender = json.data.user.gender === "MALE" ? "FEMALE" : "MALE";
+          setFilters(prev => ({ ...prev, gender: oppositeGender }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch user gender:", err);
+      }
+    };
+    fetchUserGender();
+
+    // Fetch received interests
+    const fetchReceivedInterests = async () => {
+      if (!token) return;
+      try {
+        const res = await fetch("/api/user/interests?type=received", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const json = await res.json();
+        if (json.success) {
+          const receivedMap: Record<string, boolean> = {};
+          json.data.interests.forEach((i: any) => {
+            receivedMap[i.senderId] = true;
+          });
+          setReceivedInterests(receivedMap);
+        }
+      } catch (err) {
+        console.error("Failed to fetch received interests:", err);
+      }
+    };
+    fetchReceivedInterests();
+
+    // Fetch wishlist
+    const fetchWishlist = async () => {
+      if (!token) return;
+      try {
+        const res = await fetch("/api/user/wishlist", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const json = await res.json();
+        if (json.success) {
+          const wishlistMap: Record<string, boolean> = {};
+          json.data.wishlist.forEach((w: any) => {
+            wishlistMap[w.profileId] = true;
+          });
+          setWishlist(wishlistMap);
+        }
+      } catch (err) {
+        console.error("Failed to fetch wishlist:", err);
+      }
+    };
+    fetchWishlist();
   }, []);
 
   const fetchProfiles = async () => {
@@ -68,32 +174,99 @@ export default function SearchPage() {
 
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      params.set("page", page.toString());
-      params.set("limit", "20");
-      if (searchQuery) params.set("search", searchQuery);
-      if (filters.ageRange) params.set("ageRange", filters.ageRange);
-      if (filters.religion) params.set("religion", filters.religion);
-      if (filters.maritalStatus) params.set("maritalStatus", filters.maritalStatus);
-      if (filters.location) params.set("location", filters.location);
+      if (useHoroscopeMatch) {
+        // Use horoscope match API
+        const horoscopeFilters: any = {};
+        if (filters.nakshatra) horoscopeFilters.nakshatra = filters.nakshatra;
+        if (filters.rashi) horoscopeFilters.rashi = filters.rashi;
+        if (filters.nadi) horoscopeFilters.nadi = filters.nadi;
+        if (filters.gana) horoscopeFilters.gana = filters.gana;
 
-      const res = await fetch(`/api/user/search?${params}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+        const res = await fetch("/api/horoscope/match", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            minScore: parseInt(filters.minMatchScore) || 18,
+            sortByScore: true,
+            limit: 20,
+            gender: filters.gender || "ALL",
+            filters: Object.keys(horoscopeFilters).length > 0 ? horoscopeFilters : undefined,
+          }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          const matchedProfiles = json.data.matches.map((m: any) => ({
+            id: m.profile.id,
+            gender: m.profile.gender,
+            age: m.profile.dateOfBirth ? calculateAge(new Date(m.profile.dateOfBirth)) : null,
+            profile: {
+              fullName: m.profile.fullName || "Unknown",
+              city: m.profile.city || "",
+              state: m.profile.state || "",
+              religion: m.profile.religion || "",
+              caste: m.profile.caste || "",
+              qualification: "",
+              occupationType: "",
+              height: m.profile.height || null,
+              profileCompletionPct: m.profile.profileCompletionPct || 50,
+              maritalStatus: "",
+              aboutMe: null,
+              annualIncome: null,
+            },
+            hasPrimaryPhoto: false,
+            primaryPhotoUrl: null,
+            isKycVerified: false,
+            subscriptionTier: "FREE",
+            matchScore: m.match.finalScore,
+            matchCategory: m.match.category,
+            matchDetails: m.match,
+          }));
+          setProfiles(matchedProfiles);
+          setTotal(matchedProfiles.length);
+          setTotalPages(1);
+        } else {
+          toast({
+            title: "Horoscope match failed",
+            description: json.error || "Failed to calculate horoscope matches",
+            variant: "destructive",
+          });
+        }
+      } else {
+        // Use regular search API
+        const params = new URLSearchParams();
+        params.set("page", page.toString());
+        params.set("limit", "20");
+        if (searchQuery) params.set("search", searchQuery);
+        if (filters.ageMin) params.set("ageMin", filters.ageMin);
+        if (filters.ageMax) params.set("ageMax", filters.ageMax);
+        if (filters.gender) params.set("gender", filters.gender);
+        if (filters.religion) params.set("religion", filters.religion);
+        if (filters.caste) params.set("caste", filters.caste);
+        if (filters.education) params.set("education", filters.education);
+        if (filters.maritalStatus) params.set("maritalStatus", filters.maritalStatus);
+        if (filters.state) params.set("state", filters.state);
+        if (filters.motherTongue) params.set("motherTongue", filters.motherTongue);
+        if (filters.occupationType) params.set("occupationType", filters.occupationType);
+        if (filters.kycOnly) params.set("kycOnly", "true");
 
-      if (res.status === 401) {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("userInfo");
-        window.location.replace("/login");
-        return;
-      }
+        const res = await fetch(`/api/user/search?${params}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      const json = await res.json();
-      if (json.success) {
-        setProfiles(json.data.users || []);
-        setTotalPages(json.data.pagination?.totalPages || 1);
-        setTotal(json.data.pagination?.total || 0);
+        if (res.status === 401) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("userInfo");
+          window.location.replace("/login");
+          return;
+        }
+
+        const json = await res.json();
+        if (json.success) {
+          setProfiles(json.data.users || []);
+          setTotalPages(json.data.pagination?.totalPages || 1);
+          setTotal(json.data.pagination?.total || 0);
+        }
       }
     } catch (err) {
       console.error("Failed to fetch profiles:", err);
@@ -103,10 +276,10 @@ export default function SearchPage() {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && filters.gender) {
       fetchProfiles();
     }
-  }, [isLoggedIn, page]);
+  }, [isLoggedIn, page, filters.gender, useHoroscopeMatch]);
 
   const handleSearch = () => {
     setPage(1);
@@ -119,6 +292,140 @@ export default function SearchPage() {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userInfo");
     window.location.replace("/");
+  };
+
+  const token = () => localStorage.getItem("accessToken");
+
+  const sendInterest = async (profileId: string) => {
+    setSendingInterest(profileId);
+    try {
+      const res = await fetch("/api/user/interests", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ receiverId: profileId }),
+      });
+      const json = await res.json();
+      if (json.success || json.code === "INTEREST_EXISTS") {
+        setInterests((prev) => ({ ...prev, [profileId]: true }));
+        toast({
+          title: "Interest sent",
+          description: "Your interest has been sent successfully",
+        });
+      } else {
+        toast({
+          title: "Failed to send interest",
+          description: json.error || "Please try again",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setSendingInterest(null);
+    }
+  };
+
+  const acceptInterest = async (profileId: string) => {
+    try {
+      const res = await fetch(`/api/user/interests/${profileId}`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "ACCEPT" }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setReceivedInterests((prev) => ({ ...prev, [profileId]: false }));
+        toast({
+          title: "Interest accepted",
+          description: "You have accepted this interest request",
+        });
+      } else {
+        toast({
+          title: "Failed to accept interest",
+          description: json.error || "Please try again",
+          variant: "destructive",
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "Failed to accept interest",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const rejectInterest = async (profileId: string) => {
+    try {
+      const res = await fetch(`/api/user/interests/${profileId}`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "DECLINE" }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setReceivedInterests((prev) => ({ ...prev, [profileId]: false }));
+        toast({
+          title: "Interest declined",
+          description: "You have declined this interest request",
+        });
+      } else {
+        toast({
+          title: "Failed to decline interest",
+          description: json.error || "Please try again",
+          variant: "destructive",
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "Failed to decline interest",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const toggleWishlist = async (profileId: string) => {
+    setTogglingWishlist(profileId);
+    try {
+      if (wishlist[profileId]) {
+        const res = await fetch(`/api/user/wishlist?profileId=${profileId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token()}` } });
+        const json = await res.json();
+        if (json.success) {
+          setWishlist((prev) => ({ ...prev, [profileId]: false }));
+          toast({
+            title: "Removed from wishlist",
+            description: "Profile removed from your wishlist",
+          });
+        } else {
+          toast({
+            title: "Failed to remove",
+            description: json.error || "Please try again",
+            variant: "destructive",
+          });
+        }
+      } else {
+        const res = await fetch("/api/user/wishlist", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ profileId }),
+        });
+        const json = await res.json();
+        if (json.success) {
+          setWishlist((prev) => ({ ...prev, [profileId]: true }));
+          toast({
+            title: "Added to wishlist",
+            description: "Profile saved to your wishlist",
+          });
+        } else {
+          toast({
+            title: "Failed to add to wishlist",
+            description: json.error || "Please try again",
+            variant: "destructive",
+          });
+        }
+      }
+    } finally {
+      setTogglingWishlist(null);
+    }
   };
 
   return (
@@ -164,61 +471,202 @@ export default function SearchPage() {
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
             </div>
-            <Button variant="gold" className="px-6" onClick={handleSearch} disabled={!isLoggedIn || searching} loading={searching}>
+            <Button variant="gold" className="px-6 cursor-pointer" onClick={handleSearch} disabled={!isLoggedIn || searching} loading={searching}>
               Search
             </Button>
-            <Button variant="glass" onClick={() => setShowFilters(!showFilters)} disabled={!isLoggedIn}>
-              <Filter size={16} />
+            <Button variant="glass" onClick={() => setShowFilters(!showFilters)} disabled={!isLoggedIn} className="cursor-pointer">
+              <SlidersHorizontal size={16} /> Filters {showFilters && <X size={14} />}
             </Button>
           </div>
 
           {showFilters && (
-            <div className="mt-4 pt-4 border-t border-white/[0.06] grid sm:grid-cols-4 gap-3">
-              <select 
-                className="input-glass" 
-                value={filters.ageRange}
-                onChange={(e) => setFilters({ ...filters, ageRange: e.target.value })}
-              >
-                <option value="">Age Range</option>
-                <option value="18-25">18-25</option>
-                <option value="26-30">26-30</option>
-                <option value="31-35">31-35</option>
-                <option value="36+">36+</option>
-              </select>
-              <select 
-                className="input-glass"
-                value={filters.religion}
-                onChange={(e) => setFilters({ ...filters, religion: e.target.value })}
-              >
-                <option value="">Religion</option>
-                <option value="Hindu">Hindu</option>
-                <option value="Muslim">Muslim</option>
-                <option value="Christian">Christian</option>
-                <option value="Sikh">Sikh</option>
-                <option value="Other">Other</option>
-              </select>
-              <select 
-                className="input-glass"
-                value={filters.maritalStatus}
-                onChange={(e) => setFilters({ ...filters, maritalStatus: e.target.value })}
-              >
-                <option value="">Marital Status</option>
-                <option value="NEVER_MARRIED">Never Married</option>
-                <option value="DIVORCED">Divorced</option>
-                <option value="WIDOWED">Widowed</option>
-              </select>
-              <select 
-                className="input-glass"
-                value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-              >
-                <option value="">Location</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Bengaluru">Bengaluru</option>
-                <option value="Chennai">Chennai</option>
-                <option value="Other">Other</option>
-              </select>
+            <div className="mt-4 pt-4 border-t border-white/[0.06]">
+              {/* Horoscope Match Toggle */}
+              <div className="flex items-center gap-3 p-3 bg-[rgba(201,151,44,0.1)] rounded-lg border border-[rgba(201,151,44,0.2)] mb-4">
+                <Sparkles size={18} className="text-[#C9972C]" />
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-white">Horoscope Matching</div>
+                  <div className="text-xs text-white/50">Find matches based on Vedic astrology compatibility</div>
+                </div>
+                <button
+                  className={`w-12 h-6 rounded-full transition-colors cursor-pointer ${useHoroscopeMatch ? "bg-[#C9972C]" : "bg-white/20"}`}
+                  onClick={() => setUseHoroscopeMatch(!useHoroscopeMatch)}
+                >
+                  <div className={`w-5 h-5 rounded-full bg-white transition-transform ${useHoroscopeMatch ? "translate-x-6" : "translate-x-0.5"}`} />
+                </button>
+              </div>
+
+              {/* Horoscope Filters */}
+              {useHoroscopeMatch && (
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
+                  <div>
+                    <label className="block text-xs text-white/50 mb-1">Nakshatra</label>
+                    <select className="input-glass" value={filters.nakshatra} onChange={(e) => setFilters({ ...filters, nakshatra: e.target.value })}>
+                      {NAKSHATRAS.map((n) => <option key={n} value={n}>{n || "Any"}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-white/50 mb-1">Rashi</label>
+                    <select className="input-glass" value={filters.rashi} onChange={(e) => setFilters({ ...filters, rashi: e.target.value })}>
+                      {RASHIS.map((r) => <option key={r} value={r}>{r || "Any"}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-white/50 mb-1">Nadi</label>
+                    <select className="input-glass" value={filters.nadi} onChange={(e) => setFilters({ ...filters, nadi: e.target.value })}>
+                      {NADIS.map((n) => <option key={n} value={n}>{n || "Any"}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-white/50 mb-1">Gana</label>
+                    <select className="input-glass" value={filters.gana} onChange={(e) => setFilters({ ...filters, gana: e.target.value })}>
+                      {GANAS.map((g) => <option key={g} value={g}>{g || "Any"}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs text-white/50 mb-1">Min Match Score</label>
+                    <select className="input-glass" value={filters.minMatchScore} onChange={(e) => setFilters({ ...filters, minMatchScore: e.target.value })}>
+                      <option value="18">18 (Good)</option>
+                      <option value="24">24 (Excellent)</option>
+                      <option value="30">30 (Outstanding)</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+
+              {/* Regular Filters */}
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 gap-2">
+                  <select 
+                    className="input-glass" 
+                    value={filters.ageMin}
+                    onChange={(e) => setFilters({ ...filters, ageMin: e.target.value })}
+                  >
+                    <option value="">Min Age</option>
+                    {Array.from({ length: 40 }, (_, i) => i + 18).map(age => (
+                      <option key={age} value={age}>{age}</option>
+                    ))}
+                  </select>
+                  <select 
+                    className="input-glass"
+                    value={filters.ageMax}
+                    onChange={(e) => setFilters({ ...filters, ageMax: e.target.value })}
+                  >
+                    <option value="">Max Age</option>
+                    {Array.from({ length: 40 }, (_, i) => i + 18).map(age => (
+                      <option key={age} value={age}>{age}</option>
+                    ))}
+                  </select>
+                </div>
+                <select 
+                  className="input-glass"
+                  value={filters.gender}
+                  onChange={(e) => setFilters({ ...filters, gender: e.target.value })}
+                >
+                  <option value="">Gender</option>
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                </select>
+                <select 
+                  className="input-glass"
+                  value={filters.religion}
+                  onChange={(e) => setFilters({ ...filters, religion: e.target.value })}
+                >
+                  <option value="">Religion</option>
+                  {RELIGIONS.map((r) => <option key={r} value={r}>{r || "Any"}</option>)}
+                </select>
+                <select 
+                  className="input-glass"
+                  value={filters.caste}
+                  onChange={(e) => setFilters({ ...filters, caste: e.target.value })}
+                >
+                  <option value="">Caste</option>
+                  <option value="Brahmin">Brahmin</option>
+                  <option value="Kshatriya">Kshatriya</option>
+                  <option value="Vaishya">Vaishya</option>
+                  <option value="Shudra">Shudra</option>
+                  <option value="Other">Other</option>
+                </select>
+                <select 
+                  className="input-glass"
+                  value={filters.education}
+                  onChange={(e) => setFilters({ ...filters, education: e.target.value })}
+                >
+                  <option value="">Education</option>
+                  <option value="Bachelor's">Bachelor's</option>
+                  <option value="Master's">Master's</option>
+                  <option value="PhD">PhD</option>
+                  <option value="Professional">Professional</option>
+                  <option value="Other">Other</option>
+                </select>
+                <select 
+                  className="input-glass"
+                  value={filters.maritalStatus}
+                  onChange={(e) => setFilters({ ...filters, maritalStatus: e.target.value })}
+                >
+                  <option value="">Marital Status</option>
+                  {MARITAL.map((m) => <option key={m} value={m}>{m ? m.replace(/_/g, " ") : "Any"}</option>)}
+                </select>
+                <select 
+                  className="input-glass"
+                  value={filters.state}
+                  onChange={(e) => setFilters({ ...filters, state: e.target.value })}
+                >
+                  <option value="">State</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Other">Other</option>
+                </select>
+                <select 
+                  className="input-glass"
+                  value={filters.motherTongue}
+                  onChange={(e) => setFilters({ ...filters, motherTongue: e.target.value })}
+                >
+                  <option value="">Mother Tongue</option>
+                  <option value="Tamil">Tamil</option>
+                  <option value="Telugu">Telugu</option>
+                  <option value="Hindi">Hindi</option>
+                  <option value="Malayalam">Malayalam</option>
+                  <option value="Kannada">Kannada</option>
+                  <option value="Other">Other</option>
+                </select>
+                <select 
+                  className="input-glass"
+                  value={filters.occupationType}
+                  onChange={(e) => setFilters({ ...filters, occupationType: e.target.value })}
+                >
+                  <option value="">Occupation</option>
+                  <option value="Software Engineer">Software Engineer</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Engineer">Engineer</option>
+                  <option value="Teacher">Teacher</option>
+                  <option value="Business">Business</option>
+                  <option value="Other">Other</option>
+                </select>
+                <label className="flex items-center gap-2 text-white/70 text-sm cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={filters.kycOnly}
+                    onChange={(e) => setFilters({ ...filters, kycOnly: e.target.checked })}
+                    className="w-4 h-4 rounded accent-[#C9972C]"
+                  />
+                  KYC Verified Only
+                </label>
+                <div className="sm:col-span-2 flex items-end gap-3">
+                  <Button variant="gold" onClick={handleSearch} className="flex-1 cursor-pointer" loading={loading}>
+                    <Filter size={14} /> Apply Filters
+                  </Button>
+                  <Button variant="glass" onClick={() => {
+                    setFilters({ ageMin: "", ageMax: "", gender: "", religion: "", caste: "", state: "", maritalStatus: "", heightMin: "", heightMax: "", nakshatra: "", rashi: "", nadi: "", gana: "", minMatchScore: "18", education: "", motherTongue: "", occupationType: "", kycOnly: false });
+                    setProfiles([]); setTotal(0);
+                  }} className="cursor-pointer">
+                    Reset
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -251,66 +699,166 @@ export default function SearchPage() {
             <div className="text-white/50">No profiles found matching your criteria.</div>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 gap-5">
-            {profiles.map((profile) => {
-              return (
-                <Link key={profile.id} href={`/profile/${profile.id}`} className="block">
-                  <div className="glass p-5 hover:bg-white/[0.05] transition-all duration-300 hover:scale-[1.02] border border-white/[0.06] hover:border-[#C9972C]/30">
-                    <div className="flex gap-4">
-                      <div className="w-28 h-28 rounded-xl bg-white/5 overflow-hidden flex-shrink-0 border border-white/[0.08]">
-                        {profile.primaryPhotoUrl ? (
-                          <img 
-                            src={profile.primaryPhotoUrl} 
-                            alt={profile.profile?.fullName || "Profile"} 
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-white/30 bg-gradient-to-br from-white/[0.05] to-white/[0.02]">
-                            <User size={32} />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-semibold text-white truncate text-base">{profile.profile?.fullName || "Unknown"}</h3>
-                            {profile.isKycVerified && (
-                              <Badge variant="success" className="text-[10px] px-2 py-0.5">KYC</Badge>
-                            )}
-                          </div>
-                          <div className="text-white/50 text-xs grid grid-cols-2 gap-x-4 gap-y-1">
-                            <div>
-                              <span className="text-white/30 block text-[10px] uppercase tracking-wide">Age</span>
-                              <span className="text-white/70 font-medium">{profile.age ? `${profile.age} yrs` : "—"}</span>
-                            </div>
-                            <div>
-                              <span className="text-white/30 block text-[10px] uppercase tracking-wide">Status</span>
-                              <span className="text-white/70 font-medium">{profile.profile?.maritalStatus?.replace(/_/g, " ") || "—"}</span>
-                            </div>
-                            <div>
-                              <span className="text-white/30 block text-[10px] uppercase tracking-wide">Location</span>
-                              <span className="text-white/70 font-medium truncate block">{profile.profile?.city || "—"}, {profile.profile?.state || ""}</span>
-                            </div>
-                            <div>
-                              <span className="text-white/30 block text-[10px] uppercase tracking-wide">Religion</span>
-                              <span className="text-white/70 font-medium truncate block">{profile.profile?.religion || "—"}</span>
-                            </div>
-                            <div>
-                              <span className="text-white/30 block text-[10px] uppercase tracking-wide">Education</span>
-                              <span className="text-white/70 font-medium truncate block">{profile.profile?.qualification || "—"}</span>
-                            </div>
-                            <div>
-                              <span className="text-white/30 block text-[10px] uppercase tracking-wide">Occupation</span>
-                              <span className="text-white/70 font-medium truncate block">{profile.profile?.occupationType || "—"}</span>
-                            </div>
-                          </div>
+          <div className="grid gap-4">
+            {profiles.map((profile) => (
+              <div key={profile.id} className="glass p-0 overflow-hidden group hover:border-[rgba(201,151,44,0.25)] transition-colors">
+                <div className="flex flex-col sm:flex-row h-full">
+                  {/* Gallery Slider - 30% */}
+                  <div className="w-full sm:w-[30%] aspect-[3/4] sm:aspect-auto bg-gradient-to-b from-[#7B1D1D]/30 to-[#1a0505] relative">
+                    {profile.hasPrimaryPhoto && profile.primaryPhotoUrl ? (
+                      <img src={profile.primaryPhotoUrl} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-20 h-20 rounded-full bg-[rgba(201,151,44,0.1)] flex items-center justify-center">
+                          <span className="text-3xl font-display font-bold text-[#C9972C]">
+                            {profile.profile?.fullName?.[0] || "?"}
+                          </span>
                         </div>
                       </div>
+                    )}
+                    {/* Badges */}
+                    <div className="absolute top-2 left-2 flex flex-col gap-1">
+                      {profile.matchScore !== undefined && (
+                        <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full flex items-center gap-0.5 ${
+                          profile.matchScore >= 24 ? "bg-emerald-900/80 text-emerald-400" :
+                          profile.matchScore >= 18 ? "bg-amber-900/80 text-amber-400" :
+                          "bg-red-900/80 text-red-400"
+                        }`}>
+                          <Sparkles size={8} /> {profile.matchScore}/36
+                        </span>
+                      )}
+                      {profile.isKycVerified && (
+                        <span className="bg-emerald-900/80 text-emerald-400 text-[9px] font-semibold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                          <Shield size={8} /> Verified
+                        </span>
+                      )}
+                      {profile.subscriptionTier !== "FREE" && (
+                        <span className="bg-[rgba(201,151,44,0.8)] text-[#1a0505] text-[9px] font-semibold px-1.5 py-0.5 rounded-full">
+                          {profile.subscriptionTier}
+                        </span>
+                      )}
                     </div>
                   </div>
-                </Link>
-              );
-            })}
+                  
+                  {/* Details - 70% */}
+                  <div className="w-full sm:w-[70%] p-5 flex flex-col">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="font-display font-semibold text-white text-xl">
+                          {profile.profile?.fullName || "Unknown"}
+                        </h3>
+                        <p className="text-white/50 text-sm mt-1">
+                          {profile.age ? `${profile.age} yrs` : ""} {profile.profile?.height ? `• ${cmToFeetInches(profile.profile.height)}` : ""}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => toggleWishlist(profile.id)}
+                        className={`p-2 rounded-full transition-colors cursor-pointer ${wishlist[profile.id] ? "bg-[rgba(201,151,44,0.2)] text-[#C9972C]" : "bg-white/5 text-white/40 hover:text-white/60"}`}
+                        disabled={togglingWishlist === profile.id}
+                      >
+                        <Heart size={20} className={wishlist[profile.id] ? "fill-[#C9972C]" : ""} />
+                      </button>
+                    </div>
+                    
+                    {/* Multi-column details */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                      <div>
+                        <div className="text-white/40 text-xs mb-1">Location</div>
+                        <div className="text-white text-sm">{profile.profile?.city || ""}, {profile.profile?.state || ""}</div>
+                      </div>
+                      <div>
+                        <div className="text-white/40 text-xs mb-1">Religion</div>
+                        <div className="text-white text-sm">{profile.profile?.religion || ""}</div>
+                      </div>
+                      <div>
+                        <div className="text-white/40 text-xs mb-1">Caste</div>
+                        <div className="text-white text-sm">{profile.profile?.caste || ""}</div>
+                      </div>
+                      <div>
+                        <div className="text-white/40 text-xs mb-1">Profile Completion</div>
+                        <div className="text-white text-sm">{profile.profile?.profileCompletionPct || 0}%</div>
+                      </div>
+                      <div>
+                        <div className="text-white/40 text-xs mb-1">Gender</div>
+                        <div className="text-white text-sm capitalize">{profile.gender?.toLowerCase() || ""}</div>
+                      </div>
+                      <div>
+                        <div className="text-white/40 text-xs mb-1">Status</div>
+                        <div className="text-white text-sm capitalize">{profile.isKycVerified ? "Verified" : "Pending"}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-auto flex gap-3">
+                      {receivedInterests[profile.id] ? (
+                        <>
+                          <Button
+                            variant="gold"
+                            size="sm"
+                            className="flex-1 text-sm h-10 cursor-pointer"
+                            onClick={() => acceptInterest(profile.id)}
+                          >
+                            <Check size={14} /> Accept
+                          </Button>
+                          <Button
+                            variant="glass"
+                            size="sm"
+                            className="flex-1 text-sm h-10 cursor-pointer"
+                            onClick={() => rejectInterest(profile.id)}
+                          >
+                            <X size={14} /> Decline
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            variant={interests[profile.id] ? "glass-gold" : "glass"}
+                            size="sm"
+                            className="flex-1 text-sm h-10 cursor-pointer"
+                            onClick={() => sendInterest(profile.id)}
+                            disabled={interests[profile.id] || sendingInterest === profile.id}
+                            loading={sendingInterest === profile.id}
+                          >
+                            <Heart size={14} className={interests[profile.id] ? "fill-[#C9972C]" : ""} />
+                            {interests[profile.id] ? "Interest Sent" : "Send Interest"}
+                          </Button>
+                          {profile.matchScore !== undefined && (
+                            <Button
+                              variant="glass"
+                              size="sm"
+                              className="text-sm h-10 px-4 cursor-pointer"
+                              onClick={() => {
+                                setSelectedMatch(profile.matchDetails);
+                                setMatchModalOpen(true);
+                              }}
+                            >
+                              <Sparkles size={14} /> Match
+                            </Button>
+                          )}
+                        </>
+                      )}
+                      <Button variant="glass" size="sm" asChild className="text-sm h-10 px-4 cursor-pointer">
+                        <Link href={`/profile/${profile.id}`}>View Profile</Link>
+                      </Button>
+                      {profile.matchScore !== undefined && (
+                        <div 
+                          className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity ${
+                            profile.matchScore >= 24 ? "bg-emerald-900/50 text-emerald-400" :
+                            profile.matchScore >= 18 ? "bg-amber-900/50 text-amber-400" :
+                            "bg-red-900/50 text-red-400"
+                          }`}
+                          onClick={() => {
+                            setSelectedMatch(profile.matchDetails);
+                            setMatchModalOpen(true);
+                          }}
+                        >
+                          <Sparkles size={10} /> {profile.matchScore}/36
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
@@ -322,6 +870,7 @@ export default function SearchPage() {
               size="sm"
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
+              className="cursor-pointer"
             >
               Previous
             </Button>
@@ -333,6 +882,7 @@ export default function SearchPage() {
               size="sm"
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
+              className="cursor-pointer"
             >
               Next
             </Button>
@@ -353,6 +903,103 @@ export default function SearchPage() {
           ))}
         </div>
       </div>
+
+      {/* Match Details Modal */}
+      {matchModalOpen && selectedMatch && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glass p-6 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <Sparkles size={20} className="text-[#C9972C]" />
+                <h2 className="font-display text-xl font-bold text-white">Horoscope Match Details</h2>
+              </div>
+              <button onClick={() => setMatchModalOpen(false)} className="text-white/50 hover:text-white cursor-pointer">
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Overall Score */}
+            <div className="bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] rounded-xl p-4 mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-white/60 text-sm">Match Score</div>
+                  <div className="font-display text-3xl font-bold text-[#C9972C]">
+                    {selectedMatch.finalScore}/{selectedMatch.maxScore}
+                  </div>
+                  <div className="text-white/40 text-xs mt-1">{selectedMatch.percentage}% compatibility</div>
+                </div>
+                <div className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                  selectedMatch.category === "Excellent" ? "bg-emerald-900/50 text-emerald-400" :
+                  selectedMatch.category === "Good" ? "bg-amber-900/50 text-amber-400" :
+                  "bg-red-900/50 text-red-400"
+                }`}>
+                  {selectedMatch.category}
+                </div>
+              </div>
+            </div>
+
+            {/* Breakdown */}
+            <div className="space-y-3 mb-6">
+              <h3 className="text-white font-semibold mb-3">Guna Milan Breakdown</h3>
+              {Object.entries(selectedMatch.breakdown || {}).map(([key, value]: [string, any]) => (
+                <div key={key} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                  <div>
+                    <div className="text-white font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                    <div className="text-white/50 text-xs">{value.description}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-[#C9972C] font-semibold">{value.score}/{value.max}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Dosha Check */}
+            {selectedMatch.doshaCheck && (
+              <div className="bg-white/5 rounded-xl p-4 mb-6">
+                <h3 className="text-white font-semibold mb-3">Dosha Check</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/70">Manglik Dosha</span>
+                    <span className={selectedMatch.doshaCheck.hasManglikDosha ? "text-red-400" : "text-emerald-400"}>
+                      {selectedMatch.doshaCheck.hasManglikDosha ? "Present" : "Absent"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/70">Nadi Dosha</span>
+                    <span className={selectedMatch.doshaCheck.hasNadiDosha ? "text-red-400" : "text-emerald-400"}>
+                      {selectedMatch.doshaCheck.hasNadiDosha ? "Present" : "Absent"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white/70">Bhakoot Dosha</span>
+                    <span className={selectedMatch.doshaCheck.hasBhakootDosha ? "text-red-400" : "text-emerald-400"}>
+                      {selectedMatch.doshaCheck.hasBhakootDosha ? "Present" : "Absent"}
+                    </span>
+                  </div>
+                </div>
+                {selectedMatch.doshaCheck.warnings && selectedMatch.doshaCheck.warnings.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-white/10">
+                    {selectedMatch.doshaCheck.warnings.map((warning: string, i: number) => (
+                      <div key={i} className="text-amber-400 text-xs mt-1">⚠️ {warning}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Recommendations */}
+            {selectedMatch.recommendations && selectedMatch.recommendations.length > 0 && (
+              <div className="bg-amber-900/20 border border-amber-900/30 rounded-xl p-4">
+                <h3 className="text-amber-400 font-semibold mb-2">Recommendations</h3>
+                {selectedMatch.recommendations.map((rec: string, i: number) => (
+                  <div key={i} className="text-white/70 text-sm mt-1">• {rec}</div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

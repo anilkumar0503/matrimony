@@ -35,6 +35,13 @@ export default function AdminImagesPage() {
     setLoading(true);
     const params = new URLSearchParams({ page: String(page), status: statusFilter });
     const res = await fetch(`/api/admin/images?${params}`, { headers: { Authorization: `Bearer ${token()}` } });
+    if (res.status === 401) {
+      localStorage.removeItem("adminAccessToken");
+      localStorage.removeItem("adminRefreshToken");
+      localStorage.removeItem("adminInfo");
+      window.location.replace("/admin/login");
+      return;
+    }
     const json = await res.json();
     if (json.success) {
       setImages(json.data.images);
@@ -57,14 +64,26 @@ export default function AdminImagesPage() {
   const selectAll = () => setSelected(new Set(images.map((i) => i.id)));
   const clearAll = () => setSelected(new Set());
 
+  const handleAuthError = (status: number) => {
+    if (status === 401) {
+      localStorage.removeItem("adminAccessToken");
+      localStorage.removeItem("adminRefreshToken");
+      localStorage.removeItem("adminInfo");
+      window.location.replace("/admin/login");
+      return true;
+    }
+    return false;
+  };
+
   const bulkAction = async (action: "APPROVE" | "REJECT") => {
     if (!selected.size) return;
     setProcessing(true);
-    await fetch("/api/admin/images", {
+    const res = await fetch("/api/admin/images", {
       method: "POST",
       headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
       body: JSON.stringify({ imageIds: Array.from(selected), action }),
     });
+    if (handleAuthError(res.status)) return;
     setProcessing(false);
     setSelected(new Set());
     fetchImages();
@@ -72,11 +91,12 @@ export default function AdminImagesPage() {
 
   const singleAction = async (imageId: string, action: "APPROVE" | "REJECT") => {
     setProcessing(true);
-    await fetch("/api/admin/images", {
+    const res = await fetch("/api/admin/images", {
       method: "POST",
       headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
       body: JSON.stringify({ imageId, action, rejectionReason: rejectReason || undefined }),
     });
+    if (handleAuthError(res.status)) return;
     setProcessing(false);
     setRejectTarget(null);
     setRejectReason("");

@@ -13,6 +13,7 @@ interface Community {
   isActive: boolean;
   subscriptionPlan: { name: string; tier: string } | null;
   _count: { members: number };
+  userStatus: string | null;
 }
 
 export default function CommunitiesPage() {
@@ -29,9 +30,18 @@ export default function CommunitiesPage() {
     setLoading(true);
     const params = new URLSearchParams();
     if (q) params.set("search", q);
-    const res = await fetch(`/api/communities?${params}`);
+    const res = await fetch(`/api/communities?${params}`, { headers: { Authorization: `Bearer ${token()}` } });
     const json = await res.json();
-    if (json.success) setCommunities(json.data.communities);
+    if (json.success) {
+      setCommunities(json.data.communities);
+      const joinedMap: Record<string, boolean> = {};
+      json.data.communities.forEach((c: Community) => {
+        if (c.userStatus === "APPROVED" || c.userStatus === "PENDING") {
+          joinedMap[c.id] = true;
+        }
+      });
+      setJoined(joinedMap);
+    }
     setLoading(false);
   };
 
@@ -105,7 +115,7 @@ export default function CommunitiesPage() {
                     <div className="font-semibold text-white text-sm truncate">{c.name}</div>
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
                       <Badge variant={typeColor[c.type as keyof typeof typeColor] || "glass"} className="text-[10px]">
-                        <Icon size={9} /> {c.type.replace(/_/g, " ")}
+                        <Icon size={9} /> {c.type?.replace(/_/g, " ") || "Public"}
                       </Badge>
                       {requiresPremium && (
                         <Badge variant="gold" className="text-[10px]">{c.subscriptionPlan?.tier}+</Badge>

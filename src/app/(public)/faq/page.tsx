@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export const metadata = {
   title: "FAQ",
-  description: "Frequently asked questions about Premium Matrimony — registration, KYC, subscriptions, and more.",
+  description: "Frequently asked questions about Jasmine Matrimony — registration, KYC, subscriptions, and more.",
 };
 
 export default async function FAQPage() {
@@ -55,7 +55,7 @@ export default async function FAQPage() {
             <HelpCircle size={13} /> Help Centre
           </div>
           <h1 className="font-display text-4xl font-bold text-white mb-3">Frequently Asked Questions</h1>
-          <p className="text-white/50">Everything you need to know about Premium Matrimony</p>
+          <p className="text-white/50">Everything you need to know about Jasmine Matrimony</p>
         </div>
 
         <div className="space-y-8">

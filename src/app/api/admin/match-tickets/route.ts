@@ -42,10 +42,91 @@ export async function GET(req: NextRequest) {
   }
 }
 
+export async function POST(req: NextRequest) {
+  try {
+    const { admin } = await requireAdmin(req, [PERMISSIONS.MATCHES_MANAGE]);
+    const body = await req.json();
+    const parsed = createSchema.safeParse(body);
+    if (!parsed.success) return apiError(parsed.error.issues[0].message, 400);
+
+    const { userAId, userBId, notes } = parsed.data;
+
+    if (userAId === userBId) return apiError("Cannot match a user with themselves", 400);
+
+    // Check if users exist and are active
+    const [userA, userB] = await Promise.all([
+      prisma.user.findUnique({ where: { id: userAId, status: "ACTIVE" }, include: { profile: true } }),
+      prisma.user.findUnique({ where: { id: userBId, status: "ACTIVE" }, include: { profile: true } }),
+    ]);
+
+    if (!userA) return apiError("User A not found or not active", 404);
+    if (!userB) return apiError("User B not found or not active", 404);
+
+    // Check if match already exists
+    const existingMatch = await prisma.mutualMatch.findFirst({
+      where: {
+        OR: [
+          { userAId, userBId },
+          { userAId: userBId, userBId: userAId },
+        ],
+      },
+    });
+
+    if (existingMatch) {
+      // Check if ticket already exists for this match
+      const existingTicket = await prisma.matchTicket.findUnique({
+        where: { matchId: existingMatch.id },
+      });
+      if (existingTicket) return apiError("Match ticket already exists for this pair", 409);
+    }
+
+    // Create mutual match and ticket
+    const match = await prisma.mutualMatch.create({
+      data: { userAId, userBId },
+    });
+
+    const ticket = await prisma.matchTicket.create({
+      data: {
+        matchId: match.id,
+        status: "OPEN",
+        assignedTo: admin.id,
+      },
+    });
+
+    // Add initial note if provided
+    if (notes) {
+      await prisma.matchTicketNote.create({
+        data: { ticketId: ticket.id, adminId: admin.id, note: notes },
+      });
+    }
+
+    // Audit log
+    await prisma.auditLog.create({
+      data: {
+        adminId: admin.id,
+        action: "MATCH_TICKET_UPDATED",
+        targetType: "MatchTicket",
+        targetId: ticket.id,
+        details: { action: "CREATE", userAId, userBId },
+      },
+    });
+
+    return apiResponse({ ticket, match }, 201);
+  } catch (err) {
+    return handleApiError(err);
+  }
+}
+
+const createSchema = z.object({
+  userAId: z.string(),
+  userBId: z.string(),
+  notes: z.string().max(500).optional(),
+});
+
 const updateSchema = z.object({
   ticketId: z.string(),
   action: z.enum(["START_REVIEW", "SCHEDULE_MEETING", "COMPLETE", "CLOSE", "ADD_NOTE"]),
-  meetingLink: z.string().url().optional(),
+  meetingLink: z.string().url().optional().or(z.literal("")),
   meetingTime: z.string().optional(),
   meetingType: z.enum(["GOOGLE_MEET", "PHYSICAL", "OFFLINE_ASSISTED"]).optional(),
   outcome: z.enum(["PROCEEDING", "NOT_PROCEEDING", "ENGAGED", "MARRIED"]).optional(),

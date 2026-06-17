@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
 
     await sendEmailDirect({
       to: fullUser.email,
-      subject: "Account Deletion Request Received — Premium Matrimony",
+      subject: "Account Deletion Request Received — Jasmine Matrimony",
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto">
           <h2 style="color:#7B1D1D">Account Deletion Request</h2>

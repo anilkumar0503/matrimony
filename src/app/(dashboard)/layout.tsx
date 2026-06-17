@@ -4,13 +4,14 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
   Heart, LayoutDashboard, User, Search, Star,
-  Bell, CreditCard, Settings, LogOut, Menu, X, Shield, Users2
+  Bell, CreditCard, Settings, LogOut, Menu, X, Shield, Users2, Images
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/dashboard/profile", icon: User, label: "My Profile" },
+  { href: "/dashboard/gallery", icon: Images, label: "My Gallery" },
   { href: "/dashboard/search", icon: Search, label: "Find Match" },
   { href: "/dashboard/interests", icon: Heart, label: "Interests" },
   { href: "/dashboard/wishlist", icon: Star, label: "Wishlist" },
@@ -83,10 +84,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Logo */}
           <div className="flex items-center justify-between p-5 border-b border-white/[0.06]">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7B1D1D] to-[#C9972C] flex items-center justify-center">
-                <Heart size={14} className="text-white fill-white" />
-              </div>
-              <span className="font-display font-bold text-white text-sm">Premium Matrimony</span>
+              <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
             </Link>
             <button className="lg:hidden text-white/50 hover:text-white" onClick={() => setSidebarOpen(false)}>
               <X size={18} />
@@ -143,8 +141,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           >
             <Menu size={20} />
           </button>
-          <div className="lg:hidden font-display font-bold text-white text-sm">
-            Premium <span className="text-gold">Matrimony</span>
+          <div className="lg:hidden">
+            <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </div>
           <div className="flex items-center gap-3 ml-auto">
             <Link href="/dashboard/notifications" className="relative p-2 text-white/60 hover:text-white">

@@ -12,8 +12,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Heart size={14} className="text-[#C9972C]" />
-                <span className="font-display font-bold text-white text-sm">Premium Matrimony</span>
+                <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
               </div>
               <p className="text-white/40 text-xs">India's most trusted verified matrimony platform.</p>
             </div>
@@ -27,7 +26,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                 { label: "FAQ", href: "/faq" },
               ]},
               { title: "Company", links: [
-                { label: "About Us", href: "/" },
+                { label: "About Us", href: "/about" },
                 { label: "Contact", href: "/contact" },
                 { label: "Press", href: "/contact" },
               ]},
@@ -50,7 +49,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
             ))}
           </div>
           <div className="border-t border-white/[0.06] pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-white/30 text-xs">© 2025 Premium Matrimony. All rights reserved.</p>
+            <p className="text-white/30 text-xs">© 2025 Jasmine Matrimony. All rights reserved.</p>
             <p className="text-white/30 text-xs">Compliant with DPDP Act 2023 • GST Registered • Secured by AES-256</p>
           </div>
         </div>

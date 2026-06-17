@@ -159,6 +159,31 @@ body {
 
 .font-display { font-family: var(--font-jakarta), 'Plus Jakarta Sans', sans-serif; }
 .font-accent  { font-family: var(--font-dm-serif), 'DM Serif Display', serif; }
+.font-logo    { font-family: var(--font-inter), 'Inter', 'Ocean Sans Pro', sans-serif; letter-spacing: 0.02em; }
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-main {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.logo-sub {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #C9972C;
+}
 
 .text-gold    { color: #C9972C; }
 .text-gold-light { color: #E8C76A; }

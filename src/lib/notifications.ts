@@ -119,7 +119,7 @@ export async function sendEmailDirect(opts: {
     });
 
     await transporter.sendMail({
-      from: `"${fromName || "Premium Matrimony"}" <${from || "noreply@matrimony.com"}>`,
+      from: `"${fromName || "Jasmine Matrimony"}" <${from || "noreply@matrimony.com"}>`,
       to: opts.to,
       subject: opts.subject,
       html: opts.html,
@@ -130,7 +130,7 @@ export async function sendEmailDirect(opts: {
     sgMail.setApiKey(apiKey);
     await sgMail.send({
       to: opts.to,
-      from: { email: from || "noreply@matrimony.com", name: fromName || "Premium Matrimony" },
+      from: { email: from || "noreply@matrimony.com", name: fromName || "Jasmine Matrimony" },
       subject: opts.subject,
       html: opts.html,
     });
@@ -150,7 +150,7 @@ export async function sendEmailDirect(opts: {
     });
 
     await transporter.sendMail({
-      from: `"${fromName || "Premium Matrimony"}" <${from || "noreply@matrimony.com"}>`,
+      from: `"${fromName || "Jasmine Matrimony"}" <${from || "noreply@matrimony.com"}>`,
       to: opts.to,
       subject: opts.subject,
       html: opts.html,

@@ -44,12 +44,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7B1D1D] to-[#C9972C] flex items-center justify-center">
-              <Heart size={16} className="text-white fill-white" />
-            </div>
-            <span className="font-display font-bold text-lg text-white">
-              Premium <span className="text-gold">Matrimony</span>
-            </span>
+            <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </Link>
 
           {/* Desktop nav */}
