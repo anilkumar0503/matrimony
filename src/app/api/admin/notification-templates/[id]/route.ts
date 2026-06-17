@@ -11,15 +11,16 @@ const schema = z.object({
   inAppBody: z.string().optional().nullable(),
 });
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(req);
+    const { id } = await params;
     const body = await req.json();
     const parsed = schema.safeParse(body);
     if (!parsed.success) return apiError(parsed.error.issues[0].message, 400);
 
     const template = await prisma.notificationTemplate.update({
-      where: { id: params.id },
+      where: { id },
       data: { ...parsed.data, version: { increment: 1 } },
     });
 

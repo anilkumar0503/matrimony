@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       orderBy: { createdAt: "desc" },
     });
 
-    if (existingKyc?.attempts >= maxAttempts && existingKyc.status === "REJECTED") {
+    if (existingKyc && existingKyc.attempts >= maxAttempts && existingKyc.status === "REJECTED") {
       return apiError(
         "Maximum KYC resubmission attempts reached. Your case has been escalated to the admin.",
         400,

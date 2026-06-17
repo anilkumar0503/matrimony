@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       await setSetting(s.key as Parameters<typeof setSetting>[0], s.value, admin.id, s.isSecret);
     }
 
-    await redis.del(CACHE_KEYS.platformSettings());
+    await redis?.del(CACHE_KEYS.platformSettings());
 
     await prisma.auditLog.create({
       data: {

@@ -3,6 +3,8 @@ import { Heart, ChevronLeft } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Success Stories",
   description: "Real couples who found their life partner on our premium matrimony platform.",

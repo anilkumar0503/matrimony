@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const hashed = await bcrypt.hash(newPassword, 12);
     await prisma.user.update({ where: { id: user.id }, data: { passwordHash: hashed } });
 
-    await redis.del(`sessions:${user.id}`);
+    await redis?.del(`sessions:${user.id}`);
 
     return apiResponse({ message: "Password updated successfully. Please log in again." });
   } catch (err) {

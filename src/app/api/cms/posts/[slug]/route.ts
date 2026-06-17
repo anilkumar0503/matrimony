@@ -4,9 +4,10 @@ import prisma from "@/lib/prisma";
 import { requireAdmin, apiResponse, apiError, handleApiError } from "@/lib/auth";
 import { slugify } from "@/lib/utils";
 
-export async function GET(_req: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
-    const post = await prisma.blog.findUnique({ where: { slug: params.slug } });
+    const { slug } = await params;
+    const post = await prisma.blog.findUnique({ where: { slug } });
     if (!post) return apiError("Post not found", 404);
     if (post.status !== "PUBLISHED") return apiError("Post not available", 403);
     return apiResponse({ post: { ...post, author: { name: post.author || "Admin" }, coverImageUrl: post.featuredImage, seoTitle: post.metaTitle, seoDescription: post.metaDesc } });
@@ -27,14 +28,15 @@ const updateSchema = z.object({
   metaDesc: z.string().max(160).optional(),
 });
 
-export async function PUT(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
     await requireAdmin(req);
+    const { slug } = await params;
     const body = await req.json();
     const parsed = updateSchema.safeParse(body);
     if (!parsed.success) return apiError(parsed.error.issues[0].message, 400);
 
-    const existing = await prisma.blog.findUnique({ where: { slug: params.slug } });
+    const existing = await prisma.blog.findUnique({ where: { slug } });
     if (!existing) return apiError("Post not found", 404);
 
     const data: Record<string, unknown> = { ...parsed.data };
@@ -54,10 +56,11 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { slug: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
     await requireAdmin(req);
-    const post = await prisma.blog.findUnique({ where: { slug: params.slug } });
+    const { slug } = await params;
+    const post = await prisma.blog.findUnique({ where: { slug } });
     if (!post) return apiError("Post not found", 404);
     await prisma.blog.delete({ where: { id: post.id } });
     return apiResponse({ message: "Post deleted" });

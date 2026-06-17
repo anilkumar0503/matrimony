@@ -12,9 +12,9 @@ export async function POST(req: NextRequest) {
       include: {
         profile: true,
         images: { select: { category: true, status: true, createdAt: true } },
-        kycSubmissions: { select: { mode: true, status: true, createdAt: true } },
+        kycSubmissions: { select: { documentType: true, status: true, createdAt: true } },
         subscriptions: { include: { plan: { select: { name: true, tier: true } } } },
-        sentInterests: { select: { status: true, createdAt: true } },
+        interests: { select: { status: true, createdAt: true } },
         receivedInterests: { select: { status: true, createdAt: true } },
         consentRecords: { select: { purpose: true, granted: true, createdAt: true } },
       },
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       kycSubmissions: fullUser?.kycSubmissions,
       subscriptions: fullUser?.subscriptions,
       interests: {
-        sent: fullUser?.sentInterests.length,
+        sent: fullUser?.interests.length,
         received: fullUser?.receivedInterests.length,
       },
       consents: fullUser?.consentRecords,

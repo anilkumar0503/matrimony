@@ -14,16 +14,17 @@ const updateSchema = z.object({
   metaDesc: z.string().max(160).optional(),
 });
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(req);
+    const { id } = await params;
     const body = await req.json();
     const parsed = updateSchema.safeParse(body);
     if (!parsed.success) return apiError(parsed.error.issues[0].message, 400);
 
     const { logo, banner, ...rest } = parsed.data;
     const community = await prisma.community.update({
-      where: { id: params.id },
+      where: { id },
       data: { ...rest, logo: logo === "" ? null : logo, banner: banner === "" ? null : banner },
     });
 
@@ -33,22 +34,24 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(req);
-    await prisma.community.delete({ where: { id: params.id } });
+    const { id } = await params;
+    await prisma.community.delete({ where: { id } });
     return apiResponse({ message: "Community deleted" });
   } catch (err) {
     return handleApiError(err);
   }
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(req);
+    const { id } = await params;
 
     const pending = await prisma.communityMember.findMany({
-      where: { communityId: params.id, status: "PENDING" },
+      where: { communityId: id, status: "PENDING" },
       include: { user: { include: { profile: { select: { fullName: true } } } } },
     });
 

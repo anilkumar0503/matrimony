@@ -79,8 +79,8 @@ const CACHE_TTL = 60 * 5; // 5 minutes
 
 export async function getSetting(key: SettingKey): Promise<string | null> {
   try {
-    const cached = await redis.hget(CACHE_KEYS.platformSettings(), key);
-    if (cached !== null) return cached;
+    const cached = await redis?.hget(CACHE_KEYS.platformSettings(), key);
+    if (cached != null) return cached;
   } catch {
     // Redis unavailable, continue to database
   }
@@ -88,8 +88,8 @@ export async function getSetting(key: SettingKey): Promise<string | null> {
   const setting = await prisma.platformSetting.findUnique({ where: { key } });
   if (setting) {
     try {
-      await redis.hset(CACHE_KEYS.platformSettings(), key, setting.value);
-      await redis.expire(CACHE_KEYS.platformSettings(), CACHE_TTL);
+      await redis?.hset(CACHE_KEYS.platformSettings(), key, setting.value);
+      await redis?.expire(CACHE_KEYS.platformSettings(), CACHE_TTL);
     } catch {
       // Redis unavailable, skip caching
     }
@@ -118,7 +118,7 @@ export async function setSetting(
     update: { value, updatedBy },
   });
   try {
-    await redis.del(CACHE_KEYS.platformSettings());
+    await redis?.del(CACHE_KEYS.platformSettings());
   } catch {
     // Redis unavailable, skip cache invalidation
   }

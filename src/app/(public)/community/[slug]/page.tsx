@@ -28,7 +28,7 @@ export default async function CommunitySlugPage({ params }: Props) {
     include: {
       _count: { select: { members: { where: { status: "APPROVED" } } } },
       successStories: {
-        where: { status: "PUBLISHED" },
+        where: { isFeatured: true },
         take: 3,
         orderBy: { createdAt: "desc" },
       },
@@ -120,12 +120,12 @@ export default async function CommunitySlugPage({ params }: Props) {
                 <div key={story.id} className="glass rounded-2xl overflow-hidden">
                   {story.photo && (
                     <div className="aspect-[4/3] overflow-hidden">
-                      <img src={story.photo} alt={story.coupleNames || "Success Story"} className="w-full h-full object-cover" />
+                      <img src={story.photo} alt={story.coupleName || "Success Story"} className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div className="p-4">
-                    {story.coupleNames && (
-                      <div className="text-white font-semibold text-sm mb-2">{story.coupleNames}</div>
+                    {story.coupleName && (
+                      <div className="text-white font-semibold text-sm mb-2">{story.coupleName}</div>
                     )}
                     <p className="text-white/60 text-xs leading-relaxed line-clamp-3">{story.story}</p>
                   </div>

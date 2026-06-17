@@ -13,10 +13,10 @@ const updateSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(req, [PERMISSIONS.USERS_VIEW]);
-    const { id } = params;
+    const { id } = await params;
 
     const adminUser = await prisma.adminUser.findUnique({
       where: { id },
@@ -50,10 +50,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(req, [PERMISSIONS.USERS_EDIT]);
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
     const parsed = updateSchema.safeParse(body);
     if (!parsed.success) return apiError(parsed.error.issues[0].message, 400);
@@ -115,10 +115,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireAdmin(req, [PERMISSIONS.USERS_DELETE]);
-    const { id } = params;
+    const { id } = await params;
 
     // Check if admin exists
     const existing = await prisma.adminUser.findUnique({

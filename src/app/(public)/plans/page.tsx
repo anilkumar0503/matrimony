@@ -3,6 +3,8 @@ import { Crown, Check, ChevronLeft, Sparkles, Shield } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { formatCurrency } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Premium Subscription Plans",
   description: "Choose the right plan — Free, Premium, or VIP — and find your life partner faster on our verified matrimony platform.",
