@@ -49,8 +49,8 @@ export default function LoginPage() {
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </Link>
-          <h1 className="font-display text-3xl font-bold text-white mb-2">Welcome back</h1>
-          <p className="text-white/50 text-sm">Sign in to continue your journey</p>
+          <h1 className="font-display text-3xl font-bold text-foreground mb-2">Welcome back</h1>
+          <p className="text-muted text-sm">Sign in to continue your journey</p>
         </div>
 
         <div className="glass p-8">
@@ -75,7 +75,7 @@ export default function LoginPage() {
                 icon={<Lock size={16} />}
                 error={errors.password?.message}
                 rightIcon={
-                  <button type="button" onClick={() => setShowPw(!showPw)} className="text-white/40 hover:text-white/70">
+                  <button type="button" onClick={() => setShowPw(!showPw)} className="text-muted hover:text-muted">
                     {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 }
@@ -91,10 +91,10 @@ export default function LoginPage() {
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#C9972C]"
+                className="w-4 h-4 rounded border-border bg-white/5 accent-[#C9972C]"
                 {...register("rememberMe")}
               />
-              <span className="text-sm text-white/60">Remember me for 7 days</span>
+              <span className="text-sm text-muted">Remember me for 7 days</span>
             </label>
 
             {error && (
@@ -109,7 +109,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-white/50 text-sm">
+            <p className="text-muted text-sm">
               Don't have an account?{" "}
               <Link href="/register" className="text-[#E8C76A] hover:underline font-medium">
                 Create Profile
@@ -118,9 +118,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="text-center text-white/25 text-xs mt-6">
+        <p className="text-center text-muted text-xs mt-6">
           Admin?{" "}
-          <Link href="/admin/login" className="hover:text-white/50 underline">
+          <Link href="/admin/login" className="hover:text-muted underline">
             Admin Login
           </Link>
         </p>

@@ -1,0 +1,61 @@
+Step-by-Step Guide
+1. Create Meta Developer Account
+Go to https://developers.facebook.com
+Log in with your Facebook account
+Click "Get Started" or "Create App"
+2. Create a Meta App
+Choose app type: "Business" (recommended for WhatsApp)
+Enter app name (e.g., "Jasmine Matrimony")
+Enter your business email
+Click "Create App"
+3. Add WhatsApp Product
+In your app dashboard, click "Add Product"
+Select "WhatsApp"
+Click "Set Up"
+4. Get Phone Number ID
+In WhatsApp → API Setup
+You'll see your Phone Number ID listed
+Copy this — this is your META_WHATSAPP_PHONE_NUMBER_ID
+5. Get Access Token
+In WhatsApp → API Setup
+Scroll to "Access Token" section
+Click "Create new token" or use existing
+Select permissions needed (at minimum: whatsapp_business_messaging)
+Copy the token — this is your META_WHATSAPP_ACCESS_TOKEN
+Important: Store this securely — it's like a password
+6. Add to Your .env
+
+
+bash
+META_WHATSAPP_ACCESS_TOKEN=EAAGxxxxxxxxx  # The token you copied
+META_WHATSAPP_PHONE_NUMBER_ID=1234567890  # The phone number ID
+ADMIN_WHATSAPP_NUMBER=+919876543210  # Your admin's WhatsApp number
+7. Test Mode (Sandbox)
+In WhatsApp → API Setup → "Send and receive messages"
+You'll see a test phone number
+Send the sandbox code (e.g., join xxx-xxx) to that number from WhatsApp
+Your number is now whitelisted for testing
+8. Production (Business Verification Required)
+For production use with unlimited messages:
+
+Go to Meta Business Suite → Business Settings
+Complete Business Verification with:
+Business documents (GST certificate, etc.)
+Address proof
+Phone verification
+Once verified, you can send messages to any number
+The integration will work immediately in test mode with whitelisted numbers.
+
+
+
+sample 
+
+🎉 New Mutual Match Alert!
+
+User A: [Name] ([City], [State])
+User B: [Name] ([City], [State])
+
+Match ID: [match_id]
+Ticket Status: OPEN
+
+Please review in admin panel.

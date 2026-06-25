@@ -87,10 +87,10 @@ export default function AdminRolesPage() {
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <Shield size={22} className="text-[#C9972C]" /> Roles & Permissions
           </h1>
-          <p className="text-white/40 text-sm">{roles.length} roles · {permissions.length} permissions</p>
+          <p className="text-muted text-sm">{roles.length} roles · {permissions.length} permissions</p>
         </div>
         <Button variant="gold" onClick={openCreate}><PlusCircle size={16} /> New Role</Button>
       </div>
@@ -104,22 +104,22 @@ export default function AdminRolesPage() {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="font-semibold text-white">{role.name}</span>
+                    <span className="font-semibold text-foreground">{role.name}</span>
                     {role.isDefault && <Badge variant="gold" className="text-[10px]">Default</Badge>}
                     {!role.isEditable && <Badge variant="glass" className="text-[10px]">System</Badge>}
                     {role._count && (
-                      <span className="text-white/40 text-xs">{role._count.adminUsers} admins</span>
+                      <span className="text-muted text-xs">{role._count.adminUsers} admins</span>
                     )}
                   </div>
-                  {role.description && <p className="text-white/50 text-xs mb-3">{role.description}</p>}
+                  {role.description && <p className="text-muted text-xs mb-3">{role.description}</p>}
                   <div className="flex flex-wrap gap-1.5">
                     {role.rolePermissions.slice(0, 8).map(rp => (
-                      <span key={rp.permission.id} className="text-[10px] text-white/50 bg-white/[0.05] border border-white/[0.07] px-2 py-0.5 rounded-full font-mono">
+                      <span key={rp.permission.id} className="text-[10px] text-muted bg-white/[0.05] border border-border px-2 py-0.5 rounded-full font-mono">
                         {rp.permission.code}
                       </span>
                     ))}
                     {role.rolePermissions.length > 8 && (
-                      <span className="text-[10px] text-white/30">+{role.rolePermissions.length - 8} more</span>
+                      <span className="text-[10px] text-muted">+{role.rolePermissions.length - 8} more</span>
                     )}
                   </div>
                 </div>
@@ -140,8 +140,8 @@ export default function AdminRolesPage() {
         <div className="fixed inset-0 bg-black/80 z-50 overflow-y-auto flex items-start justify-center p-4 pt-8" onClick={() => setShowEditor(false)}>
           <div className="glass-dark p-6 rounded-2xl max-w-2xl w-full my-4" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-white">{editId ? "Edit Role" : "New Role"}</h3>
-              <button onClick={() => setShowEditor(false)} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">{editId ? "Edit Role" : "New Role"}</h3>
+              <button onClick={() => setShowEditor(false)} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
 
             <form onSubmit={form.handleSubmit(onSave)} className="space-y-5">
@@ -152,26 +152,26 @@ export default function AdminRolesPage() {
               </div>
 
               <div>
-                <div className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3">
+                <div className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">
                   Permissions ({selectedPerms.length} selected)
                 </div>
                 <div className="space-y-4 max-h-80 overflow-y-auto pr-1">
                   {modules.map(module => (
                     <div key={module}>
-                      <div className="text-white/40 text-[10px] uppercase tracking-widest mb-2 font-semibold">{module}</div>
+                      <div className="text-muted text-[10px] uppercase tracking-widest mb-2 font-semibold">{module}</div>
                       <div className="grid grid-cols-2 gap-1.5">
                         {permissions.filter(p => p.module === module).map(perm => (
                           <label key={perm.id} className="flex items-start gap-2 cursor-pointer group">
                             <div
                               onClick={() => togglePerm(perm.id)}
                               className={`w-4 h-4 rounded border mt-0.5 flex items-center justify-center shrink-0 transition-colors cursor-pointer
-                                ${selectedPerms.includes(perm.id) ? "bg-[#C9972C] border-[#C9972C]" : "border-white/20 hover:border-white/40"}`}
+                                ${selectedPerms.includes(perm.id) ? "bg-[#C9972C] border-[#C9972C]" : "border-border hover:border-border"}`}
                             >
                               {selectedPerms.includes(perm.id) && <Check size={10} className="text-[#1a0505]" />}
                             </div>
                             <div>
-                              <div className="text-white/70 text-xs font-mono group-hover:text-white transition-colors">{perm.code}</div>
-                              <div className="text-white/30 text-[10px]">{perm.description}</div>
+                              <div className="text-muted text-xs font-mono group-hover:text-foreground transition-colors">{perm.code}</div>
+                              <div className="text-muted text-[10px]">{perm.description}</div>
                             </div>
                           </label>
                         ))}

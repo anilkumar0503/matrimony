@@ -108,12 +108,12 @@ export default function DashboardPage() {
       <div className="glass-gold p-6 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="font-display text-2xl font-bold text-white">
+            <h1 className="font-display text-2xl font-bold text-foreground">
               Welcome back{data?.profile?.fullName ? `, ${data.profile.fullName.split(" ")[0]}` : ""}!
             </h1>
             <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
           </div>
-          <p className="text-white/50 text-sm">
+          <p className="text-muted text-sm">
             {data?.subscription?.plan
               ? `${data.subscription.plan.name} Member`
               : "Free Member"} • Your journey to finding love continues.
@@ -136,7 +136,7 @@ export default function DashboardPage() {
               <TrendingUp size={20} className="text-[#C9972C]" />
             </div>
             <div>
-              <div className="text-sm font-medium text-white mb-1">
+              <div className="text-sm font-medium text-foreground mb-1">
                 Profile {completionPct}% complete
               </div>
               <div className="w-48 h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -159,8 +159,8 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Shield size={20} className="text-blue-400" />
             <div>
-              <div className="text-sm font-medium text-white">Complete KYC Verification</div>
-              <div className="text-xs text-white/50">Verify your identity to become visible on the platform</div>
+              <div className="text-sm font-medium text-foreground">Complete KYC Verification</div>
+              <div className="text-xs text-muted">Verify your identity to become visible on the platform</div>
             </div>
           </div>
           <Button variant="glass" size="sm" asChild>
@@ -175,8 +175,8 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Clock size={20} className="text-amber-400" />
             <div>
-              <div className="text-sm font-medium text-white">KYC Verification Pending</div>
-              <div className="text-xs text-white/50">Your KYC is under review. This usually takes 24-48 hours.</div>
+              <div className="text-sm font-medium text-foreground">KYC Verification Pending</div>
+              <div className="text-xs text-muted">Your KYC is under review. This usually takes 24-48 hours.</div>
             </div>
           </div>
           <Badge variant="warning">In Review</Badge>
@@ -189,8 +189,8 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <CheckCircle size={20} className="text-emerald-400" />
             <div>
-              <div className="text-sm font-medium text-white">KYC Verified</div>
-              <div className="text-xs text-white/50">Your identity has been verified. You can now access all features.</div>
+              <div className="text-sm font-medium text-foreground">KYC Verified</div>
+              <div className="text-xs text-muted">Your identity has been verified. You can now access all features.</div>
             </div>
           </div>
           <Badge variant="success">Verified</Badge>
@@ -203,8 +203,8 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Shield size={20} className="text-red-400" />
             <div>
-              <div className="text-sm font-medium text-white">KYC Verification Failed</div>
-              <div className="text-xs text-white/50">Please resubmit your documents for verification.</div>
+              <div className="text-sm font-medium text-foreground">KYC Verification Failed</div>
+              <div className="text-xs text-muted">Please resubmit your documents for verification.</div>
             </div>
           </div>
           <Button variant="glass" size="sm" asChild>
@@ -223,8 +223,8 @@ export default function DashboardPage() {
         ].map((stat) => (
           <Card key={stat.label} className={`text-center py-6 ${stat.highlight ? "border-[rgba(201,151,44,0.3)]" : ""}`}>
             <stat.icon size={22} className={`${stat.color} mx-auto mb-2`} />
-            <div className="font-display text-2xl font-bold text-white">{stat.value}</div>
-            <div className="text-white/50 text-xs mt-1">{stat.label}</div>
+            <div className="font-display text-2xl font-bold text-foreground">{stat.value}</div>
+            <div className="text-muted text-xs mt-1">{stat.label}</div>
           </Card>
         ))}
       </div>
@@ -251,8 +251,8 @@ export default function DashboardPage() {
                 <action.icon size={18} className="text-[#C9972C]" />
               </div>
               <div>
-                <div className="font-medium text-white text-sm">{action.title}</div>
-                <div className="text-white/45 text-xs mt-0.5">{action.desc}</div>
+                <div className="font-medium text-foreground text-sm">{action.title}</div>
+                <div className="text-muted text-xs mt-0.5">{action.desc}</div>
               </div>
             </div>
             <Button variant={action.highlight ? "gold" : "glass"} size="sm" asChild className="self-start">
@@ -268,10 +268,10 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Bell size={18} className="text-[#C9972C]" />
             <div>
-              <div className="text-sm font-medium text-white">
+              <div className="text-sm font-medium text-foreground">
                 {data?.unreadNotifications} unread notification{(data?.unreadNotifications || 0) > 1 ? "s" : ""}
               </div>
-              <div className="text-xs text-white/40">Stay updated with your match activity</div>
+              <div className="text-xs text-muted">Stay updated with your match activity</div>
             </div>
           </div>
           <Button variant="glass-gold" size="sm" asChild>
@@ -285,14 +285,14 @@ export default function DashboardPage() {
         <Card variant="gold" className="flex flex-col sm:flex-row items-center gap-6">
           <div className="flex-1">
             <Crown size={24} className="text-[#C9972C] mb-3" />
-            <h3 className="font-display text-xl font-bold text-white mb-2">Upgrade to Premium</h3>
-            <p className="text-white/60 text-sm">Get advanced search, unlimited interests, anonymous browsing, and more from ₹999/month.</p>
+            <h3 className="font-display text-xl font-bold text-foreground mb-2">Upgrade to Premium</h3>
+            <p className="text-muted text-sm">Get advanced search, unlimited interests, anonymous browsing, and more from ₹999/month.</p>
           </div>
           <div className="flex flex-col gap-2 min-w-[140px]">
             <Button variant="gold" asChild>
               <Link href="/dashboard/subscription">View Plans</Link>
             </Button>
-            <div className="text-white/30 text-xs text-center">GST inclusive • Cancel anytime</div>
+            <div className="text-muted text-xs text-center">GST inclusive • Cancel anytime</div>
           </div>
         </Card>
       )}

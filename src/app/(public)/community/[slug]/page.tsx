@@ -67,12 +67,12 @@ export default async function CommunitySlugPage({ params }: Props) {
                   </span>
                 )}
               </div>
-              <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-2">{community.name}</h1>
+              <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">{community.name}</h1>
               {community.description && (
-                <p className="text-white/60 leading-relaxed">{community.description}</p>
+                <p className="text-muted leading-relaxed">{community.description}</p>
               )}
               <div className="flex items-center gap-4 mt-3">
-                <div className="flex items-center gap-1.5 text-white/50 text-sm">
+                <div className="flex items-center gap-1.5 text-muted text-sm">
                   <Users size={14} /> {approvedMembersCount.toLocaleString()} members
                 </div>
               </div>
@@ -93,14 +93,14 @@ export default async function CommunitySlugPage({ params }: Props) {
       {community.announcements.length > 0 && (
         <section className="py-8 px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-display text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <h2 className="font-display text-xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Megaphone size={18} className="text-[#C9972C]" /> Announcements
             </h2>
             <div className="space-y-3">
               {community.announcements.map((ann) => (
                 <div key={ann.id} className="glass rounded-xl p-4">
-                  <div className="text-white font-medium text-sm mb-1">{ann.title}</div>
-                  <div className="text-white/60 text-sm">{ann.content}</div>
+                  <div className="text-foreground font-medium text-sm mb-1">{ann.title}</div>
+                  <div className="text-muted text-sm">{ann.content}</div>
                 </div>
               ))}
             </div>
@@ -112,7 +112,7 @@ export default async function CommunitySlugPage({ params }: Props) {
       {community.successStories.length > 0 && (
         <section className="py-12 px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-display text-2xl font-bold text-white mb-6 flex items-center gap-2">
+            <h2 className="font-display text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
               <Trophy size={20} className="text-[#C9972C]" /> Success Stories from {community.name}
             </h2>
             <div className="grid sm:grid-cols-3 gap-5">
@@ -125,9 +125,9 @@ export default async function CommunitySlugPage({ params }: Props) {
                   )}
                   <div className="p-4">
                     {story.coupleName && (
-                      <div className="text-white font-semibold text-sm mb-2">{story.coupleName}</div>
+                      <div className="text-foreground font-semibold text-sm mb-2">{story.coupleName}</div>
                     )}
-                    <p className="text-white/60 text-xs leading-relaxed line-clamp-3">{story.story}</p>
+                    <p className="text-muted text-xs leading-relaxed line-clamp-3">{story.story}</p>
                   </div>
                 </div>
               ))}
@@ -145,17 +145,17 @@ export default async function CommunitySlugPage({ params }: Props) {
       <section className="py-16 px-4">
         <div className="max-w-2xl mx-auto glass rounded-3xl p-8 text-center border border-[rgba(201,151,44,0.15)]">
           <Heart size={32} className="text-[#C9972C] mx-auto mb-4" />
-          <h2 className="font-display text-2xl font-bold text-white mb-3">
+          <h2 className="font-display text-2xl font-bold text-foreground mb-3">
             Find Your Match in the {community.name} Community
           </h2>
-          <p className="text-white/60 text-sm mb-6 leading-relaxed">
+          <p className="text-muted text-sm mb-6 leading-relaxed">
             Join {approvedMembersCount.toLocaleString()}+ verified members from {community.name}. Register today and discover your perfect match within your community.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/register" className="px-8 py-3 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors">
               Create Free Profile
             </Link>
-            <Link href="/search" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-white rounded-xl transition-colors border border-white/[0.1]">
+            <Link href="/search" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-foreground rounded-xl transition-colors border border-border">
               Browse Profiles
             </Link>
           </div>

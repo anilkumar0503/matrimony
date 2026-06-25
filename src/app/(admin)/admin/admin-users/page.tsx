@@ -111,10 +111,10 @@ export default function AdminUsersPage() {
     <div className="space-y-6 max-w-6xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <Shield size={22} className="text-[#C9972C]" /> Admin Users
           </h1>
-          <p className="text-white/40 text-sm">{adminUsers.length} admin accounts</p>
+          <p className="text-muted text-sm">{adminUsers.length} admin accounts</p>
         </div>
         <Button variant="gold" onClick={openCreate}><PlusCircle size={16} /> New Admin</Button>
       </div>
@@ -126,20 +126,20 @@ export default function AdminUsersPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/[0.06]">
+                <tr className="border-b border-border">
                   {["Admin", "Email", "Role", "Status", "2FA", "Last Login", "Created", "Actions"].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-white/40 text-xs font-semibold uppercase tracking-wider">{h}</th>
+                    <th key={h} className="text-left px-4 py-3 text-muted text-xs font-semibold uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {adminUsers.map((admin) => (
-                  <tr key={admin.id} className="border-b border-white/[0.04] hover:bg-white/[0.02]">
+                  <tr key={admin.id} className="border-b border-border hover:bg-white/[0.02]">
                     <td className="px-4 py-3">
-                      <div className="font-medium text-white">{admin.name}</div>
+                      <div className="font-medium text-foreground">{admin.name}</div>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="text-white/70">{admin.email}</div>
+                      <div className="text-muted">{admin.email}</div>
                     </td>
                     <td className="px-4 py-3">
                       <Badge variant="glass" className="text-xs">{admin.role.name}</Badge>
@@ -153,17 +153,17 @@ export default function AdminUsersPage() {
                       {admin.totpEnabled ? (
                         <Badge variant="success" className="text-[10px]"><Lock size={10} /> Enabled</Badge>
                       ) : (
-                        <span className="text-white/25 text-xs">Disabled</span>
+                        <span className="text-muted text-xs">Disabled</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="text-white/40 text-xs">
+                      <div className="text-muted text-xs">
                         {admin.lastLoginAt ? formatDate(admin.lastLoginAt) : "Never"}
                       </div>
-                      {admin.lastLoginIp && <div className="text-white/25 text-[10px]">{admin.lastLoginIp}</div>}
+                      {admin.lastLoginIp && <div className="text-muted text-[10px]">{admin.lastLoginIp}</div>}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-white/40 text-xs">{formatDate(admin.createdAt)}</span>
+                      <span className="text-muted text-xs">{formatDate(admin.createdAt)}</span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-1.5">
@@ -192,8 +192,8 @@ export default function AdminUsersPage() {
         <div className="fixed inset-0 bg-black/80 z-50 overflow-y-auto flex items-start justify-center p-4 pt-8" onClick={() => setShowEditor(false)}>
           <div className="glass-dark p-6 rounded-2xl max-w-md w-full my-4" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-white">{editId ? "Edit Admin" : "New Admin"}</h3>
-              <button onClick={() => setShowEditor(false)} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">{editId ? "Edit Admin" : "New Admin"}</h3>
+              <button onClick={() => setShowEditor(false)} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
 
             <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
@@ -206,7 +206,7 @@ export default function AdminUsersPage() {
                 error={form.formState.errors.password?.message}
               />
               <div>
-                <label className="block text-xs text-white/50 mb-1">Role</label>
+                <label className="block text-xs text-muted mb-1">Role</label>
                 <select className="input-glass w-full" {...form.register("roleId", { required: "Required" })}>
                   <option value="">Select role</option>
                   {roles.map(role => <option key={role.id} value={role.id}>{role.name}</option>)}
@@ -217,10 +217,10 @@ export default function AdminUsersPage() {
                 <input
                   type="checkbox"
                   id="isActive"
-                  className="w-4 h-4 rounded border-white/20 bg-white/5"
+                  className="w-4 h-4 rounded border-border bg-white/5"
                   {...form.register("isActive")}
                 />
-                <label htmlFor="isActive" className="text-white/70 text-sm">Active</label>
+                <label htmlFor="isActive" className="text-muted text-sm">Active</label>
               </div>
 
               <div className="flex gap-3 pt-2">

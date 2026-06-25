@@ -67,15 +67,15 @@ export default function CommunitiesPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2 mb-1">
+        <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
           <Users2 size={22} className="text-[#C9972C]" /> Communities
         </h1>
-        <p className="text-white/40 text-sm">Connect with like-minded families across religion, region, and interests</p>
+        <p className="text-muted text-sm">Connect with like-minded families across religion, region, and interests</p>
       </div>
 
       {/* Search */}
       <div className="relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
         <input
           className="input-glass input-glass-with-icon"
           placeholder="Search communities..."
@@ -90,8 +90,8 @@ export default function CommunitiesPage() {
         </div>
       ) : communities.length === 0 ? (
         <div className="glass p-12 text-center">
-          <Users size={40} className="text-white/20 mx-auto mb-3" />
-          <p className="text-white/40">No communities found</p>
+          <Users size={40} className="text-muted mx-auto mb-3" />
+          <p className="text-muted">No communities found</p>
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -112,7 +112,7 @@ export default function CommunitiesPage() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-white text-sm truncate">{c.name}</div>
+                    <div className="font-semibold text-foreground text-sm truncate">{c.name}</div>
                     <div className="flex items-center gap-2 mt-1 flex-wrap">
                       <Badge variant={typeColor[c.type as keyof typeof typeColor] || "glass"} className="text-[10px]">
                         <Icon size={9} /> {c.type?.replace(/_/g, " ") || "Public"}
@@ -125,11 +125,11 @@ export default function CommunitiesPage() {
                 </div>
 
                 {c.description && (
-                  <p className="text-white/50 text-xs leading-relaxed line-clamp-2">{c.description}</p>
+                  <p className="text-muted text-xs leading-relaxed line-clamp-2">{c.description}</p>
                 )}
 
                 <div className="flex items-center justify-between mt-auto">
-                  <div className="text-white/40 text-xs flex items-center gap-1">
+                  <div className="text-muted text-xs flex items-center gap-1">
                     <Users size={11} /> {c._count.members} members
                   </div>
                   {error[c.id] && <p className="text-red-400 text-[10px]">{error[c.id]}</p>}

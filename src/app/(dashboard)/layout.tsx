@@ -6,6 +6,7 @@ import {
   Heart, LayoutDashboard, User, Search, Star,
   Bell, CreditCard, Settings, LogOut, Menu, X, Shield, Users2, Images
 } from "lucide-react";
+import ThemeToggle from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -75,18 +76,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside
         className={cn(
           "fixed top-0 left-0 h-screen w-64 z-50 transition-transform duration-300",
-          "glass-dark border-r border-white/[0.06] rounded-none",
+          "glass-dark border-r border-border rounded-none",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
           "lg:translate-x-0"
         )}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between p-5 border-b border-white/[0.06]">
+          <div className="flex items-center justify-between p-5 border-b border-border">
             <Link href="/" className="flex items-center gap-2">
               <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
             </Link>
-            <button className="lg:hidden text-white/50 hover:text-white" onClick={() => setSidebarOpen(false)}>
+            <button className="lg:hidden text-muted hover:text-foreground" onClick={() => setSidebarOpen(false)}>
               <X size={18} />
             </button>
           </div>
@@ -104,7 +105,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
                     isActive
                       ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.2)]"
-                      : "text-white/60 hover:text-white hover:bg-white/[0.05]"
+                      : "text-muted hover:text-foreground hover:bg-white/[0.05]"
                   )}
                 >
                   <item.icon size={17} />
@@ -120,10 +121,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </nav>
 
           {/* Logout */}
-          <div className="p-4 border-t border-white/[0.06]">
+          <div className="p-4 border-t border-border">
             <button
               onClick={logout}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:text-red-400 hover:bg-red-900/20 transition-colors w-full"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted hover:text-red-400 hover:bg-red-900/20 transition-colors w-full"
             >
               <LogOut size={17} /> Logout
             </button>
@@ -136,7 +137,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Top bar */}
         <header className="navbar-glass sticky top-0 z-30 px-4 py-5 flex items-center justify-between">
           <button
-            className="lg:hidden text-white/70 hover:text-white p-1.5"
+            className="lg:hidden text-muted hover:text-foreground p-1.5"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu size={20} />
@@ -145,7 +146,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </div>
           <div className="flex items-center gap-3 ml-auto">
-            <Link href="/dashboard/notifications" className="relative p-2 text-white/60 hover:text-white">
+            <ThemeToggle />
+            <Link href="/dashboard/notifications" className="relative p-2 text-muted hover:text-foreground">
               <Bell size={18} />
               {unreadCount > 0 && (
                 <span className="absolute top-1 right-1 w-2 h-2 bg-[#C9972C] rounded-full" />

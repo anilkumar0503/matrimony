@@ -1,6 +1,7 @@
 export const PERMISSIONS = {
   // User Management
   USERS_VIEW: "users.view",
+  USERS_CREATE: "users.create",
   USERS_APPROVE: "users.approve",
   USERS_SUSPEND: "users.suspend",
   USERS_DELETE: "users.delete",
@@ -67,6 +68,7 @@ export const PERMISSION_MODULES: Record<string, { label: string; permissions: Pe
     label: "User Management",
     permissions: [
       PERMISSIONS.USERS_VIEW,
+      PERMISSIONS.USERS_CREATE,
       PERMISSIONS.USERS_APPROVE,
       PERMISSIONS.USERS_SUSPEND,
       PERMISSIONS.USERS_DELETE,

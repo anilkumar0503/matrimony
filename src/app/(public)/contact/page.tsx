@@ -32,8 +32,8 @@ export default function ContactPage() {
           <div className="inline-flex items-center gap-2 badge-gold mb-4">
             <MessageSquare size={13} /> Support
           </div>
-          <h1 className="font-display text-4xl font-bold text-white mb-3">Contact Us</h1>
-          <p className="text-white/50">Our team is here to help. Reach out to us anytime.</p>
+          <h1 className="font-display text-4xl font-bold text-foreground mb-3">Contact Us</h1>
+          <p className="text-muted">Our team is here to help. Reach out to us anytime.</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -50,18 +50,18 @@ export default function ContactPage() {
                   <Icon size={15} className="text-[#C9972C]" />
                 </div>
                 <div>
-                  <div className="text-white/40 text-xs mb-0.5">{label}</div>
+                  <div className="text-muted text-xs mb-0.5">{label}</div>
                   {href ? (
-                    <a href={href} className="text-white/80 text-sm hover:text-[#E8C76A] transition-colors">{value}</a>
+                    <a href={href} className="text-muted text-sm hover:text-[#E8C76A] transition-colors">{value}</a>
                   ) : (
-                    <div className="text-white/80 text-sm">{value}</div>
+                    <div className="text-muted text-sm">{value}</div>
                   )}
                 </div>
               </div>
             ))}
 
             <div className="glass p-4">
-              <div className="text-white/40 text-xs mb-2">For DPO / DPDP Queries</div>
+              <div className="text-muted text-xs mb-2">For DPO / DPDP Queries</div>
               <a href="mailto:dpo@matrimony.com" className="text-[#C9972C] text-sm hover:text-[#E8C76A]">dpo@matrimony.com</a>
             </div>
           </div>
@@ -73,13 +73,13 @@ export default function ContactPage() {
                 <div className="w-16 h-16 rounded-full bg-emerald-900/30 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4">
                   <Send size={24} className="text-emerald-400" />
                 </div>
-                <h3 className="font-display text-xl font-bold text-white mb-2">Message Sent!</h3>
-                <p className="text-white/50">We&apos;ll get back to you within 24–48 hours.</p>
+                <h3 className="font-display text-xl font-bold text-foreground mb-2">Message Sent!</h3>
+                <p className="text-muted">We&apos;ll get back to you within 24–48 hours.</p>
                 <Button variant="glass" className="mt-6" onClick={() => setSubmitted(false)}>Send Another</Button>
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <h3 className="font-semibold text-white mb-4">Send us a message</h3>
+                <h3 className="font-semibold text-foreground mb-4">Send us a message</h3>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <Input label="Your Name" {...register("name", { required: "Required" })} error={errors.name?.message} />
                   <Input label="Email Address" type="email" {...register("email", { required: "Required" })} error={errors.email?.message} />
@@ -87,7 +87,7 @@ export default function ContactPage() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <Input label="Phone (optional)" {...register("phone")} />
                   <div>
-                    <label className="block text-xs font-medium text-white/60 mb-1.5">Subject</label>
+                    <label className="block text-xs font-medium text-muted mb-1.5">Subject</label>
                     <select className="input-glass" {...register("subject", { required: "Required" })}>
                       <option value="">Select topic</option>
                       <option value="Account Issues">Account Issues</option>
@@ -100,7 +100,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Message</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Message</label>
                   <textarea className="input-glass min-h-[120px]" placeholder="Describe your issue or question..."
                     {...register("message", { required: "Required", minLength: { value: 10, message: "Too short" } })} />
                   {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message.message}</p>}

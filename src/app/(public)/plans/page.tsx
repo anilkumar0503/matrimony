@@ -18,9 +18,9 @@ export default async function PlansPage() {
 
   const tierConfig: Record<string, { icon: React.ReactNode; color: string; border: string; featured: boolean; badge: string }> = {
     FREE: {
-      icon: <Shield size={22} className="text-white/60" />,
-      color: "text-white/70",
-      border: "border-white/[0.08]",
+      icon: <Shield size={22} className="text-muted" />,
+      color: "text-muted",
+      border: "border-border",
       featured: false,
       badge: "",
     },
@@ -73,10 +73,10 @@ export default async function PlansPage() {
           <div className="inline-flex items-center gap-2 badge-gold mb-4">
             <Crown size={13} /> Plans & Pricing
           </div>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
             Find Your Perfect <span className="text-gold">Match Faster</span>
           </h1>
-          <p className="text-white/50 max-w-xl mx-auto">
+          <p className="text-muted max-w-xl mx-auto">
             Upgrade to unlock unlimited access, contact details, and priority support. All plans include KYC-verified profiles.
           </p>
         </div>
@@ -98,16 +98,16 @@ export default async function PlansPage() {
 
               {plan.priceMonthly === 0 ? (
                 <div className="mb-6">
-                  <span className="text-4xl font-bold text-white">Free</span>
+                  <span className="text-4xl font-bold text-foreground">Free</span>
                 </div>
               ) : (
                 <div className="mb-6">
                   <div className="flex items-end gap-1">
-                    <span className="text-4xl font-bold text-white">{formatCurrency(plan.priceMonthly || 0)}</span>
-                    <span className="text-white/40 mb-1">/mo</span>
+                    <span className="text-4xl font-bold text-foreground">{formatCurrency(plan.priceMonthly || 0)}</span>
+                    <span className="text-muted mb-1">/mo</span>
                   </div>
                   {plan.priceYearly && (
-                    <div className="text-white/40 text-xs mt-1">
+                    <div className="text-muted text-xs mt-1">
                       {formatCurrency(plan.priceYearly)}/year · save {Math.round((1 - plan.priceYearly / (plan.priceMonthly! * 12)) * 100)}%
                     </div>
                   )}
@@ -116,7 +116,7 @@ export default async function PlansPage() {
 
               <ul className="space-y-2.5 mb-8 flex-1">
                 {(plan.features as string[]).map((feature, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-white/70">
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted">
                     <Check size={14} className="text-[#C9972C] mt-0.5 shrink-0" />
                     {feature}
                   </li>
@@ -133,10 +133,10 @@ export default async function PlansPage() {
           ))}
         </div>
 
-        <div className="glass p-6 text-center text-white/40 text-sm">
+        <div className="glass p-6 text-center text-muted text-sm">
           All prices include 18% GST. Secure payment via Razorpay. Cancel anytime.
           <span className="mx-2">·</span>
-          <Link href="/terms" className="hover:text-white/60 transition-colors">Terms apply</Link>
+          <Link href="/terms" className="hover:text-muted transition-colors">Terms apply</Link>
         </div>
       </div>
     </>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   Heart, Shield, Star, MapPin, GraduationCap, Briefcase,
   Users, ChevronLeft, ChevronRight, Lock, Crown, ArrowRight, ChevronDown, ChevronUp,
-  User as UserIcon, Calendar, Phone, Mail, Flag, X, ZoomIn, Sparkles
+  User as UserIcon, Calendar, Phone, Mail, Flag, X, ZoomIn, Sparkles, ImageOff, ImagePlus, Check
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -98,6 +98,12 @@ export default function ProfileViewPage() {
   const [currentUserGender, setCurrentUserGender] = useState<"MALE" | "FEMALE" | null>(null);
   const [horoscopeMatch, setHoroscopeMatch] = useState<any>(null);
   const [loadingHoroscopeMatch, setLoadingHoroscopeMatch] = useState(false);
+  const [photoRequested, setPhotoRequested] = useState(false);
+  const [sendingPhotoRequest, setSendingPhotoRequest] = useState(false);
+  const [galleryHidden, setGalleryHidden] = useState(false);
+  const [hasNoPhotos, setHasNoPhotos] = useState(false);
+  const [pendingPhotoRequestNotifId, setPendingPhotoRequestNotifId] = useState<string | null>(null);
+  const [actingOnPhotoRequest, setActingOnPhotoRequest] = useState(false);
 
   const token = () => localStorage.getItem("accessToken");
 
@@ -132,11 +138,13 @@ export default function ProfileViewPage() {
   }, []);
 
   useEffect(() => {
-    const headers: Record<string, string> = {};
     const tokenValue = token();
-    if (tokenValue) {
-      headers.Authorization = `Bearer ${tokenValue}`;
+    if (!tokenValue) {
+      window.location.replace(`/login?redirect=/profile/${id}`);
+      return;
     }
+
+    const headers: Record<string, string> = { Authorization: `Bearer ${tokenValue}` };
 
     fetch(`/api/profiles/${id}`, { headers })
       .then((r) => {
@@ -154,6 +162,16 @@ export default function ProfileViewPage() {
           setProfile(json.data.profile);
           setInterestSent(json.data.interestStatus === "PENDING" || json.data.interestStatus === "ACCEPTED");
           setWishlisted(json.data.isWishlisted);
+          setGalleryHidden(!!json.data.isGalleryHidden);
+          setHasNoPhotos(!!json.data.hasNoPhotos);
+          setPendingPhotoRequestNotifId(json.data.pendingPhotoRequestNotifId || null);
+          // Check if photo request was already sent
+          const tokenValue = token();
+          if (tokenValue && (json.data.isGalleryHidden || json.data.hasNoPhotos)) {
+            fetch(`/api/user/photo-request?targetUserId=${id}`, {
+              headers: { Authorization: `Bearer ${tokenValue}` },
+            }).then(r => r.json()).then(pj => { if (pj.success) setPhotoRequested(pj.data.requested); }).catch(() => {});
+          }
         } else if (json) {
           console.error("Profile fetch error:", json.error);
         }
@@ -220,6 +238,57 @@ export default function ProfileViewPage() {
       })
       .finally(() => setLoadingHoroscopeMatch(false));
   }, [profile, currentUserId, id]);
+
+  const handlePhotoRequestAction = async (action: "APPROVE" | "REJECT") => {
+    if (!pendingPhotoRequestNotifId) return;
+    setActingOnPhotoRequest(true);
+    try {
+      const res = await fetch("/api/user/photo-request", {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ notificationId: pendingPhotoRequestNotifId, action }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setPendingPhotoRequestNotifId(null);
+        toast({
+          title: action === "APPROVE" ? "Approved" : "Rejected",
+          description: json.data.message,
+          variant: "success",
+        });
+      } else {
+        toast({ title: "Error", description: json.error || "Failed", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Error", description: "Failed", variant: "destructive" });
+    } finally {
+      setActingOnPhotoRequest(false);
+    }
+  };
+
+  const sendPhotoRequest = async () => {
+    setSendingPhotoRequest(true);
+    try {
+      const res = await fetch("/api/user/photo-request", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ targetUserId: id }),
+      });
+      const json = await res.json();
+      if (json.success) {
+        setPhotoRequested(true);
+        toast({ title: "Request sent", description: "Your photo access request has been sent", variant: "success" });
+      } else if (json.code === "PHOTO_REQUEST_EXISTS") {
+        setPhotoRequested(true);
+      } else {
+        toast({ title: "Error", description: json.error || "Failed to send request", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Error", description: "Failed to send request", variant: "destructive" });
+    } finally {
+      setSendingPhotoRequest(false);
+    }
+  };
 
   const sendInterest = async () => {
     setSendingInterest(true);
@@ -362,7 +431,7 @@ export default function ProfileViewPage() {
   );
 
   if (!profile) return (
-    <div className="min-h-screen bg-[#1a0505] flex items-center justify-center text-white/50">
+    <div className="min-h-screen bg-[#1a0505] flex items-center justify-center text-muted">
       Profile not found
     </div>
   );
@@ -378,7 +447,7 @@ export default function ProfileViewPage() {
         {/* Back */}
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-white/50 hover:text-white transition-colors mb-4 text-sm"
+          className="flex items-center gap-2 text-muted hover:text-foreground transition-colors mb-4 text-sm"
         >
           <ChevronLeft size={16} /> Back
         </button>
@@ -386,8 +455,8 @@ export default function ProfileViewPage() {
         <div className="glass p-5 mb-4">
           <div className="flex items-start justify-between mb-3">
             <div>
-              <h1 className="font-display text-2xl font-bold text-white">{p?.fullName || "—"}</h1>
-              <div className="flex flex-wrap gap-2 text-white/60 text-sm mt-1">
+              <h1 className="font-display text-2xl font-bold text-foreground">{p?.fullName || "—"}</h1>
+              <div className="flex flex-wrap gap-2 text-muted text-sm mt-1">
                 {age && <span>{age} yrs</span>}
                 {p?.height && <span>• {cmToFeetInches(p.height)}</span>}
                 {p?.maritalStatus && <span>• {p.maritalStatus.replace(/_/g, " ")}</span>}
@@ -395,7 +464,7 @@ export default function ProfileViewPage() {
             </div>
             <button
               onClick={() => setReportModalOpen(true)}
-              className="text-white/40 hover:text-red-400 transition-colors"
+              className="text-muted hover:text-red-400 transition-colors"
               title="Report profile"
             >
               <Flag size={18} />
@@ -412,9 +481,41 @@ export default function ProfileViewPage() {
             {p?.motherTongue && <span className="badge-glass text-xs">{p.motherTongue}</span>}
           </div>
           {p?.aboutMe && (
-            <p className="text-white/60 text-sm leading-relaxed italic">"{p.aboutMe}"</p>
+            <p className="text-muted text-sm leading-relaxed italic">"{p.aboutMe}"</p>
           )}
         </div>
+        {/* Incoming photo request banner — shown to Person B when Person A requested their photos */}
+        {pendingPhotoRequestNotifId && (
+          <div className="glass border-[rgba(201,151,44,0.3)] p-4 mb-4 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[rgba(201,151,44,0.12)] flex items-center justify-center shrink-0">
+              <ImagePlus size={16} className="text-[#C9972C]" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Photo request</p>
+              <p className="text-xs text-muted">This member wants to see your photos. Approve to share your gallery.</p>
+            </div>
+            <div className="flex gap-2 shrink-0">
+              <Button
+                variant="gold"
+                size="sm"
+                onClick={() => handlePhotoRequestAction("APPROVE")}
+                loading={actingOnPhotoRequest}
+                disabled={actingOnPhotoRequest}
+              >
+                <Check size={13} /> Approve
+              </Button>
+              <Button
+                variant="glass"
+                size="sm"
+                onClick={() => handlePhotoRequestAction("REJECT")}
+                disabled={actingOnPhotoRequest}
+              >
+                <X size={13} /> Reject
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Photo Carousel */}
         <div className="relative aspect-[4/3] glass overflow-hidden rounded-2xl mb-4">
           {photos.length > 0 && (photos[currentPhoto]?.signedUrl || photos[currentPhoto]?.watermarkedUrl || photos[currentPhoto]?.originalUrl) ? (
@@ -427,8 +528,8 @@ export default function ProfileViewPage() {
               />
               {!currentUserId && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60">
-                  <Lock size={24} className="text-white/60 mb-2" />
-                  <span className="text-white/80 text-sm font-medium">Register to view full photos</span>
+                  <Lock size={24} className="text-muted mb-2" />
+                  <span className="text-muted text-sm font-medium">Register to view full photos</span>
                   <Link href="/register" className="mt-3 px-4 py-2 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] text-xs font-semibold rounded-lg transition-colors">
                     Create Free Account
                   </Link>
@@ -437,7 +538,7 @@ export default function ProfileViewPage() {
               {currentUserId && (
                 <button
                   onClick={() => setLightboxOpen(true)}
-                  className="absolute bottom-3 right-3 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                  className="absolute bottom-3 right-3 bg-black/50 hover:bg-black/70 text-foreground p-2 rounded-full transition-colors"
                 >
                   <ZoomIn size={16} />
                 </button>
@@ -445,8 +546,8 @@ export default function ProfileViewPage() {
             </>
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-              <UserIcon size={32} className="text-white/20" />
-              <span className="text-white/30 text-sm">No photo shared</span>
+              <UserIcon size={32} className="text-muted" />
+              <span className="text-muted text-sm">No photo shared</span>
             </div>
           )}
           {/* Badges */}
@@ -467,17 +568,17 @@ export default function ProfileViewPage() {
             <>
               <button
                 onClick={() => setCurrentPhoto((prev) => (prev === 0 ? photos.length - 1 : prev - 1))}
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-foreground p-2 rounded-full transition-colors"
               >
                 <ChevronLeft size={20} />
               </button>
               <button
                 onClick={() => setCurrentPhoto((prev) => (prev === photos.length - 1 ? 0 : prev + 1))}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-foreground p-2 rounded-full transition-colors"
               >
                 <ChevronRight size={20} />
               </button>
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/50 text-foreground text-xs px-2 py-1 rounded-full">
                 {currentPhoto + 1} / {photos.length}
               </div>
             </>
@@ -491,7 +592,7 @@ export default function ProfileViewPage() {
               <button
                 key={ph.id}
                 onClick={() => setCurrentPhoto(idx)}
-                className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 ${currentPhoto === idx ? "border-[#C9972C]" : "border-white/10"}`}
+                className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 ${currentPhoto === idx ? "border-[#C9972C]" : "border-border"}`}
               >
                 <img src={ph.signedUrl || ph.watermarkedUrl || ph.originalUrl} alt="" className="w-full h-full object-cover" />
               </button>
@@ -500,6 +601,35 @@ export default function ProfileViewPage() {
         )}
 
        
+
+        {/* Gallery hidden / no photos notice + photo request */}
+        {currentUserId && currentUserId !== id && (galleryHidden || hasNoPhotos) && (
+          <div className="glass p-4 mb-4 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[rgba(201,151,44,0.12)] flex items-center justify-center shrink-0">
+              <ImageOff size={16} className="text-[#C9972C]" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">
+                {hasNoPhotos ? "No photos uploaded" : "Photos are private"}
+              </p>
+              <p className="text-xs text-muted">
+                {hasNoPhotos
+                  ? "This member hasn't added any photos yet."
+                  : "This member has chosen to keep their gallery private."}
+              </p>
+            </div>
+            <Button
+              variant={photoRequested ? "glass" : "gold"}
+              size="sm"
+              onClick={sendPhotoRequest}
+              disabled={photoRequested || sendingPhotoRequest}
+              loading={sendingPhotoRequest}
+            >
+              <ImagePlus size={14} />
+              {photoRequested ? "Requested" : "Request Photos"}
+            </Button>
+          </div>
+        )}
 
         {/* Action buttons */}
         <div className="flex gap-2 mb-6">
@@ -537,7 +667,7 @@ export default function ProfileViewPage() {
               className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                 activeTab === tab.id
                   ? "bg-[#C9972C] text-[#1a0505]"
-                  : "glass text-white/60 hover:text-white"
+                  : "glass text-muted hover:text-foreground"
               }`}
             >
               <tab.icon size={14} /> {tab.label}
@@ -642,17 +772,17 @@ export default function ProfileViewPage() {
                 <div className="glass rounded-xl p-4 mt-4">
                   <div className="flex items-center gap-2 mb-4">
                     <Sparkles size={18} className="text-[#C9972C]" />
-                    <h3 className="font-semibold text-white">Horoscope Compatibility with You</h3>
+                    <h3 className="font-semibold text-foreground">Horoscope Compatibility with You</h3>
                   </div>
                   
                   <div className="bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] rounded-xl p-4 mb-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-white/60 text-sm">Match Score</div>
+                        <div className="text-muted text-sm">Match Score</div>
                         <div className="font-display text-3xl font-bold text-[#C9972C]">
                           {horoscopeMatch.finalScore}/{horoscopeMatch.maxScore}
                         </div>
-                        <div className="text-white/40 text-xs mt-1">{horoscopeMatch.percentage}% compatibility</div>
+                        <div className="text-muted text-xs mt-1">{horoscopeMatch.percentage}% compatibility</div>
                       </div>
                       <div className={`px-4 py-2 rounded-full text-sm font-semibold ${
                         horoscopeMatch.category === "Excellent" ? "bg-emerald-900/50 text-emerald-400" :
@@ -665,12 +795,12 @@ export default function ProfileViewPage() {
                   </div>
 
                   <div className="space-y-2 mb-4">
-                    <h4 className="text-white font-semibold text-sm">Guna Milan Breakdown</h4>
+                    <h4 className="text-foreground font-semibold text-sm">Guna Milan Breakdown</h4>
                     {Object.entries(horoscopeMatch.breakdown || {}).map(([key, value]: [string, any]) => (
                       <div key={key} className="flex items-center justify-between text-sm">
-                        <span className="text-white/70 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                        <span className="text-muted capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
                         <div className="flex items-center gap-2">
-                          <span className="text-white/50">{value.score}/{value.max}</span>
+                          <span className="text-muted">{value.score}/{value.max}</span>
                           <div className="w-16 h-1.5 bg-white/10 rounded-full overflow-hidden">
                             <div
                               className={`h-full ${
@@ -688,22 +818,22 @@ export default function ProfileViewPage() {
 
                   {horoscopeMatch.doshaCheck && (
                     <div className="bg-white/5 rounded-lg p-3">
-                      <h4 className="text-white font-semibold text-sm mb-2">Dosha Check</h4>
+                      <h4 className="text-foreground font-semibold text-sm mb-2">Dosha Check</h4>
                       <div className="space-y-1 text-xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-white/70">Manglik Dosha</span>
+                          <span className="text-muted">Manglik Dosha</span>
                           <span className={horoscopeMatch.doshaCheck.hasManglikDosha ? "text-red-400" : "text-emerald-400"}>
                             {horoscopeMatch.doshaCheck.hasManglikDosha ? "Present" : "Absent"}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-white/70">Nadi Dosha</span>
+                          <span className="text-muted">Nadi Dosha</span>
                           <span className={horoscopeMatch.doshaCheck.hasNadiDosha ? "text-red-400" : "text-emerald-400"}>
                             {horoscopeMatch.doshaCheck.hasNadiDosha ? "Present" : "Absent"}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-white/70">Bhakoot Dosha</span>
+                          <span className="text-muted">Bhakoot Dosha</span>
                           <span className={horoscopeMatch.doshaCheck.hasBhakootDosha ? "text-red-400" : "text-emerald-400"}>
                             {horoscopeMatch.doshaCheck.hasBhakootDosha ? "Present" : "Absent"}
                           </span>
@@ -715,13 +845,13 @@ export default function ProfileViewPage() {
               )}
 
               {loadingHoroscopeMatch && (
-                <div className="text-center py-4 text-white/50 text-sm">
+                <div className="text-center py-4 text-muted text-sm">
                   Calculating horoscope compatibility...
                 </div>
               )}
 
               {!horoscopeMatch && !loadingHoroscopeMatch && currentUserId !== id && (
-                <div className="text-center py-4 text-white/50 text-sm">
+                <div className="text-center py-4 text-muted text-sm">
                   Horoscope data not available for compatibility check
                 </div>
               )}
@@ -755,10 +885,10 @@ export default function ProfileViewPage() {
         {/* Contact info locked */}
         <div className="glass border-[rgba(201,151,44,0.2)] p-4 mt-6 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Lock size={16} className="text-white/30" />
+            <Lock size={16} className="text-muted" />
             <div>
-              <div className="text-sm font-medium text-white">Contact info locked</div>
-              <div className="text-xs text-white/40">Upgrade to view phone & email</div>
+              <div className="text-sm font-medium text-foreground">Contact info locked</div>
+              <div className="text-xs text-muted">Upgrade to view phone & email</div>
             </div>
           </div>
           <Button variant="gold" size="sm" asChild>
@@ -769,7 +899,7 @@ export default function ProfileViewPage() {
         {/* Similar Profiles */}
         {similarProfiles.length > 0 && (
           <div className="mt-8">
-            <h2 className="font-display text-xl font-bold text-white mb-4">Similar Profiles</h2>
+            <h2 className="font-display text-xl font-bold text-foreground mb-4">Similar Profiles</h2>
             <div className="grid grid-cols-2 gap-3">
               {similarProfiles.map((similar) => {
                 const similarAge = similar.dateOfBirth ? calculateAge(similar.dateOfBirth) : null;
@@ -781,14 +911,14 @@ export default function ProfileViewPage() {
                           {similar.primaryPhotoUrl ? (
                             <img src={similar.primaryPhotoUrl} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-white/30">
+                            <div className="w-full h-full flex items-center justify-center text-muted">
                               <Users size={20} />
                             </div>
                           )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-white text-sm truncate">{similar.profile?.fullName || "Unknown"}</h3>
-                          <div className="text-white/50 text-xs mt-1">
+                          <h3 className="font-medium text-foreground text-sm truncate">{similar.profile?.fullName || "Unknown"}</h3>
+                          <div className="text-muted text-xs mt-1">
                             {similarAge ? `${similarAge} yrs` : "—"} • {similar.profile?.city || "—"}
                           </div>
                         </div>
@@ -813,7 +943,7 @@ export default function ProfileViewPage() {
           />
           <button
             onClick={() => setLightboxOpen(false)}
-            className="absolute top-4 right-4 text-white/70 hover:text-white"
+            className="absolute top-4 right-4 text-muted hover:text-foreground"
           >
             <X size={24} />
           </button>
@@ -823,8 +953,8 @@ export default function ProfileViewPage() {
       {/* Report Modal */}
       {reportModalOpen && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setReportModalOpen(false)}>
-          <div className="glass-dark p-6 rounded-2xl max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-semibold text-white mb-4">Report Profile</h3>
+          <div className="bg-background border border-border p-6 rounded-2xl max-w-sm w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-semibold text-foreground mb-4">Report Profile</h3>
             <textarea
               className="input-glass min-h-[100px] mb-4"
               placeholder="Reason for reporting..."
@@ -851,9 +981,9 @@ function AccordionSection({ title, icon: Icon, expanded, onToggle, children }: {
       >
         <div className="flex items-center gap-2">
           <Icon size={16} className="text-[#C9972C]" />
-          <span className="font-medium text-white text-sm">{title}</span>
+          <span className="font-medium text-foreground text-sm">{title}</span>
         </div>
-        {expanded ? <ChevronUp size={16} className="text-white/50" /> : <ChevronDown size={16} className="text-white/50" />}
+        {expanded ? <ChevronUp size={16} className="text-muted" /> : <ChevronDown size={16} className="text-muted" />}
       </button>
       {expanded && <div className="px-4 pb-4">{children}</div>}
     </div>
@@ -863,8 +993,8 @@ function AccordionSection({ title, icon: Icon, expanded, onToggle, children }: {
 function Detail({ label, value, full = false }: { label: string; value: string | null | undefined; full?: boolean }) {
   return (
     <div className={full ? "col-span-2" : ""}>
-      <div className="text-white/40 text-xs mb-0.5">{label}</div>
-      <div className="text-white/80 text-sm">{value || <span className="text-white/30 italic">Not yet updated</span>}</div>
+      <div className="text-muted text-xs mb-0.5">{label}</div>
+      <div className="text-muted text-sm">{value || <span className="text-muted italic">Not yet updated</span>}</div>
     </div>
   );
 }

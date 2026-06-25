@@ -46,8 +46,8 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-2xl font-bold text-white mb-1">Dashboard</h1>
-        <p className="text-white/40 text-sm">Platform overview and key metrics</p>
+        <h1 className="font-display text-2xl font-bold text-foreground mb-1">Dashboard</h1>
+        <p className="text-muted text-sm">Platform overview and key metrics</p>
       </div>
 
       {/* Alerts */}
@@ -57,7 +57,7 @@ export default function AdminDashboardPage() {
             <div className="glass border-amber-700/30 bg-amber-900/10 p-4 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <AlertTriangle size={18} className="text-amber-400 shrink-0" />
-                <span className="text-sm text-white">
+                <span className="text-sm text-foreground">
                   <strong>{kpis?.kycSlaBreach}</strong> KYC submissions exceeded 24h SLA
                 </span>
               </div>
@@ -70,7 +70,7 @@ export default function AdminDashboardPage() {
             <div className="glass border-amber-700/30 bg-amber-900/10 p-4 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <AlertTriangle size={18} className="text-amber-400 shrink-0" />
-                <span className="text-sm text-white">
+                <span className="text-sm text-foreground">
                   <strong>{kpis?.pendingImages}</strong> images pending moderation
                 </span>
               </div>
@@ -97,15 +97,15 @@ export default function AdminDashboardPage() {
           <Link
             key={kpi.label}
             href={kpi.href}
-            className={`glass p-5 hover:border-white/15 transition-colors group ${kpi.alert ? "border-amber-700/30" : ""}`}
+            className={`glass p-5 hover:border-border transition-colors group ${kpi.alert ? "border-amber-700/30" : ""}`}
           >
             <div className="flex items-center justify-between mb-3">
               <kpi.icon size={18} className={kpi.color} />
               {kpi.alert && <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />}
             </div>
-            <div className="font-display text-2xl font-bold text-white mb-0.5">{kpi.value ?? "—"}</div>
-            <div className="text-xs font-medium text-white/70">{kpi.label}</div>
-            <div className="text-[10px] text-white/35 mt-0.5">{kpi.sub}</div>
+            <div className="font-display text-2xl font-bold text-foreground mb-0.5">{kpi.value ?? "—"}</div>
+            <div className="text-xs font-medium text-muted">{kpi.label}</div>
+            <div className="text-[10px] text-muted mt-0.5">{kpi.sub}</div>
           </Link>
         ))}
       </div>
@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
           { label: "This Year", amount: revenue?.thisYear || 0 },
         ].map((r) => (
           <div key={r.label} className="glass-gold p-5">
-            <div className="text-white/50 text-xs mb-1">{r.label}</div>
+            <div className="text-muted text-xs mb-1">{r.label}</div>
             <div className="font-display text-3xl font-bold shimmer-text">{formatCurrency(r.amount)}</div>
           </div>
         ))}
@@ -128,8 +128,8 @@ export default function AdminDashboardPage() {
       <div className="glass p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <div className="font-medium text-white">Daily Registrations</div>
-            <div className="text-white/40 text-xs">Last 7 days</div>
+            <div className="font-medium text-foreground">Daily Registrations</div>
+            <div className="text-muted text-xs">Last 7 days</div>
           </div>
           <Badge variant="glass">Last 7 days</Badge>
         </div>
@@ -143,7 +143,7 @@ export default function AdminDashboardPage() {
                   className="w-full bg-gradient-to-t from-[#C9972C] to-[#E8C76A] rounded-sm transition-all"
                   style={{ height: `${Math.max(pct, 4)}%` }}
                 />
-                <span className="text-[9px] text-white/30">{new Date(d.date).getDate()}</span>
+                <span className="text-[9px] text-muted">{new Date(d.date).getDate()}</span>
               </div>
             );
           })}

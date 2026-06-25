@@ -11,13 +11,13 @@ const buttonVariants = cva(
       variant: {
         gold: "bg-gradient-to-r from-[#C9972C] via-[#E8C76A] to-[#C9972C] bg-[length:200%_auto] text-[#1a0505] font-bold hover:bg-right hover:shadow-[0_0_20px_rgba(201,151,44,0.5)] hover:-translate-y-0.5",
         glass:
-          "bg-white/[0.08] text-white border border-white/[0.15] backdrop-blur-sm hover:bg-white/[0.12] hover:border-white/[0.25]",
+          "bg-surface text-foreground border border-border backdrop-blur-sm hover:bg-surface-hover hover:border-border-gold",
         "glass-gold":
           "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.35)] hover:bg-[rgba(201,151,44,0.2)]",
         danger:
           "bg-red-900/30 text-red-400 border border-red-900/50 hover:bg-red-900/50",
         info: "bg-blue-900/30 text-blue-400 border border-blue-900/50 hover:bg-blue-900/50",
-        ghost: "text-white/70 hover:text-white hover:bg-white/[0.05]",
+        ghost: "text-muted hover:text-foreground hover:bg-surface-hover",
         link: "text-[#E8C76A] underline-offset-4 hover:underline p-0 h-auto",
       },
       size: {

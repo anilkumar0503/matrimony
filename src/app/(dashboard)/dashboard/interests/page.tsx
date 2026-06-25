@@ -61,21 +61,21 @@ export default function InterestsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-white mb-1">Interests</h1>
-        <p className="text-white/40 text-sm">Manage your sent and received interests</p>
+        <h1 className="font-display text-2xl font-bold text-foreground mb-1">Interests</h1>
+        <p className="text-muted text-sm">Manage your sent and received interests</p>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-2">
         <button
           onClick={() => setTab("received")}
-          className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${tab === "received" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-white/50 hover:text-white"}`}
+          className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${tab === "received" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
         >
           <Heart size={14} className="inline mr-1.5" /> Received
         </button>
         <button
           onClick={() => setTab("sent")}
-          className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${tab === "sent" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-white/50 hover:text-white"}`}
+          className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${tab === "sent" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
         >
           <Send size={14} className="inline mr-1.5" /> Sent
         </button>
@@ -87,10 +87,10 @@ export default function InterestsPage() {
         </div>
       ) : interests.length === 0 ? (
         <div className="glass p-12 text-center">
-          <Heart size={40} className="text-white/20 mx-auto mb-3" />
-          <p className="text-white/40">No {tab} interests yet</p>
+          <Heart size={40} className="text-muted mx-auto mb-3" />
+          <p className="text-muted">No {tab} interests yet</p>
           {tab === "received" && (
-            <p className="text-white/25 text-sm mt-1">Complete your KYC and upgrade to attract more interests</p>
+            <p className="text-muted text-sm mt-1">Complete your KYC and upgrade to attract more interests</p>
           )}
           {tab === "sent" && (
             <Button variant="gold" size="sm" asChild className="mt-4">
@@ -106,7 +106,7 @@ export default function InterestsPage() {
             return (
               <div key={interest.id} className={`glass p-5 flex items-start gap-4 ${interest.status === "PENDING" ? "border-[rgba(201,151,44,0.15)]" : ""}`}>
                 {/* Avatar placeholder */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#7B1D1D]/50 to-[#C9972C]/30 flex items-center justify-center shrink-0 text-white font-bold text-lg">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#7B1D1D]/50 to-[#C9972C]/30 flex items-center justify-center shrink-0 text-foreground font-bold text-lg">
                   {p?.profile?.fullName?.[0] || "?"}
                 </div>
 
@@ -114,7 +114,7 @@ export default function InterestsPage() {
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-white">{p?.profile?.fullName || "Unknown"}</span>
+                        <span className="font-medium text-foreground">{p?.profile?.fullName || "Unknown"}</span>
                         <Badge variant={statusVariant[interest.status] || "glass"} className="text-[10px]">
                           {interest.status}
                         </Badge>
@@ -124,16 +124,16 @@ export default function InterestsPage() {
                           </Badge>
                         )}
                       </div>
-                      <div className="text-white/50 text-xs mt-0.5">
+                      <div className="text-muted text-xs mt-0.5">
                         {p?.dateOfBirth ? calculateAge(p.dateOfBirth) + " yrs" : ""} · {p?.profile?.city}, {p?.profile?.state}
                       </div>
-                      <div className="text-white/30 text-xs">{p?.profile?.religion}</div>
+                      <div className="text-muted text-xs">{p?.profile?.religion}</div>
                     </div>
-                    <span className="text-white/25 text-xs shrink-0">{formatDate(interest.createdAt)}</span>
+                    <span className="text-muted text-xs shrink-0">{formatDate(interest.createdAt)}</span>
                   </div>
 
                   {interest.message && (
-                    <div className="mt-2 text-white/60 text-sm italic bg-white/[0.04] px-3 py-2 rounded-lg">
+                    <div className="mt-2 text-muted text-sm italic bg-white/[0.04] px-3 py-2 rounded-lg">
                       "{interest.message}"
                     </div>
                   )}

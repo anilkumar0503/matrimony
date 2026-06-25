@@ -63,10 +63,10 @@ export default function WishlistPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2 mb-1">
+        <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
           <Star size={22} className="text-[#C9972C]" /> Wishlist
         </h1>
-        <p className="text-white/40 text-sm">{items.length} saved profiles</p>
+        <p className="text-muted text-sm">{items.length} saved profiles</p>
       </div>
 
       {loading ? (
@@ -75,9 +75,9 @@ export default function WishlistPage() {
         </div>
       ) : items.length === 0 ? (
         <div className="glass p-16 text-center">
-          <Star size={40} className="text-white/20 mx-auto mb-3" />
-          <p className="text-white/40">Your wishlist is empty</p>
-          <p className="text-white/25 text-sm mt-1">Browse profiles and save the ones you like</p>
+          <Star size={40} className="text-muted mx-auto mb-3" />
+          <p className="text-muted">Your wishlist is empty</p>
+          <p className="text-muted text-sm mt-1">Browse profiles and save the ones you like</p>
           <Button variant="gold" size="sm" asChild className="mt-4">
             <Link href="/dashboard/search">Browse Profiles</Link>
           </Button>
@@ -106,13 +106,13 @@ export default function WishlistPage() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <Link href={`/profile/${p.id}`}>
-                    <div className="font-medium text-white text-sm hover:text-[#E8C76A] transition-colors">{prof?.fullName || "—"}</div>
+                    <div className="font-medium text-foreground text-sm hover:text-[#E8C76A] transition-colors">{prof?.fullName || "—"}</div>
                   </Link>
-                  <div className="text-white/50 text-xs mt-0.5">
+                  <div className="text-muted text-xs mt-0.5">
                     {p.dateOfBirth ? calculateAge(p.dateOfBirth) + " yrs" : ""}
                     {prof?.height ? ` · ${cmToFeetInches(prof.height)}` : ""}
                   </div>
-                  <div className="text-white/40 text-xs mt-0.5 flex items-center gap-1">
+                  <div className="text-muted text-xs mt-0.5 flex items-center gap-1">
                     <MapPin size={10} /> {prof?.city}, {prof?.state}
                   </div>
                   <div className="flex gap-2 mt-3">

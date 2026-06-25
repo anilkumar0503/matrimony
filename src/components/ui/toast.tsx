@@ -24,9 +24,9 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName
 
 const toastVariants = {
-  default: "bg-white border border-gray-200 text-gray-900",
-  destructive: "bg-red-500 border-red-500 text-white",
-  success: "bg-emerald-500 border-emerald-500 text-white",
+  default: "bg-background border border-border text-foreground",
+  destructive: "bg-red-500 border-red-500 text-foreground",
+  success: "bg-emerald-500 border-emerald-500 text-foreground",
 }
 
 const Toast = React.forwardRef<

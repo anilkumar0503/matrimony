@@ -41,19 +41,19 @@ export default function MatchesPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2 mb-1">
+        <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
           <Heart size={22} className="text-[#C9972C] fill-[#C9972C]" /> Mutual Matches
         </h1>
-        <p className="text-white/40 text-sm">{matches.length} mutual match{matches.length !== 1 ? "es" : ""}</p>
+        <p className="text-muted text-sm">{matches.length} mutual match{matches.length !== 1 ? "es" : ""}</p>
       </div>
 
       {loading ? (
         <div className="space-y-3">{[...Array(3)].map((_, i) => <div key={i} className="skeleton h-24" />)}</div>
       ) : matches.length === 0 ? (
         <div className="glass p-16 text-center">
-          <Heart size={40} className="text-white/20 mx-auto mb-3" />
-          <p className="text-white/40">No mutual matches yet</p>
-          <p className="text-white/25 text-sm mt-1">When someone accepts your interest and you accept theirs, it becomes a match!</p>
+          <Heart size={40} className="text-muted mx-auto mb-3" />
+          <p className="text-muted">No mutual matches yet</p>
+          <p className="text-muted text-sm mt-1">When someone accepts your interest and you accept theirs, it becomes a match!</p>
           <Button variant="gold" size="sm" asChild className="mt-4">
             <Link href="/dashboard/search">Find Profiles</Link>
           </Button>
@@ -76,14 +76,14 @@ export default function MatchesPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-white">{other.profile?.fullName || "—"}</span>
+                    <span className="font-semibold text-foreground">{other.profile?.fullName || "—"}</span>
                     <CheckCircle size={14} className="text-emerald-400" />
                     <Badge variant="success" className="text-[10px]">Mutual Match</Badge>
                   </div>
-                  <div className="text-white/50 text-xs mt-0.5">
+                  <div className="text-muted text-xs mt-0.5">
                     {other.dateOfBirth ? calculateAge(other.dateOfBirth) + " yrs" : ""} · {other.profile?.city}
                   </div>
-                  <div className="text-white/30 text-xs mt-0.5">Matched {formatDate(match.createdAt)}</div>
+                  <div className="text-muted text-xs mt-0.5">Matched {formatDate(match.createdAt)}</div>
                   {match.ticket && (
                     <div className="mt-1">
                       <Badge variant="gold" className="text-[10px]">

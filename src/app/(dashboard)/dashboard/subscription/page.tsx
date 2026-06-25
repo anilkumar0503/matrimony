@@ -31,7 +31,7 @@ interface Subscription {
 }
 
 const tierIcon = { FREE: Star, PREMIUM: Crown, VIP: Zap };
-const tierColor = { FREE: "text-white/50", PREMIUM: "text-[#C9972C]", VIP: "text-purple-400" };
+const tierColor = { FREE: "text-muted", PREMIUM: "text-[#C9972C]", VIP: "text-purple-400" };
 
 declare global {
   interface Window {
@@ -110,8 +110,8 @@ export default function SubscriptionPage() {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" onLoad={() => setScriptLoaded(true)} />
 
       <div>
-        <h1 className="font-display text-2xl font-bold text-white mb-1">Subscription Plans</h1>
-        <p className="text-white/40 text-sm">Choose the plan that matches your matchmaking needs</p>
+        <h1 className="font-display text-2xl font-bold text-foreground mb-1">Subscription Plans</h1>
+        <p className="text-muted text-sm">Choose the plan that matches your matchmaking needs</p>
       </div>
 
       {/* Current subscription */}
@@ -120,8 +120,8 @@ export default function SubscriptionPage() {
           <div className="flex items-center gap-3">
             <Crown size={22} className="text-[#C9972C]" />
             <div>
-              <div className="font-semibold text-white">{currentSub.plan.name} — Active</div>
-              <div className="text-white/50 text-xs">Valid until {formatDate(currentSub.endDate)}</div>
+              <div className="font-semibold text-foreground">{currentSub.plan.name} — Active</div>
+              <div className="text-muted text-xs">Valid until {formatDate(currentSub.endDate)}</div>
             </div>
           </div>
           <Badge variant="success">Active</Badge>
@@ -134,7 +134,7 @@ export default function SubscriptionPage() {
           <button
             key={d}
             onClick={() => setDuration(d)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${duration === d ? "bg-[rgba(201,151,44,0.15)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-white/50 hover:text-white"}`}
+            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${duration === d ? "bg-[rgba(201,151,44,0.15)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
           >
             {d.charAt(0).toUpperCase() + d.slice(1)}
             {d === "yearly" && <span className="ml-1.5 text-[10px] text-emerald-400">Save 25%</span>}
@@ -157,7 +157,7 @@ export default function SubscriptionPage() {
       <div className="grid sm:grid-cols-3 gap-6">
         {plans.map((plan) => {
           const Icon = tierIcon[plan.tier as keyof typeof tierIcon] || Star;
-          const color = tierColor[plan.tier as keyof typeof tierColor] || "text-white";
+          const color = tierColor[plan.tier as keyof typeof tierColor] || "text-foreground";
           const isCurrentPlan = currentSub?.plan?.tier === plan.tier && currentSub?.status === "ACTIVE";
           const isHighlighted = plan.tier === "PREMIUM";
           const price = getPrice(plan);
@@ -175,23 +175,23 @@ export default function SubscriptionPage() {
 
               <div className="flex items-center gap-2 mb-4">
                 <Icon size={22} className={color} />
-                <span className="font-display font-bold text-white">{plan.name}</span>
+                <span className="font-display font-bold text-foreground">{plan.name}</span>
                 {isCurrentPlan && <Badge variant="success" className="text-[10px]">Current</Badge>}
               </div>
 
               <div className="mb-5">
                 {price != null && price > 0 ? (
                   <>
-                    <span className="font-display text-4xl font-bold text-white">{formatCurrency(price)}</span>
-                    <span className="text-white/40 text-sm">/{duration === "monthly" ? "mo" : duration === "quarterly" ? "3mo" : "yr"}</span>
-                    <div className="text-white/30 text-xs mt-1">GST @ 18% inclusive</div>
+                    <span className="font-display text-4xl font-bold text-foreground">{formatCurrency(price)}</span>
+                    <span className="text-muted text-sm">/{duration === "monthly" ? "mo" : duration === "quarterly" ? "3mo" : "yr"}</span>
+                    <div className="text-muted text-xs mt-1">GST @ 18% inclusive</div>
                   </>
                 ) : (
-                  <span className="font-display text-4xl font-bold text-white">Free</span>
+                  <span className="font-display text-4xl font-bold text-foreground">Free</span>
                 )}
               </div>
 
-              {plan.description && <p className="text-white/50 text-sm mb-5 leading-relaxed">{plan.description}</p>}
+              {plan.description && <p className="text-muted text-sm mb-5 leading-relaxed">{plan.description}</p>}
 
               <ul className="space-y-2.5 mb-7 flex-1">
                 {[
@@ -202,8 +202,8 @@ export default function SubscriptionPage() {
                   { label: "View contact info", active: plan.canViewContactInfo },
                   { label: "Admin-assisted matching", active: plan.adminAssistance },
                 ].map((feature) => (
-                  <li key={feature.label} className={`flex items-center gap-2 text-sm ${feature.active ? "text-white/70" : "text-white/25 line-through"}`}>
-                    <CheckCircle size={14} className={feature.active ? "text-[#C9972C] shrink-0" : "text-white/20 shrink-0"} />
+                  <li key={feature.label} className={`flex items-center gap-2 text-sm ${feature.active ? "text-muted" : "text-muted line-through"}`}>
+                    <CheckCircle size={14} className={feature.active ? "text-[#C9972C] shrink-0" : "text-muted shrink-0"} />
                     {feature.label}
                   </li>
                 ))}
@@ -230,7 +230,7 @@ export default function SubscriptionPage() {
         })}
       </div>
 
-      <div className="glass p-4 text-center text-white/30 text-xs">
+      <div className="glass p-4 text-center text-muted text-xs">
         Payments processed securely by Razorpay · GST invoice sent to your email · Cancel anytime
       </div>
     </div>

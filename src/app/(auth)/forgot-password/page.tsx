@@ -74,8 +74,8 @@ export default function ForgotPasswordPage() {
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </Link>
-          <h1 className="font-display text-3xl font-bold text-white mb-2">{stepTitle[step]}</h1>
-          <p className="text-white/50 text-sm">{stepDesc[step]}</p>
+          <h1 className="font-display text-3xl font-bold text-foreground mb-2">{stepTitle[step]}</h1>
+          <p className="text-muted text-sm">{stepDesc[step]}</p>
         </div>
 
         <div className="glass p-8">
@@ -127,7 +127,7 @@ export default function ForgotPasswordPage() {
           )}
 
           <div className="mt-6 text-center">
-            <Link href="/login" className="text-white/40 hover:text-white/70 text-sm transition-colors">
+            <Link href="/login" className="text-muted hover:text-muted text-sm transition-colors">
               Back to Login
             </Link>
           </div>

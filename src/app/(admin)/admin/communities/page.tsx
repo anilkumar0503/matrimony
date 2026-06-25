@@ -86,10 +86,10 @@ export default function AdminCommunitiesPage() {
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <Users2 size={22} className="text-[#C9972C]" /> Communities
           </h1>
-          <p className="text-white/40 text-sm">{communities.length} communities</p>
+          <p className="text-muted text-sm">{communities.length} communities</p>
         </div>
         <Button variant="gold" onClick={openCreate}><PlusCircle size={16} /> New Community</Button>
       </div>
@@ -97,7 +97,7 @@ export default function AdminCommunitiesPage() {
       {loading ? (
         <div className="grid sm:grid-cols-2 gap-4">{[...Array(4)].map((_, i) => <div key={i} className="skeleton h-36 rounded-2xl" />)}</div>
       ) : communities.length === 0 ? (
-        <div className="glass p-12 text-center text-white/30">No communities yet</div>
+        <div className="glass p-12 text-center text-muted">No communities yet</div>
       ) : (
         <div className="grid sm:grid-cols-2 gap-4">
           {communities.map((c) => {
@@ -105,7 +105,7 @@ export default function AdminCommunitiesPage() {
               <div key={c.id} className="glass p-5">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <div className="font-semibold text-white">{c.name}</div>
+                    <div className="font-semibold text-foreground">{c.name}</div>
                     <div className="flex items-center gap-2 mt-1">
                       {c.category && <Badge variant="glass" className="text-[10px]">{c.category}</Badge>}
                       {!c.isActive && <Badge variant="danger" className="text-[10px]">Inactive</Badge>}
@@ -119,8 +119,8 @@ export default function AdminCommunitiesPage() {
                     </Button>
                   </div>
                 </div>
-                {c.description && <p className="text-white/50 text-xs mb-3 line-clamp-2">{c.description}</p>}
-                <div className="text-white/40 text-xs">{c._count.members} members</div>
+                {c.description && <p className="text-muted text-xs mb-3 line-clamp-2">{c.description}</p>}
+                <div className="text-muted text-xs">{c._count.members} members</div>
               </div>
             );
           })}
@@ -132,15 +132,15 @@ export default function AdminCommunitiesPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setShowEditor(false)}>
           <div className="glass-dark p-6 rounded-2xl max-w-lg w-full" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-white">{editId ? "Edit Community" : "New Community"}</h3>
-              <button onClick={() => setShowEditor(false)} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">{editId ? "Edit Community" : "New Community"}</h3>
+              <button onClick={() => setShowEditor(false)} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
 
             <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
               <Input label="Community Name" {...form.register("name", { required: "Name required" })}
                 error={form.formState.errors.name?.message} />
               <div>
-                <label className="block text-xs font-medium text-white/60 mb-1.5">Description</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">Description</label>
                 <textarea className="input-glass" rows={3} {...form.register("description")} />
               </div>
               <Input label="Category (e.g. Caste, Region, Language)" placeholder="e.g. Tamil Brahmin" {...form.register("category")} />
@@ -148,7 +148,7 @@ export default function AdminCommunitiesPage() {
               <Input label="Banner URL (optional)" placeholder="https://..." {...form.register("banner")} />
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" className="w-4 h-4 accent-[#C9972C]" {...form.register("isActive")} />
-                <span className="text-white/70 text-sm">Active (visible to members)</span>
+                <span className="text-muted text-sm">Active (visible to members)</span>
               </label>
 
               <div className="flex gap-3 pt-2">

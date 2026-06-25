@@ -43,15 +43,15 @@ export default function CookieConsent() {
           <div className="flex items-start gap-3 flex-1">
             <Cookie size={20} className="text-[#C9972C] shrink-0 mt-0.5" />
             <div>
-              <h3 className="text-white font-semibold text-sm mb-1">We value your privacy</h3>
-              <p className="text-white/60 text-xs leading-relaxed">
+              <h3 className="text-foreground font-semibold text-sm mb-1">We value your privacy</h3>
+              <p className="text-muted text-xs leading-relaxed">
                 We use cookies to enhance your experience, personalise content, and analyse platform usage. 
-                Under the <strong className="text-white/80">DPDP Act 2023</strong>, you have full control over your data preferences.{" "}
+                Under the <strong className="text-muted">DPDP Act 2023</strong>, you have full control over your data preferences.{" "}
                 <a href="/privacy" className="text-[#C9972C] underline hover:text-[#E8C76A]">Privacy Policy</a>
               </p>
             </div>
           </div>
-          <button onClick={acceptNecessary} className="text-white/30 hover:text-white transition-colors shrink-0">
+          <button onClick={acceptNecessary} className="text-muted hover:text-foreground transition-colors shrink-0">
             <X size={16} />
           </button>
         </div>
@@ -60,13 +60,13 @@ export default function CookieConsent() {
         <div className="mt-4">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="flex items-center gap-1 text-white/50 hover:text-white/80 text-xs transition-colors"
+            className="flex items-center gap-1 text-muted hover:text-muted text-xs transition-colors"
           >
             {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
             Manage Preferences
           </button>
           {expanded && (
-            <div className="mt-3 space-y-2.5 border border-white/[0.08] rounded-xl p-4">
+            <div className="mt-3 space-y-2.5 border border-border rounded-xl p-4">
               {[
                 { key: "necessary", label: "Strictly Necessary", desc: "Required for the platform to function. Cannot be disabled.", locked: true },
                 { key: "analytics", label: "Analytics", desc: "Helps us understand how visitors use the platform (anonymous)." },
@@ -74,8 +74,8 @@ export default function CookieConsent() {
               ].map(({ key, label, desc, locked }) => (
                 <div key={key} className="flex items-start justify-between gap-4">
                   <div>
-                    <div className="text-white/80 text-xs font-medium">{label}</div>
-                    <div className="text-white/40 text-xs">{desc}</div>
+                    <div className="text-muted text-xs font-medium">{label}</div>
+                    <div className="text-muted text-xs">{desc}</div>
                   </div>
                   <div className={`relative shrink-0 ${locked ? "opacity-50 cursor-not-allowed" : ""}`}>
                     <input
@@ -113,14 +113,14 @@ export default function CookieConsent() {
           {expanded ? (
             <button
               onClick={savePrefs}
-              className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.12] text-white text-xs rounded-lg transition-colors border border-white/[0.1]"
+              className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.12] text-foreground text-xs rounded-lg transition-colors border border-border"
             >
               Save Preferences
             </button>
           ) : (
             <button
               onClick={acceptNecessary}
-              className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.12] text-white text-xs rounded-lg transition-colors border border-white/[0.1]"
+              className="px-4 py-2 bg-white/[0.08] hover:bg-white/[0.12] text-foreground text-xs rounded-lg transition-colors border border-border"
             >
               Accept Necessary Only
             </button>

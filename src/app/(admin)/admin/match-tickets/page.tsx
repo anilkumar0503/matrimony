@@ -129,10 +129,10 @@ export default function AdminMatchTicketsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <Ticket size={22} className="text-[#C9972C]" /> Match Tickets
           </h1>
-          <p className="text-white/40 text-sm">{total} tickets</p>
+          <p className="text-muted text-sm">{total} tickets</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <Button variant="gold" onClick={() => setShowCreateModal(true)}><Plus size={16} /> Create Match</Button>
@@ -149,7 +149,7 @@ export default function AdminMatchTicketsPage() {
         {loading ? (
           [...Array(4)].map((_, i) => <div key={i} className="skeleton h-24" />)
         ) : tickets.length === 0 ? (
-          <div className="glass p-12 text-center text-white/30">No match tickets found</div>
+          <div className="glass p-12 text-center text-muted">No match tickets found</div>
         ) : tickets.map((ticket) => (
           <div key={ticket.id} className="glass p-5">
             <div className="flex items-start justify-between gap-4">
@@ -161,25 +161,25 @@ export default function AdminMatchTicketsPage() {
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="glass-dark p-3 rounded-xl">
-                    <div className="text-white/40 text-[10px] mb-1">Profile A</div>
-                    <div className="font-medium text-white text-sm">{ticket.match.userA.profile?.fullName || "—"}</div>
-                    <div className="text-white/50 text-xs">{ticket.match.userA.dateOfBirth ? calculateAge(ticket.match.userA.dateOfBirth) + " yrs" : ""} · {ticket.match.userA.profile?.city}</div>
+                    <div className="text-muted text-[10px] mb-1">Profile A</div>
+                    <div className="font-medium text-foreground text-sm">{ticket.match.userA.profile?.fullName || "—"}</div>
+                    <div className="text-muted text-xs">{ticket.match.userA.dateOfBirth ? calculateAge(ticket.match.userA.dateOfBirth) + " yrs" : ""} · {ticket.match.userA.profile?.city}</div>
                   </div>
                   <div className="glass-dark p-3 rounded-xl">
-                    <div className="text-white/40 text-[10px] mb-1">Profile B</div>
-                    <div className="font-medium text-white text-sm">{ticket.match.userB.profile?.fullName || "—"}</div>
-                    <div className="text-white/50 text-xs">{ticket.match.userB.dateOfBirth ? calculateAge(ticket.match.userB.dateOfBirth) + " yrs" : ""} · {ticket.match.userB.profile?.city}</div>
+                    <div className="text-muted text-[10px] mb-1">Profile B</div>
+                    <div className="font-medium text-foreground text-sm">{ticket.match.userB.profile?.fullName || "—"}</div>
+                    <div className="text-muted text-xs">{ticket.match.userB.dateOfBirth ? calculateAge(ticket.match.userB.dateOfBirth) + " yrs" : ""} · {ticket.match.userB.profile?.city}</div>
                   </div>
                 </div>
                 {ticket.meetingTime && (
-                  <div className="flex items-center gap-2 mt-2 text-white/50 text-xs">
+                  <div className="flex items-center gap-2 mt-2 text-muted text-xs">
                     <Calendar size={12} />
                     Meeting: {formatDateTime(ticket.meetingTime)}
                     {ticket.meetingLink && <a href={ticket.meetingLink} target="_blank" className="text-[#E8C76A] underline">Join</a>}
                   </div>
                 )}
                 {ticket.notes.length > 0 && (
-                  <div className="mt-2 text-white/40 text-xs">
+                  <div className="mt-2 text-muted text-xs">
                     {ticket.notes[0].admin.name}: "{ticket.notes[0].note}"
                   </div>
                 )}
@@ -200,7 +200,7 @@ export default function AdminMatchTicketsPage() {
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-3">
           <Button variant="glass" size="sm" disabled={page === 1} onClick={() => setPage(p => p - 1)}><ChevronLeft size={14} /></Button>
-          <span className="text-white/50 text-sm">Page {page} of {totalPages}</span>
+          <span className="text-muted text-sm">Page {page} of {totalPages}</span>
           <Button variant="glass" size="sm" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}><ChevronRight size={14} /></Button>
         </div>
       )}
@@ -210,8 +210,8 @@ export default function AdminMatchTicketsPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setSelected(null)}>
           <div className="glass-dark p-6 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-white">Manage Ticket</h3>
-              <button onClick={() => setSelected(null)} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">Manage Ticket</h3>
+              <button onClick={() => setSelected(null)} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
 
             <div className="space-y-4">
@@ -245,7 +245,7 @@ export default function AdminMatchTicketsPage() {
               {/* Schedule meeting */}
               {(selected.status === "IN_REVIEW" || selected.status === "OPEN") && (
                 <div className="glass-dark p-4 rounded-xl space-y-3">
-                  <div className="text-sm font-medium text-white">Schedule Meeting</div>
+                  <div className="text-sm font-medium text-foreground">Schedule Meeting</div>
                   <input className="input-glass" type="datetime-local" value={meetingTime} onChange={(e) => setMeetingTime(e.target.value)} />
                   <input className="input-glass" type="url" placeholder="Meeting link (optional)" value={meetingLink} onChange={(e) => setMeetingLink(e.target.value)} />
                   <select className="input-glass" value={meetingType} onChange={(e) => setMeetingType(e.target.value)}>
@@ -262,7 +262,7 @@ export default function AdminMatchTicketsPage() {
 
               {/* Add note */}
               <div className="glass-dark p-4 rounded-xl space-y-3">
-                <div className="text-sm font-medium text-white">Add Note</div>
+                <div className="text-sm font-medium text-foreground">Add Note</div>
                 <textarea className="input-glass min-h-[70px]" placeholder="Internal note..." value={note} onChange={(e) => setNote(e.target.value)} />
                 <Button variant="glass" size="sm" onClick={() => action(selected.id, "ADD_NOTE", { note })} loading={processing === selected.id + "ADD_NOTE"} disabled={!note.trim()}>
                   <MessageSquare size={14} /> Add Note
@@ -272,12 +272,12 @@ export default function AdminMatchTicketsPage() {
               {/* Notes history */}
               {selected.notes.length > 0 && (
                 <div>
-                  <div className="text-white/40 text-xs mb-2">Notes History</div>
+                  <div className="text-muted text-xs mb-2">Notes History</div>
                   <div className="space-y-2">
                     {selected.notes.map((n) => (
                       <div key={n.id} className="glass-dark p-3 rounded-xl">
-                        <div className="text-white/70 text-sm">{n.note}</div>
-                        <div className="text-white/30 text-xs mt-1">{n.admin.name} · {formatDateTime(n.createdAt)}</div>
+                        <div className="text-muted text-sm">{n.note}</div>
+                        <div className="text-muted text-xs mt-1">{n.admin.name} · {formatDateTime(n.createdAt)}</div>
                       </div>
                     ))}
                   </div>
@@ -293,16 +293,16 @@ export default function AdminMatchTicketsPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setShowCreateModal(false)}>
           <div className="glass-dark p-6 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-white">Create Match Ticket</h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">Create Match Ticket</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
 
             <div className="space-y-5">
               {/* User A Selection */}
               <div>
-                <label className="block text-xs text-white/50 mb-2">Profile A</label>
+                <label className="block text-xs text-muted mb-2">Profile A</label>
                 <div className="relative">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
                   <input
                     className="input-glass input-glass-with-icon"
                     placeholder="Search by name, email, phone..."
@@ -313,10 +313,10 @@ export default function AdminMatchTicketsPage() {
                 {selectedUserA && (
                   <div className="glass-dark p-3 mt-2 rounded-lg flex items-center justify-between">
                     <div>
-                      <div className="text-white text-sm font-medium">{selectedUserA.profile?.fullName || "—"}</div>
-                      <div className="text-white/40 text-xs">{selectedUserA.email} · {selectedUserA.gender}</div>
+                      <div className="text-foreground text-sm font-medium">{selectedUserA.profile?.fullName || "—"}</div>
+                      <div className="text-muted text-xs">{selectedUserA.email} · {selectedUserA.gender}</div>
                     </div>
-                    <button onClick={() => setSelectedUserA(null)} className="text-white/40 hover:text-red-400"><X size={14} /></button>
+                    <button onClick={() => setSelectedUserA(null)} className="text-muted hover:text-red-400"><X size={14} /></button>
                   </div>
                 )}
                 {userResultsA.length > 0 && !selectedUserA && (
@@ -324,11 +324,11 @@ export default function AdminMatchTicketsPage() {
                     {userResultsA.map((user) => (
                       <div
                         key={user.id}
-                        className="p-3 hover:bg-white/[0.05] cursor-pointer border-b border-white/[0.04] last:border-0"
+                        className="p-3 hover:bg-white/[0.05] cursor-pointer border-b border-border last:border-0"
                         onClick={() => { setSelectedUserA(user); setUserResultsA([]); setUserSearchA(""); }}
                       >
-                        <div className="text-white text-sm">{user.profile?.fullName || "—"}</div>
-                        <div className="text-white/40 text-xs">{user.email} · {user.gender} · {user.profile?.city}</div>
+                        <div className="text-foreground text-sm">{user.profile?.fullName || "—"}</div>
+                        <div className="text-muted text-xs">{user.email} · {user.gender} · {user.profile?.city}</div>
                       </div>
                     ))}
                   </div>
@@ -337,9 +337,9 @@ export default function AdminMatchTicketsPage() {
 
               {/* User B Selection */}
               <div>
-                <label className="block text-xs text-white/50 mb-2">Profile B</label>
+                <label className="block text-xs text-muted mb-2">Profile B</label>
                 <div className="relative">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
                   <input
                     className="input-glass input-glass-with-icon"
                     placeholder="Search by name, email, phone..."
@@ -350,10 +350,10 @@ export default function AdminMatchTicketsPage() {
                 {selectedUserB && (
                   <div className="glass-dark p-3 mt-2 rounded-lg flex items-center justify-between">
                     <div>
-                      <div className="text-white text-sm font-medium">{selectedUserB.profile?.fullName || "—"}</div>
-                      <div className="text-white/40 text-xs">{selectedUserB.email} · {selectedUserB.gender}</div>
+                      <div className="text-foreground text-sm font-medium">{selectedUserB.profile?.fullName || "—"}</div>
+                      <div className="text-muted text-xs">{selectedUserB.email} · {selectedUserB.gender}</div>
                     </div>
-                    <button onClick={() => setSelectedUserB(null)} className="text-white/40 hover:text-red-400"><X size={14} /></button>
+                    <button onClick={() => setSelectedUserB(null)} className="text-muted hover:text-red-400"><X size={14} /></button>
                   </div>
                 )}
                 {userResultsB.length > 0 && !selectedUserB && (
@@ -361,11 +361,11 @@ export default function AdminMatchTicketsPage() {
                     {userResultsB.map((user) => (
                       <div
                         key={user.id}
-                        className="p-3 hover:bg-white/[0.05] cursor-pointer border-b border-white/[0.04] last:border-0"
+                        className="p-3 hover:bg-white/[0.05] cursor-pointer border-b border-border last:border-0"
                         onClick={() => { setSelectedUserB(user); setUserResultsB([]); setUserSearchB(""); }}
                       >
-                        <div className="text-white text-sm">{user.profile?.fullName || "—"}</div>
-                        <div className="text-white/40 text-xs">{user.email} · {user.gender} · {user.profile?.city}</div>
+                        <div className="text-foreground text-sm">{user.profile?.fullName || "—"}</div>
+                        <div className="text-muted text-xs">{user.email} · {user.gender} · {user.profile?.city}</div>
                       </div>
                     ))}
                   </div>
@@ -374,7 +374,7 @@ export default function AdminMatchTicketsPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-xs text-white/50 mb-2">Initial Notes (optional)</label>
+                <label className="block text-xs text-muted mb-2">Initial Notes (optional)</label>
                 <textarea
                   className="input-glass min-h-[70px]"
                   placeholder="Add any notes about this match..."

@@ -81,10 +81,10 @@ export default function RegisterPage() {
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </Link>
-          <h1 className="font-display text-3xl font-bold text-white mb-2">
+          <h1 className="font-display text-3xl font-bold text-foreground mb-2">
             {step === "form" ? "Create Your Profile" : "Verify Your Email"}
           </h1>
-          <p className="text-white/50 text-sm">
+          <p className="text-muted text-sm">
             {step === "form"
               ? "Free to join. KYC-verified profiles only."
               : `Enter the 6-digit OTP sent to ${email}`}
@@ -145,14 +145,14 @@ export default function RegisterPage() {
               />
 
               {/* Consents */}
-              <div className="space-y-3 pt-2 border-t border-white/[0.07]">
+              <div className="space-y-3 pt-2 border-t border-border">
                 <label className="flex items-start gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
                     className="w-4 h-4 mt-0.5 rounded accent-[#C9972C]"
                     {...form.register("terms", { required: true })}
                   />
-                  <span className="text-xs text-white/60">
+                  <span className="text-xs text-muted">
                     I agree to the{" "}
                     <Link href="/terms" className="text-[#E8C76A] hover:underline">Terms of Service</Link>{" "}
                     and{" "}
@@ -165,7 +165,7 @@ export default function RegisterPage() {
                     className="w-4 h-4 mt-0.5 rounded accent-[#C9972C]"
                     {...form.register("dpdpConsent", { required: true })}
                   />
-                  <span className="text-xs text-white/60">
+                  <span className="text-xs text-muted">
                     I consent to processing of my personal data including profile, KYC, and photo data for matrimony
                     matchmaking as per the{" "}
                     <Link href="/dpdp-rights" className="text-[#E8C76A] hover:underline">DPDP Act 2023</Link>.
@@ -186,7 +186,7 @@ export default function RegisterPage() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-white/50 text-sm">
+              <p className="text-muted text-sm">
                 Already registered?{" "}
                 <Link href="/login" className="text-[#E8C76A] hover:underline font-medium">
                   Sign In
@@ -198,7 +198,7 @@ export default function RegisterPage() {
           <div className="glass p-8">
             <div className="bg-[rgba(201,151,44,0.08)] border border-[rgba(201,151,44,0.2)] rounded-xl p-4 mb-6 text-center">
               <div className="text-[#E8C76A] text-sm">OTP sent to <strong>{email}</strong></div>
-              <div className="text-white/40 text-xs mt-1">Valid for 10 minutes</div>
+              <div className="text-muted text-xs mt-1">Valid for 10 minutes</div>
             </div>
 
             <form onSubmit={otpForm.handleSubmit(onVerifyOtp)} className="space-y-5">
@@ -230,7 +230,7 @@ export default function RegisterPage() {
             </form>
 
             <div className="mt-6 text-center space-y-2">
-              <p className="text-white/40 text-xs">Didn't receive it?</p>
+              <p className="text-muted text-xs">Didn't receive it?</p>
               <Button variant="ghost" size="sm" onClick={resendOtp} loading={resending}>
                 Resend OTP
               </Button>

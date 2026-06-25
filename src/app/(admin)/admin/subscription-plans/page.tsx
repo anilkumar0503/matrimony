@@ -186,10 +186,10 @@ export default function SubscriptionPlansPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <CreditCard size={22} className="text-[#C9972C]" /> Subscription Plans
           </h1>
-          <p className="text-white/40 text-sm">Manage subscription tiers, pricing, and features</p>
+          <p className="text-muted text-sm">Manage subscription tiers, pricing, and features</p>
         </div>
         <Button variant="gold" onClick={() => setShowModal(true)}>
           <Plus size={16} /> Add Plan
@@ -202,48 +202,48 @@ export default function SubscriptionPlansPage() {
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-semibold text-white text-lg">{plan.name}</h3>
+                  <h3 className="font-semibold text-foreground text-lg">{plan.name}</h3>
                   <Badge variant={plan.tier === "VIP" ? "gold" : plan.tier === "PREMIUM" ? "success" : "glass"}>
                     {plan.tier}
                   </Badge>
                   {plan.isDefault && <Badge variant="glass">Default</Badge>}
                   {!plan.isActive && <Badge variant="danger">Inactive</Badge>}
                 </div>
-                {plan.description && <p className="text-white/50 text-sm mb-3">{plan.description}</p>}
+                {plan.description && <p className="text-muted text-sm mb-3">{plan.description}</p>}
                 
                 <div className="grid sm:grid-cols-3 gap-4 text-sm">
                   <div>
-                    <span className="text-white/30 block text-[10px] uppercase tracking-wide">Monthly</span>
-                    <span className="text-white/70 font-medium">{plan.priceMonthly ? `₹${plan.priceMonthly}` : "—"}</span>
+                    <span className="text-muted block text-[10px] uppercase tracking-wide">Monthly</span>
+                    <span className="text-muted font-medium">{plan.priceMonthly ? `₹${plan.priceMonthly}` : "—"}</span>
                   </div>
                   <div>
-                    <span className="text-white/30 block text-[10px] uppercase tracking-wide">Quarterly</span>
-                    <span className="text-white/70 font-medium">{plan.priceQuarterly ? `₹${plan.priceQuarterly}` : "—"}</span>
+                    <span className="text-muted block text-[10px] uppercase tracking-wide">Quarterly</span>
+                    <span className="text-muted font-medium">{plan.priceQuarterly ? `₹${plan.priceQuarterly}` : "—"}</span>
                   </div>
                   <div>
-                    <span className="text-white/30 block text-[10px] uppercase tracking-wide">Yearly</span>
-                    <span className="text-white/70 font-medium">{plan.priceYearly ? `₹${plan.priceYearly}` : "—"}</span>
+                    <span className="text-muted block text-[10px] uppercase tracking-wide">Yearly</span>
+                    <span className="text-muted font-medium">{plan.priceYearly ? `₹${plan.priceYearly}` : "—"}</span>
                   </div>
                   <div>
-                    <span className="text-white/30 block text-[10px] uppercase tracking-wide">Duration</span>
-                    <span className="text-white/70 font-medium">{plan.durationDays ? `${plan.durationDays} days` : "—"}</span>
+                    <span className="text-muted block text-[10px] uppercase tracking-wide">Duration</span>
+                    <span className="text-muted font-medium">{plan.durationDays ? `${plan.durationDays} days` : "—"}</span>
                   </div>
                   <div>
-                    <span className="text-white/30 block text-[10px] uppercase tracking-wide">Wishlist Limit</span>
-                    <span className="text-white/70 font-medium">{plan.wishlistLimit || "Unlimited"}</span>
+                    <span className="text-muted block text-[10px] uppercase tracking-wide">Wishlist Limit</span>
+                    <span className="text-muted font-medium">{plan.wishlistLimit || "Unlimited"}</span>
                   </div>
                   <div>
-                    <span className="text-white/30 block text-[10px] uppercase tracking-wide">Interest Limit</span>
-                    <span className="text-white/70 font-medium">{plan.interestLimit || "Unlimited"}</span>
+                    <span className="text-muted block text-[10px] uppercase tracking-wide">Interest Limit</span>
+                    <span className="text-muted font-medium">{plan.interestLimit || "Unlimited"}</span>
                   </div>
                 </div>
 
                 {plan.features && Array.isArray(plan.features) && plan.features.length > 0 && (
                   <div className="mt-3">
-                    <span className="text-white/30 block text-[10px] uppercase tracking-wide mb-1">Features</span>
+                    <span className="text-muted block text-[10px] uppercase tracking-wide mb-1">Features</span>
                     <div className="flex flex-wrap gap-1">
                       {plan.features.map((feature, idx) => (
-                        <span key={idx} className="text-xs text-white/60 bg-white/5 px-2 py-0.5 rounded">
+                        <span key={idx} className="text-xs text-muted bg-white/5 px-2 py-0.5 rounded">
                           {feature}
                         </span>
                       ))}
@@ -270,7 +270,7 @@ export default function SubscriptionPlansPage() {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="glass p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-display text-xl font-bold text-white">
+              <h2 className="font-display text-xl font-bold text-foreground">
                 {editingPlan ? "Edit Plan" : "Add New Plan"}
               </h2>
               <Button variant="ghost" size="sm" onClick={closeModal}>
@@ -281,7 +281,7 @@ export default function SubscriptionPlansPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Plan Name</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Plan Name</label>
                   <input
                     type="text"
                     className="input-glass w-full"
@@ -291,7 +291,7 @@ export default function SubscriptionPlansPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Tier</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Tier</label>
                   <select
                     className="input-glass w-full"
                     value={formData.tier}
@@ -306,7 +306,7 @@ export default function SubscriptionPlansPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-white/60 mb-1.5">Description</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">Description</label>
                 <textarea
                   className="input-glass w-full"
                   rows={2}
@@ -317,7 +317,7 @@ export default function SubscriptionPlansPage() {
 
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Monthly Price (₹)</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Monthly Price (₹)</label>
                   <input
                     type="number"
                     className="input-glass w-full"
@@ -326,7 +326,7 @@ export default function SubscriptionPlansPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Quarterly Price (₹)</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Quarterly Price (₹)</label>
                   <input
                     type="number"
                     className="input-glass w-full"
@@ -335,7 +335,7 @@ export default function SubscriptionPlansPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Yearly Price (₹)</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Yearly Price (₹)</label>
                   <input
                     type="number"
                     className="input-glass w-full"
@@ -347,7 +347,7 @@ export default function SubscriptionPlansPage() {
 
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Duration (days)</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Duration (days)</label>
                   <input
                     type="number"
                     className="input-glass w-full"
@@ -356,7 +356,7 @@ export default function SubscriptionPlansPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Wishlist Limit</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Wishlist Limit</label>
                   <input
                     type="number"
                     className="input-glass w-full"
@@ -365,7 +365,7 @@ export default function SubscriptionPlansPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Interest Limit</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Interest Limit</label>
                   <input
                     type="number"
                     className="input-glass w-full"
@@ -376,7 +376,7 @@ export default function SubscriptionPlansPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-white/60 mb-1.5">Features (comma-separated)</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">Features (comma-separated)</label>
                 <input
                   type="text"
                   className="input-glass w-full"
@@ -394,7 +394,7 @@ export default function SubscriptionPlansPage() {
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                   className="w-4 h-4 rounded"
                 />
-                <label htmlFor="isActive" className="text-sm text-white/70">Active</label>
+                <label htmlFor="isActive" className="text-sm text-muted">Active</label>
               </div>
 
               <div className="flex justify-end gap-3 pt-4">

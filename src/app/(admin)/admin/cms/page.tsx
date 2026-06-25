@@ -125,10 +125,10 @@ export default function AdminCmsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <BookOpen size={22} className="text-[#C9972C]" /> CMS & Content
           </h1>
-          <p className="text-white/40 text-sm">{total} posts</p>
+          <p className="text-muted text-sm">{total} posts</p>
         </div>
         <Button variant="gold" onClick={openCreate}><PlusCircle size={16} /> New Post</Button>
       </div>
@@ -150,26 +150,26 @@ export default function AdminCmsPage() {
       <div className="glass overflow-hidden p-0">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/[0.06]">
+            <tr className="border-b border-border">
               {["Title", "Type", "Status", "Author", "Published", "Views", "Actions"].map((h) => (
-                <th key={h} className="text-left px-4 py-3 text-white/40 text-xs font-semibold uppercase tracking-wider">{h}</th>
+                <th key={h} className="text-left px-4 py-3 text-muted text-xs font-semibold uppercase tracking-wider">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {loading ? (
               [...Array(5)].map((_, i) => (
-                <tr key={i} className="border-b border-white/[0.04]">
+                <tr key={i} className="border-b border-border">
                   {[...Array(7)].map((_, j) => <td key={j} className="px-4 py-3"><div className="skeleton h-4 w-24" /></td>)}
                 </tr>
               ))
             ) : posts.length === 0 ? (
-              <tr><td colSpan={7} className="px-4 py-12 text-center text-white/30">No posts found</td></tr>
+              <tr><td colSpan={7} className="px-4 py-12 text-center text-muted">No posts found</td></tr>
             ) : posts.map((post) => (
-              <tr key={post.id} className="border-b border-white/[0.04] hover:bg-white/[0.02]">
+              <tr key={post.id} className="border-b border-border hover:bg-white/[0.02]">
                 <td className="px-4 py-3">
-                  <div className="font-medium text-white text-sm">{post.title}</div>
-                  <div className="text-white/30 text-xs">/blog/{post.slug}</div>
+                  <div className="font-medium text-foreground text-sm">{post.title}</div>
+                  <div className="text-muted text-xs">/blog/{post.slug}</div>
                 </td>
                 <td className="px-4 py-3">
                   <Badge variant={typeColor[post.type] || "glass"} className="text-[10px]">
@@ -181,9 +181,9 @@ export default function AdminCmsPage() {
                     {post.status}
                   </Badge>
                 </td>
-                <td className="px-4 py-3 text-white/50 text-xs">{post.author.name}</td>
-                <td className="px-4 py-3 text-white/40 text-xs">{post.publishedAt ? formatDate(post.publishedAt) : "—"}</td>
-                <td className="px-4 py-3 text-white/50 text-xs">{post.viewCount || 0}</td>
+                <td className="px-4 py-3 text-muted text-xs">{post.author.name}</td>
+                <td className="px-4 py-3 text-muted text-xs">{post.publishedAt ? formatDate(post.publishedAt) : "—"}</td>
+                <td className="px-4 py-3 text-muted text-xs">{post.viewCount || 0}</td>
                 <td className="px-4 py-3">
                   <div className="flex gap-1">
                     {post.status === "PUBLISHED" && (
@@ -204,8 +204,8 @@ export default function AdminCmsPage() {
           </tbody>
         </table>
         {totalPages > 1 && (
-          <div className="px-4 py-3 border-t border-white/[0.06] flex items-center justify-between">
-            <span className="text-white/40 text-xs">Page {page} of {totalPages}</span>
+          <div className="px-4 py-3 border-t border-border flex items-center justify-between">
+            <span className="text-muted text-xs">Page {page} of {totalPages}</span>
             <div className="flex gap-2">
               <Button variant="glass" size="sm" disabled={page === 1} onClick={() => setPage(p => p - 1)}><ChevronLeft size={14} /></Button>
               <Button variant="glass" size="sm" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}><ChevronRight size={14} /></Button>
@@ -219,11 +219,11 @@ export default function AdminCmsPage() {
         <div className="fixed inset-0 bg-black/80 z-50 overflow-y-auto flex items-start justify-center p-4 pt-8" onClick={() => setShowEditor(false)}>
           <div className="glass-dark rounded-2xl p-6 max-w-3xl w-full my-4" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-semibold text-white text-lg flex items-center gap-2">
+              <h3 className="font-semibold text-foreground text-lg flex items-center gap-2">
                 <FileText size={18} className="text-[#C9972C]" />
                 {editSlug ? "Edit Post" : "New Post"}
               </h3>
-              <button onClick={() => setShowEditor(false)} className="text-white/40 hover:text-white"><X size={20} /></button>
+              <button onClick={() => setShowEditor(false)} className="text-muted hover:text-foreground"><X size={20} /></button>
             </div>
 
             <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
@@ -233,13 +233,13 @@ export default function AdminCmsPage() {
                     error={form.formState.errors.title?.message} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Post Type</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Post Type</label>
                   <select className="input-glass" {...form.register("type")}>
                     {POST_TYPES.slice(1).map((t) => <option key={t} value={t}>{t.replace(/_/g, " ")}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">Status</label>
+                  <label className="block text-xs font-medium text-muted mb-1.5">Status</label>
                   <select className="input-glass" {...form.register("status")}>
                     <option value="DRAFT">Draft</option>
                     <option value="PUBLISHED">Published</option>
@@ -249,7 +249,7 @@ export default function AdminCmsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-white/60 mb-1.5">Content (Markdown / HTML)</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">Content (Markdown / HTML)</label>
                 <textarea
                   className="input-glass min-h-[250px] font-mono text-xs"
                   placeholder="Write your content here..."
@@ -262,13 +262,13 @@ export default function AdminCmsPage() {
               <Input label="Cover Image URL" placeholder="https://..." {...form.register("coverImageUrl")} />
               <Input label="Tags (comma separated)" placeholder="wedding, tips, success" {...form.register("tags")} />
 
-              <hr className="border-white/[0.07]" />
-              <div className="text-white/50 text-xs font-semibold uppercase tracking-wider flex items-center gap-2">
+              <hr className="border-border" />
+              <div className="text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-2">
                 <Globe size={12} /> SEO
               </div>
               <Input label="SEO Title (max 70)" placeholder="Optimized title" {...form.register("seoTitle")} />
               <div>
-                <label className="block text-xs font-medium text-white/60 mb-1.5">SEO Description (max 160)</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">SEO Description (max 160)</label>
                 <textarea className="input-glass" maxLength={160} rows={2} placeholder="Meta description" {...form.register("seoDescription")} />
               </div>
 

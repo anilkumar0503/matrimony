@@ -220,17 +220,17 @@ export default function GalleryPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white mb-1 flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
             <Images size={22} className="text-[#C9972C]" /> My Gallery
           </h1>
-          <p className="text-white/40 text-sm">{activeCount} of {MAX_IMAGES} photos used</p>
+          <p className="text-muted text-sm">{activeCount} of {MAX_IMAGES} photos used</p>
         </div>
       </div>
 
       {/* Gallery Visibility Toggle */}
       <div className={cn(
         "glass p-4 rounded-xl flex items-center justify-between gap-4 border",
-        showGalleryPublic ? "border-emerald-500/20" : "border-white/10"
+        showGalleryPublic ? "border-emerald-500/20" : "border-border"
       )}>
         <div className="flex items-center gap-3">
           <div className={cn(
@@ -239,19 +239,19 @@ export default function GalleryPage() {
           )}>
             {showGalleryPublic
               ? <Eye size={16} className="text-emerald-400" />
-              : <EyeOff size={16} className="text-white/30" />}
+              : <EyeOff size={16} className="text-muted" />}
           </div>
           <div>
-            <p className="text-sm font-medium text-white">
+            <p className="text-sm font-medium text-foreground">
               Gallery visibility
               <span className={cn(
                 "ml-2 text-xs font-semibold px-1.5 py-0.5 rounded-full",
-                showGalleryPublic ? "bg-emerald-500/20 text-emerald-400" : "bg-white/10 text-white/40"
+                showGalleryPublic ? "bg-emerald-500/20 text-emerald-400" : "bg-white/10 text-muted"
               )}>
                 {showGalleryPublic ? "Public" : "Hidden"}
               </span>
             </p>
-            <p className="text-xs text-white/35 mt-0.5">
+            <p className="text-xs text-muted mt-0.5">
               {showGalleryPublic
                 ? "Your approved gallery photos are visible to other members"
                 : "Only your primary photo is shown to others"}
@@ -276,7 +276,7 @@ export default function GalleryPage() {
       </div>
 
       {/* Note: images require admin approval before appearing publicly */}
-      <div className="glass-dark p-3 rounded-xl text-xs text-white/40 flex items-start gap-2 border border-white/5">
+      <div className="glass-dark p-3 rounded-xl text-xs text-muted flex items-start gap-2 border border-border">
         <Clock size={12} className="shrink-0 mt-0.5 text-amber-400/60" />
         <span>All uploaded photos require admin approval before they become visible to others, regardless of visibility settings.</span>
       </div>
@@ -285,8 +285,8 @@ export default function GalleryPage() {
       <div className="glass p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-white/70 text-sm font-medium">Add Photos</p>
-            <p className="text-white/30 text-xs mt-0.5">{slotsLeft} slot{slotsLeft !== 1 ? "s" : ""} remaining · JPG, PNG, WebP · Max 5MB each</p>
+            <p className="text-muted text-sm font-medium">Add Photos</p>
+            <p className="text-muted text-xs mt-0.5">{slotsLeft} slot{slotsLeft !== 1 ? "s" : ""} remaining · JPG, PNG, WebP · Max 5MB each</p>
           </div>
           <div className="flex gap-2">
             <Button
@@ -332,9 +332,9 @@ export default function GalleryPage() {
       {/* Gallery grid */}
       {images.length === 0 ? (
         <div className="glass p-12 text-center rounded-2xl">
-          <Images size={40} className="text-white/10 mx-auto mb-3" />
-          <p className="text-white/40 text-sm">No photos yet</p>
-          <p className="text-white/20 text-xs mt-1">Upload your first photo to get started</p>
+          <Images size={40} className="text-muted mx-auto mb-3" />
+          <p className="text-muted text-sm">No photos yet</p>
+          <p className="text-muted text-xs mt-1">Upload your first photo to get started</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -343,7 +343,7 @@ export default function GalleryPage() {
               key={img.id}
               className={cn(
                 "relative aspect-square rounded-xl overflow-hidden border group",
-                img.status === "REJECTED" ? "border-red-500/30 opacity-60" : "border-white/10"
+                img.status === "REJECTED" ? "border-red-500/30 opacity-60" : "border-border"
               )}
             >
               <img
@@ -369,11 +369,11 @@ export default function GalleryPage() {
                 <button
                   onClick={() => deleteImage(img.id)}
                   disabled={!!deletingId}
-                  className="p-2 rounded-full bg-red-600/90 hover:bg-red-600 text-white transition-colors"
+                  className="p-2 rounded-full bg-red-600/90 hover:bg-red-600 text-foreground transition-colors"
                   title="Delete photo"
                 >
                   {deletingId === img.id
-                    ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin block" />
+                    ? <span className="w-4 h-4 border-2 border-border border-t-white rounded-full animate-spin block" />
                     : <Trash2 size={16} />}
                 </button>
               </div>
@@ -398,7 +398,7 @@ export default function GalleryPage() {
 
       {/* Status legend */}
       {images.length > 0 && (
-        <div className="glass p-4 rounded-xl flex flex-wrap gap-4 text-xs text-white/40">
+        <div className="glass p-4 rounded-xl flex flex-wrap gap-4 text-xs text-muted">
           <span className="flex items-center gap-1.5"><Clock size={11} className="text-amber-400" /> Pending review</span>
           <span className="flex items-center gap-1.5"><CheckCircle size={11} className="text-emerald-400" /> Approved & visible</span>
           <span className="flex items-center gap-1.5"><AlertTriangle size={11} className="text-red-400" /> Rejected — can be deleted</span>
@@ -411,8 +411,8 @@ export default function GalleryPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="glass p-6 max-w-lg w-full">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-white">Take Selfie</h3>
-              <button onClick={stopCamera} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">Take Selfie</h3>
+              <button onClick={stopCamera} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
             <div className="aspect-square bg-black rounded-xl overflow-hidden mb-4">
               <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
@@ -435,10 +435,10 @@ export default function GalleryPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="glass p-6 max-w-lg w-full">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-white">Review Photo</h3>
-              <button onClick={discardCapture} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">Review Photo</h3>
+              <button onClick={discardCapture} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
-            <div className="aspect-square rounded-xl overflow-hidden mb-4 border border-white/10">
+            <div className="aspect-square rounded-xl overflow-hidden mb-4 border border-border">
               <img src={capturedPreviewUrl} alt="Captured" className="w-full h-full object-cover" />
             </div>
             {images.some(i => i.status === "PENDING") && (

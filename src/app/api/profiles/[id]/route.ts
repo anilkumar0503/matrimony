@@ -1,12 +1,12 @@
 import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
-import { getAuthUser, apiResponse, apiError, handleApiError } from "@/lib/auth";
+import { requireUser, apiResponse, apiError, handleApiError } from "@/lib/auth";
 import { getSignedDownloadUrl } from "@/lib/storage";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const payload = await getAuthUser(req).catch(() => null);
-    const viewerId = payload?.sub;
+    const viewer = await requireUser(req);
+    const viewerId = viewer.id;
     const { id } = await params;
 
     const user = await prisma.user.findUnique({
@@ -71,9 +71,19 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const subscriptionTier = user.subscriptions[0]?.plan?.tier || "FREE";
     const showGallery = user.profile?.showGalleryPublic ?? true;
 
-    // Filter: always show profile/primary photo; gallery only if user enabled it
+    // Check if viewer has been granted private gallery access
+    let hasPrivateAccess = false;
+    if (!showGallery && viewerId && viewerId !== id) {
+      const grant = await prisma.galleryAccess.findUnique({
+        where: { ownerId_grantedToId: { ownerId: id, grantedToId: viewerId } },
+        select: { id: true },
+      });
+      hasPrivateAccess = !!grant;
+    }
+
+    // Filter: always show profile/primary photo; gallery if public OR viewer has private access
     const visibleImages = user.images.filter(
-      img => img.category === "PROFILE" || img.isPrimary || showGallery
+      img => img.category === "PROFILE" || img.isPrimary || showGallery || hasPrivateAccess
     );
 
     // Resolve keys to signed URLs
@@ -87,8 +97,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     let interestStatus: string | null = null;
     let isWishlisted = false;
 
+    let pendingPhotoRequestNotifId: string | null = null;
+
     if (viewerId && viewerId !== id) {
-      const [interest, wish] = await Promise.all([
+      const [interest, wish, photoReqNotif] = await Promise.all([
         prisma.interest.findFirst({
           where: { OR: [{ senderId: viewerId, receiverId: id }, { senderId: id, receiverId: viewerId }] },
           orderBy: { createdAt: "desc" },
@@ -98,9 +110,19 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
           where: { userId_profileId: { userId: viewerId, profileId: id } },
           select: { id: true },
         }),
+        // Check if the profile owner (id) has sent a photo request TO the viewer (viewerId)
+        prisma.notification.findFirst({
+          where: {
+            userId: viewerId,
+            eventKey: `photo.request:${id}:${viewerId}`,
+            isRead: false,
+          },
+          select: { id: true },
+        }),
       ]);
       interestStatus = interest?.status || null;
       isWishlisted = !!wish;
+      pendingPhotoRequestNotifId = photoReqNotif?.id || null;
 
       const existingView = await prisma.profileView.findFirst({
         where: { viewerId, viewedId: id },
@@ -117,10 +139,15 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       }
     }
 
+    const hasNoPhotos = user.images.length === 0;
+
     return apiResponse({
       profile: { ...user, images: imagesWithUrls, isKycVerified, subscriptionTier },
       interestStatus,
       isWishlisted,
+      isGalleryHidden: !showGallery,
+      hasNoPhotos,
+      pendingPhotoRequestNotifId,
     });
   } catch (err) {
     return handleApiError(err);

@@ -7,14 +7,14 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen">
       <Navbar />
       {children}
-      <footer className="border-t border-white/[0.06] py-6 px-4">
+      <footer className="border-t border-border py-6 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6">
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
               </div>
-              <p className="text-white/40 text-xs">India's most trusted verified matrimony platform.</p>
+              <p className="text-muted text-xs">India's most trusted verified matrimony platform.</p>
             </div>
             {[
               { title: "Platform", links: [
@@ -37,20 +37,20 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
               ]},
             ].map((col) => (
               <div key={col.title}>
-                <div className="font-medium text-white/80 mb-2 text-xs">{col.title}</div>
+                <div className="font-medium text-foreground mb-2 text-xs">{col.title}</div>
                 <ul className="space-y-1.5">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link href={l.href} className="text-white/40 hover:text-white/70 text-xs transition-colors">{l.label}</Link>
+                      <Link href={l.href} className="text-muted hover:text-foreground text-xs transition-colors">{l.label}</Link>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-          <div className="border-t border-white/[0.06] pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-white/30 text-xs">© 2025 Jasmine Matrimony. All rights reserved.</p>
-            <p className="text-white/30 text-xs">Compliant with DPDP Act 2023 • GST Registered • Secured by AES-256</p>
+          <div className="border-t border-border pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-muted text-xs">© 2025 Jasmine Matrimony. All rights reserved.</p>
+            <p className="text-muted text-xs">Compliant with DPDP Act 2023 • GST Registered • Secured by AES-256</p>
           </div>
         </div>
       </footer>

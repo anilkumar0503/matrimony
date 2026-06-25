@@ -277,8 +277,8 @@ export default function ProfilePage() {
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white mb-1">My Profile</h1>
-          <p className="text-white/40 text-sm">{completionPct}% complete</p>
+          <h1 className="font-display text-2xl font-bold text-foreground mb-1">My Profile</h1>
+          <p className="text-muted text-sm">{completionPct}% complete</p>
         </div>
         <div className="flex gap-2">
           <Button variant="glass" size="sm" asChild>
@@ -298,7 +298,7 @@ export default function ProfilePage() {
       <div className="glass p-4 flex items-center gap-4">
         <div className="flex-1">
           <div className="flex justify-between mb-1.5">
-            <span className="text-white/60 text-xs">Profile Completion</span>
+            <span className="text-muted text-xs">Profile Completion</span>
             <span className="text-[#E8C76A] text-xs font-semibold">{completionPct}%</span>
           </div>
           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
@@ -316,7 +316,7 @@ export default function ProfilePage() {
       {/* Photos */}
       <div className="glass p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-white flex items-center gap-2"><Camera size={16} className="text-[#C9972C]" /> Profile Photos</h3>
+          <h3 className="font-semibold text-foreground flex items-center gap-2"><Camera size={16} className="text-[#C9972C]" /> Profile Photos</h3>
           <Button
             variant="glass"
             size="sm"
@@ -330,15 +330,15 @@ export default function ProfilePage() {
         </div>
         {imgError && <p className="text-red-400 text-xs mb-3">{imgError}</p>}
         {images.length === 0 ? (
-          <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center">
-            <User size={32} className="text-white/20 mx-auto mb-2" />
-            <p className="text-white/40 text-sm">No photos yet</p>
-            <p className="text-white/25 text-xs mt-1">Photos are reviewed by our team before being visible</p>
+          <div className="border-2 border-dashed border-border rounded-xl p-8 text-center">
+            <User size={32} className="text-muted mx-auto mb-2" />
+            <p className="text-muted text-sm">No photos yet</p>
+            <p className="text-muted text-xs mt-1">Photos are reviewed by our team before being visible</p>
           </div>
         ) : (
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
             {images.map((img) => (
-              <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-white/10 group">
+              <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-border group">
                 <img src={img.signedUrl || img.watermarkedUrl || img.originalUrl} alt="" className="w-full h-full object-cover" />
                 {img.isPrimary && (
                   <div className="absolute top-1 left-1 bg-[rgba(201,151,44,0.9)] text-[#1a0505] text-[9px] font-bold px-1.5 py-0.5 rounded-full">
@@ -361,7 +361,7 @@ export default function ProfilePage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="glass p-6 max-w-lg w-full">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-white">Take Selfie</h3>
+              <h3 className="font-semibold text-foreground">Take Selfie</h3>
               <Button variant="ghost" size="sm" onClick={stopCamera}>
                 <X size={16} />
               </Button>
@@ -387,11 +387,11 @@ export default function ProfilePage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="glass p-6 max-w-lg w-full">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-white">Review Photo</h3>
-              <button onClick={discardCapture} className="text-white/40 hover:text-white"><X size={18} /></button>
+              <h3 className="font-semibold text-foreground">Review Photo</h3>
+              <button onClick={discardCapture} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
 
-            <div className="aspect-square rounded-xl overflow-hidden mb-4 border border-white/10">
+            <div className="aspect-square rounded-xl overflow-hidden mb-4 border border-border">
               <img src={capturedPreviewUrl} alt="Captured selfie" className="w-full h-full object-cover" />
             </div>
 
@@ -403,7 +403,7 @@ export default function ProfilePage() {
             )}
 
             {images.some(img => img.status === "APPROVED") && (
-              <div className="glass-dark p-3 rounded-xl mb-4 text-xs text-white/50 flex items-start gap-2">
+              <div className="glass-dark p-3 rounded-xl mb-4 text-xs text-muted flex items-start gap-2">
                 <span className="shrink-0 mt-0.5">ℹ️</span>
                 <span>This photo will be added alongside your approved photos and reviewed by our team.</span>
               </div>
@@ -423,7 +423,7 @@ export default function ProfilePage() {
 
       {/* Profile details - Section 1: Basic Personal Information */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <User size={16} className="text-[#C9972C]" /> Basic Personal Information
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -444,14 +444,14 @@ export default function ProfilePage() {
             { label: "Complexion", value: profile?.complexion },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
             </div>
           ))}
           {profile?.aboutMe && (
             <div className="sm:col-span-2">
-              <div className="text-white/40 text-xs">About Me</div>
-              <div className="text-white/70 text-sm mt-0.5 leading-relaxed">{profile.aboutMe}</div>
+              <div className="text-muted text-xs">About Me</div>
+              <div className="text-muted text-sm mt-0.5 leading-relaxed">{profile.aboutMe}</div>
             </div>
           )}
         </div>
@@ -459,7 +459,7 @@ export default function ProfilePage() {
 
       {/* Section 2: Contact Information */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Shield size={16} className="text-[#C9972C]" /> Contact Information
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -475,8 +475,8 @@ export default function ProfilePage() {
             { label: "Postal Code", value: profile?.postalCode },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
             </div>
           ))}
         </div>
@@ -484,7 +484,7 @@ export default function ProfilePage() {
 
       {/* Section 3: Religion & Community */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Star size={16} className="text-[#C9972C]" /> Religion & Community Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -498,8 +498,8 @@ export default function ProfilePage() {
             { label: "Languages Known", value: profile?.languagesKnown?.join(", ") },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
             </div>
           ))}
         </div>
@@ -507,7 +507,7 @@ export default function ProfilePage() {
 
       {/* Section 4: Horoscope / Astrology */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Target size={16} className="text-[#C9972C]" /> Horoscope / Astrology Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -528,8 +528,8 @@ export default function ProfilePage() {
             { label: "Horoscope Notes", value: profile?.horoscopeNotes },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
             </div>
           ))}
         </div>
@@ -537,7 +537,7 @@ export default function ProfilePage() {
 
       {/* Section 5: Education */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <BookOpen size={16} className="text-[#C9972C]" /> Education Details
         </h3>
         {education && education.length > 0 ? (
@@ -555,8 +555,8 @@ export default function ProfilePage() {
                     { label: "Additional Certifications", value: edu.additionalCerts?.join(", ") },
                   ].map(({ label, value }) => (
                     <div key={label}>
-                      <div className="text-white/40 text-xs">{label}</div>
-                      <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+                      <div className="text-muted text-xs">{label}</div>
+                      <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
                     </div>
                   ))}
                 </div>
@@ -570,8 +570,8 @@ export default function ProfilePage() {
               { label: "University", value: profile?.university },
             ].map(({ label, value }) => (
               <div key={label}>
-                <div className="text-white/40 text-xs">{label}</div>
-                <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+                <div className="text-muted text-xs">{label}</div>
+                <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
               </div>
             ))}
           </div>
@@ -580,7 +580,7 @@ export default function ProfilePage() {
 
       {/* Section 6: Professional Details */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Briefcase size={16} className="text-[#C9972C]" /> Professional Details
         </h3>
         {career && career.length > 0 ? (
@@ -600,8 +600,8 @@ export default function ProfilePage() {
                     { label: "Currency", value: car.currency },
                   ].map(({ label, value }) => (
                     <div key={label}>
-                      <div className="text-white/40 text-xs">{label}</div>
-                      <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+                      <div className="text-muted text-xs">{label}</div>
+                      <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
                     </div>
                   ))}
                 </div>
@@ -618,8 +618,8 @@ export default function ProfilePage() {
               { label: "Work State", value: profile?.workState },
             ].map(({ label, value }) => (
               <div key={label}>
-                <div className="text-white/40 text-xs">{label}</div>
-                <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+                <div className="text-muted text-xs">{label}</div>
+                <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
               </div>
             ))}
           </div>
@@ -628,7 +628,7 @@ export default function ProfilePage() {
 
       {/* Section 7: Family Details */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Users size={16} className="text-[#C9972C]" /> Family Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -647,8 +647,8 @@ export default function ProfilePage() {
             { label: "Family Values", value: profile?.familyValues },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
             </div>
           ))}
         </div>
@@ -656,7 +656,7 @@ export default function ProfilePage() {
 
       {/* Section 8: Lifestyle */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Utensils size={16} className="text-[#C9972C]" /> Lifestyle Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -671,8 +671,8 @@ export default function ProfilePage() {
             { label: "Pets Details", value: profile?.petsDetails },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
             </div>
           ))}
         </div>
@@ -680,7 +680,7 @@ export default function ProfilePage() {
 
       {/* Section 9: Interests */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Heart size={16} className="text-[#C9972C]" /> Interests
         </h3>
         {interests && interests.length > 0 ? (
@@ -690,13 +690,13 @@ export default function ProfilePage() {
             ))}
           </div>
         ) : (
-          <div className="text-white/40 text-sm">No interests added</div>
+          <div className="text-muted text-sm">No interests added</div>
         )}
       </div>
 
       {/* Section 10: Hobbies */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Star size={16} className="text-[#C9972C]" /> Hobbies
         </h3>
         {hobbies && hobbies.length > 0 ? (
@@ -706,32 +706,32 @@ export default function ProfilePage() {
             ))}
           </div>
         ) : (
-          <div className="text-white/40 text-sm">No hobbies added</div>
+          <div className="text-muted text-sm">No hobbies added</div>
         )}
       </div>
 
       {/* Section 11: Favorites */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Heart size={16} className="text-[#C9972C]" /> Favorites
         </h3>
         {favorites && favorites.length > 0 ? (
           <div className="grid sm:grid-cols-2 gap-y-3 gap-x-6">
             {favorites.map((item: any, idx: number) => (
               <div key={idx}>
-                <div className="text-white/40 text-xs">{item.category}</div>
-                <div className="text-white/80 text-sm mt-0.5">{item.value}</div>
+                <div className="text-muted text-xs">{item.category}</div>
+                <div className="text-muted text-sm mt-0.5">{item.value}</div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="text-white/40 text-sm">No favorites added</div>
+          <div className="text-muted text-sm">No favorites added</div>
         )}
       </div>
 
       {/* Section 12: Personality & Values */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <User size={16} className="text-[#C9972C]" /> Personality & Values
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -743,8 +743,8 @@ export default function ProfilePage() {
             { label: "Career Oriented", value: profile?.isCareerOriented ? "Yes" : "No" },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
             </div>
           ))}
           {[
@@ -754,8 +754,8 @@ export default function ProfilePage() {
             { label: "Partner Expectations", value: profile?.partnerExpectations },
           ].map(({ label, value }) => (
             <div key={label} className="sm:col-span-2">
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/70 text-sm mt-0.5 leading-relaxed">{value || "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5 leading-relaxed">{value || "—"}</div>
             </div>
           ))}
         </div>
@@ -763,7 +763,7 @@ export default function ProfilePage() {
 
       {/* Section 13: Assets */}
       <div className="glass p-6">
-        <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+        <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
           <Home size={16} className="text-[#C9972C]" /> Assets & Financial Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -777,8 +777,8 @@ export default function ProfilePage() {
             { label: "Family Business Details", value: profile?.familyBusinessDetails },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div className="text-white/40 text-xs">{label}</div>
-              <div className="text-white/80 text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
+              <div className="text-muted text-xs">{label}</div>
+              <div className="text-muted text-sm mt-0.5">{value !== null && value !== undefined ? value : "—"}</div>
             </div>
           ))}
         </div>
@@ -787,7 +787,7 @@ export default function ProfilePage() {
       {/* Section 14: Partner Preferences */}
       {partnerPreferences && (
         <div className="glass p-6">
-          <h3 className="font-semibold text-white mb-5 flex items-center gap-2">
+          <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
             <Heart size={16} className="text-[#C9972C]" /> Partner Preferences
           </h3>
           <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
@@ -813,8 +813,8 @@ export default function ProfilePage() {
               { label: "Manglik Preference", value: partnerPreferences.manglikPref },
             ].map(({ label, value }) => (
               <div key={label}>
-                <div className="text-white/40 text-xs">{label}</div>
-                <div className="text-white/80 text-sm mt-0.5">{value || "—"}</div>
+                <div className="text-muted text-xs">{label}</div>
+                <div className="text-muted text-sm mt-0.5">{value || "—"}</div>
               </div>
             ))}
           </div>

@@ -159,10 +159,10 @@ export default function AdminSettingsPage() {
     <div className="space-y-8 max-w-4xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <Settings size={22} className="text-[#C9972C]" /> Platform Settings
           </h1>
-          <p className="text-white/40 text-sm">All changes are audit-logged and cached</p>
+          <p className="text-muted text-sm">All changes are audit-logged and cached</p>
         </div>
         <div className="flex items-center gap-3">
           {savedMsg && <span className="text-emerald-400 text-sm">{savedMsg}</span>}
@@ -177,7 +177,7 @@ export default function AdminSettingsPage() {
 
       {SETTING_GROUPS.map((group) => (
         <div key={group.label} className="glass p-6">
-          <h3 className="font-semibold text-white mb-5 pb-3 border-b border-white/[0.07]">{group.label}</h3>
+          <h3 className="font-semibold text-foreground mb-5 pb-3 border-b border-border">{group.label}</h3>
           <div className="grid sm:grid-cols-2 gap-4">
             {group.keys.map((field) => {
               const isSecret = field.type === "password";
@@ -185,7 +185,7 @@ export default function AdminSettingsPage() {
               const hasChange = field.key in changed;
               return (
                 <div key={field.key}>
-                  <label className="block text-xs font-medium text-white/60 mb-1.5">
+                  <label className="block text-xs font-medium text-muted mb-1.5">
                     {field.label}
                     {hasChange && <span className="ml-2 text-amber-400 text-[10px]">● unsaved</span>}
                   </label>
@@ -205,13 +205,13 @@ export default function AdminSettingsPage() {
                       <button
                         type="button"
                         onClick={() => setShowSecrets((prev) => ({ ...prev, [field.key]: !prev[field.key] }))}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-muted"
                       >
                         {visible ? <EyeOff size={14} /> : <Eye size={14} />}
                       </button>
                     )}
                   </div>
-                  {field.hint && <p className="text-white/30 text-[10px] mt-1">{field.hint}</p>}
+                  {field.hint && <p className="text-muted text-[10px] mt-1">{field.hint}</p>}
                 </div>
               );
             })}
@@ -220,8 +220,8 @@ export default function AdminSettingsPage() {
       ))}
 
       <div className="glass p-4 flex items-center gap-3">
-        <RefreshCw size={16} className="text-white/40" />
-        <span className="text-white/40 text-xs">Settings are cached for 5 minutes. Changes take effect immediately after save.</span>
+        <RefreshCw size={16} className="text-muted" />
+        <span className="text-muted text-xs">Settings are cached for 5 minutes. Changes take effect immediately after save.</span>
       </div>
     </div>
   );

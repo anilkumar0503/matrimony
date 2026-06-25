@@ -11,8 +11,8 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
     <div className="min-h-screen bg-[#1a0505] flex items-center justify-center p-4">
       <div className="text-center max-w-md">
         <div className="font-display text-[120px] font-bold text-red-900/20 leading-none select-none">500</div>
-        <h1 className="font-display text-3xl font-bold text-white mt-2 mb-3">Something Went Wrong</h1>
-        <p className="text-white/50 text-sm mb-8 leading-relaxed">
+        <h1 className="font-display text-3xl font-bold text-foreground mt-2 mb-3">Something Went Wrong</h1>
+        <p className="text-muted text-sm mb-8 leading-relaxed">
           An unexpected error occurred. Our team has been notified. Please try again or return to the home page.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -24,7 +24,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
           </button>
           <a
             href="/"
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-white/[0.05] border border-white/[0.1] text-white/70 rounded-xl text-sm font-medium hover:bg-white/[0.08] transition-colors"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-white/[0.05] border border-border text-muted rounded-xl text-sm font-medium hover:bg-white/[0.08] transition-colors"
           >
             <Home size={16} /> Go Home
           </a>

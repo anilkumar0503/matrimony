@@ -149,10 +149,10 @@ export default function KycPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2 mb-1">
+        <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
           <Shield size={22} className="text-[#C9972C]" /> KYC Verification
         </h1>
-        <p className="text-white/40 text-sm">Verify your identity to activate your profile</p>
+        <p className="text-muted text-sm">Verify your identity to activate your profile</p>
       </div>
 
       {/* Status card */}
@@ -161,8 +161,8 @@ export default function KycPage() {
           <div className="flex items-center gap-3">
             <sc.icon size={22} className={sc.color} />
             <div>
-              <div className="font-medium text-white">{sc.label}</div>
-              <div className="text-white/40 text-xs">Submitted {formatDateTime(kyc.createdAt)} · Attempt #{kyc.attempts}</div>
+              <div className="font-medium text-foreground">{sc.label}</div>
+              <div className="text-muted text-xs">Submitted {formatDateTime(kyc.createdAt)} · Attempt #{kyc.attempts}</div>
             </div>
           </div>
           <Badge variant={sc.variant}>{kyc.status}</Badge>
@@ -175,10 +175,10 @@ export default function KycPage() {
           <div className="flex items-start gap-3">
             <AlertTriangle size={18} className="text-red-400 shrink-0 mt-0.5" />
             <div>
-              <div className="font-medium text-white mb-1">Rejection Reason</div>
-              <div className="text-white/70 text-sm">{kyc.rejectionReason?.replace(/_/g, " ") || "—"}</div>
-              {kyc.rejectionNotes && <div className="text-white/50 text-xs mt-1">{kyc.rejectionNotes}</div>}
-              <div className="text-white/30 text-xs mt-2">You can resubmit up to {3 - kyc.attempts} more time(s).</div>
+              <div className="font-medium text-foreground mb-1">Rejection Reason</div>
+              <div className="text-muted text-sm">{kyc.rejectionReason?.replace(/_/g, " ") || "—"}</div>
+              {kyc.rejectionNotes && <div className="text-muted text-xs mt-1">{kyc.rejectionNotes}</div>}
+              <div className="text-muted text-xs mt-2">You can resubmit up to {3 - kyc.attempts} more time(s).</div>
             </div>
           </div>
         </div>
@@ -188,8 +188,8 @@ export default function KycPage() {
       {approved && (
         <div className="glass border-emerald-700/30 bg-emerald-900/10 p-8 text-center">
           <CheckCircle size={48} className="text-emerald-400 mx-auto mb-3" />
-          <div className="font-display text-xl font-bold text-white mb-2">Identity Verified!</div>
-          <div className="text-white/50 text-sm">Your profile is now KYC-verified and visible to other members.</div>
+          <div className="font-display text-xl font-bold text-foreground mb-2">Identity Verified!</div>
+          <div className="text-muted text-sm">Your profile is now KYC-verified and visible to other members.</div>
         </div>
       )}
 
@@ -198,12 +198,12 @@ export default function KycPage() {
         <div className="glass p-6 space-y-5">
           <div className="flex items-center gap-2 mb-2">
             <Camera size={18} className="text-[#C9972C]" />
-            <h3 className="font-semibold text-white">Mode A — Selfie with Code</h3>
+            <h3 className="font-semibold text-foreground">Mode A — Selfie with Code</h3>
             <Badge variant="gold" className="text-[10px]">Recommended</Badge>
           </div>
 
           <div className="bg-[rgba(201,151,44,0.05)] border border-[rgba(201,151,44,0.15)] rounded-xl p-4">
-            <ol className="text-white/60 text-sm space-y-2">
+            <ol className="text-muted text-sm space-y-2">
               <li className="flex gap-2"><span className="text-[#C9972C] font-bold">1.</span> Get your verification code below</li>
               <li className="flex gap-2"><span className="text-[#C9972C] font-bold">2.</span> Write the code clearly on plain white paper</li>
               <li className="flex gap-2"><span className="text-[#C9972C] font-bold">3.</span> Take a selfie holding the paper — face and code must be clearly visible</li>
@@ -214,11 +214,11 @@ export default function KycPage() {
           {/* Verification code */}
           {kyc?.verificationCode ? (
             <div>
-              <div className="text-white/50 text-xs mb-2">Your Verification Code</div>
+              <div className="text-muted text-xs mb-2">Your Verification Code</div>
               <div className="glass-gold p-4 text-center">
                 <div className="font-mono text-3xl font-bold tracking-[0.5rem] text-[#E8C76A]">{kyc.verificationCode}</div>
                 {kyc.codeExpiresAt && (
-                  <div className="text-white/40 text-xs mt-2">
+                  <div className="text-muted text-xs mt-2">
                     Valid until {formatDateTime(kyc.codeExpiresAt)}
                   </div>
                 )}
@@ -233,7 +233,7 @@ export default function KycPage() {
           {/* Capture selfie */}
           {kyc?.verificationCode && (
             <div className="space-y-3">
-              <div className="text-white/50 text-xs">Capture Selfie with Code</div>
+              <div className="text-muted text-xs">Capture Selfie with Code</div>
               {kyc.selfieUrl ? (
                 <div className="relative">
                   <img 
@@ -242,7 +242,7 @@ export default function KycPage() {
                     className="w-full aspect-square object-cover rounded-xl border-2 border-emerald-600/60"
                   />
                   <div className="absolute top-2 right-2 bg-emerald-500 rounded-full p-1">
-                    <CheckCircle size={16} className="text-white" />
+                    <CheckCircle size={16} className="text-foreground" />
                   </div>
                 </div>
               ) : (
@@ -253,12 +253,12 @@ export default function KycPage() {
                   className="w-full border-2 border-dashed h-24"
                 >
                   {uploading === "selfie" ? (
-                    <span className="text-white/60 text-sm">Uploading...</span>
+                    <span className="text-muted text-sm">Uploading...</span>
                   ) : (
                     <span className="space-y-1">
-                      <Camera size={24} className="text-white/30 mx-auto" />
-                      <div className="text-white/50 text-sm">Click to capture selfie with code</div>
-                      <div className="text-white/25 text-xs">Use device camera</div>
+                      <Camera size={24} className="text-muted mx-auto" />
+                      <div className="text-muted text-sm">Click to capture selfie with code</div>
+                      <div className="text-muted text-xs">Use device camera</div>
                     </span>
                   )}
                 </Button>
@@ -273,7 +273,7 @@ export default function KycPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="glass p-6 max-w-lg w-full">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-white">Capture Selfie with Code</h3>
+              <h3 className="font-semibold text-foreground">Capture Selfie with Code</h3>
               <Button variant="ghost" size="sm" onClick={stopCamera}>
                 <XCircle size={16} />
               </Button>
@@ -299,9 +299,9 @@ export default function KycPage() {
         <div className="glass p-6 space-y-4">
           <div className="flex items-center gap-2 mb-2">
             <FileText size={18} className="text-[#C9972C]" />
-            <h3 className="font-semibold text-white">Mode B — Government ID Upload</h3>
+            <h3 className="font-semibold text-foreground">Mode B — Government ID Upload</h3>
           </div>
-          <p className="text-white/50 text-sm">Upload a clear photo of your Aadhaar card, PAN card, or passport.</p>
+          <p className="text-muted text-sm">Upload a clear photo of your Aadhaar card, PAN card, or passport.</p>
 
           <input ref={idRef} type="file" accept="image/*,application/pdf" className="hidden"
             onChange={(e) => { if (e.target.files?.[0]) uploadFile(e.target.files[0], "id"); }} />
@@ -311,7 +311,7 @@ export default function KycPage() {
                 <div className="w-full aspect-[3/2] bg-white/5 rounded-xl border-2 border-emerald-600/60 flex items-center justify-center">
                   <div className="text-center">
                     <FileText size={32} className="text-emerald-400 mx-auto mb-2" />
-                    <div className="text-white/70 text-sm">ID Document (PDF)</div>
+                    <div className="text-muted text-sm">ID Document (PDF)</div>
                   </div>
                 </div>
               ) : (
@@ -322,22 +322,22 @@ export default function KycPage() {
                 />
               )}
               <div className="absolute top-2 right-2 bg-emerald-500 rounded-full p-1">
-                <CheckCircle size={16} className="text-white" />
+                <CheckCircle size={16} className="text-foreground" />
               </div>
             </div>
           ) : (
             <button
               onClick={() => idRef.current?.click()}
               className={`w-full border-2 border-dashed rounded-xl p-6 text-center transition-colors
-                ${uploaded.id ? "border-emerald-600/60 bg-emerald-900/10" : "border-white/10 hover:border-[rgba(201,151,44,0.3)]"}`}
+                ${uploaded.id ? "border-emerald-600/60 bg-emerald-900/10" : "border-border hover:border-[rgba(201,151,44,0.3)]"}`}
             >
               {uploading === "id" ? (
-                <div className="text-white/60 text-sm">Uploading...</div>
+                <div className="text-muted text-sm">Uploading...</div>
               ) : (
                 <div className="space-y-1">
-                  <Upload size={24} className="text-white/30 mx-auto" />
-                  <div className="text-white/50 text-sm">Click to upload government ID</div>
-                  <div className="text-white/25 text-xs">Aadhaar / PAN / Passport · JPG, PNG, PDF</div>
+                  <Upload size={24} className="text-muted mx-auto" />
+                  <div className="text-muted text-sm">Click to upload government ID</div>
+                  <div className="text-muted text-xs">Aadhaar / PAN / Passport · JPG, PNG, PDF</div>
                 </div>
               )}
             </button>
@@ -346,8 +346,8 @@ export default function KycPage() {
       )}
 
       <div className="glass p-4 flex items-start gap-3">
-        <Shield size={16} className="text-white/30 mt-0.5 shrink-0" />
-        <p className="text-white/40 text-xs">
+        <Shield size={16} className="text-muted mt-0.5 shrink-0" />
+        <p className="text-muted text-xs">
           Your KYC documents are encrypted and stored securely. They are reviewed only by authorized admin staff.
           Documents are deleted after 90 days of approved verification per DPDP Act 2023.
         </p>

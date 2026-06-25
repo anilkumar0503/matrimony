@@ -50,11 +50,11 @@ export default function HomePage() {
             <Shield size={12} />
             KYC-Verified Profiles Only
           </span>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
             Find Your Perfect{" "}
             <span className="shimmer-text">Life Partner</span>
           </h1>
-          <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
             India's most trusted verified matrimony platform. Every profile is admin-approved,
             KYC-verified, and protected by DPDP Act 2023 compliance.
           </p>
@@ -82,7 +82,7 @@ export default function HomePage() {
           {stats.map((s) => (
             <div key={s.label} className="glass text-center py-8">
               <div className="font-display text-3xl font-bold shimmer-text mb-1">{s.value}</div>
-              <div className="text-white/50 text-sm">{s.label}</div>
+              <div className="text-muted text-sm">{s.label}</div>
             </div>
           ))}
         </div>
@@ -92,8 +92,8 @@ export default function HomePage() {
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-display text-4xl font-bold text-white mb-4">Why Choose Us?</h2>
-            <p className="text-white/50 text-lg max-w-xl mx-auto">
+            <h2 className="font-display text-4xl font-bold text-foreground mb-4">Why Choose Us?</h2>
+            <p className="text-muted text-lg max-w-xl mx-auto">
               Built for families who value trust, privacy, and a dignified matchmaking experience.
             </p>
           </div>
@@ -103,8 +103,8 @@ export default function HomePage() {
                 <div className="w-12 h-12 rounded-xl bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] flex items-center justify-center mb-4 group-hover:bg-[rgba(201,151,44,0.15)] transition-colors">
                   <f.icon size={22} className="text-[#C9972C]" />
                 </div>
-                <h3 className="font-semibold text-white mb-2">{f.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{f.desc}</p>
+                <h3 className="font-semibold text-foreground mb-2">{f.title}</h3>
+                <p className="text-muted text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -115,8 +115,8 @@ export default function HomePage() {
       <section className="py-20 px-4" id="plans">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="font-display text-4xl font-bold text-white mb-4">Simple, Transparent Pricing</h2>
-            <p className="text-white/50 text-lg">No hidden charges. GST inclusive. Cancel anytime.</p>
+            <h2 className="font-display text-4xl font-bold text-foreground mb-4">Simple, Transparent Pricing</h2>
+            <p className="text-muted text-lg">No hidden charges. GST inclusive. Cancel anytime.</p>
           </div>
           <div className="grid sm:grid-cols-3 gap-6">
             {plans.map((plan) => (
@@ -130,15 +130,15 @@ export default function HomePage() {
                   </div>
                 )}
                 <div className="mb-6">
-                  <div className="text-white/60 text-sm mb-1">{plan.name}</div>
-                  <div className="font-display text-4xl font-bold text-white">
+                  <div className="text-muted text-sm mb-1">{plan.name}</div>
+                  <div className="font-display text-4xl font-bold text-foreground">
                     {plan.price}
-                    <span className="text-lg font-normal text-white/40">/mo</span>
+                    <span className="text-lg font-normal text-muted">/mo</span>
                   </div>
                 </div>
                 <ul className="space-y-2.5 mb-8 flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-white/70">
+                    <li key={f} className="flex items-center gap-2 text-sm text-muted">
                       <CheckCircle size={14} className="text-[#C9972C] shrink-0" />
                       {f}
                     </li>
@@ -156,8 +156,8 @@ export default function HomePage() {
       {/* CTA */}
       <section className="py-20 px-4">
         <div className="max-w-3xl mx-auto glass-gold text-center py-16 px-8 rounded-2xl">
-          <h2 className="font-display text-4xl font-bold text-white mb-4">Begin Your Journey Today</h2>
-          <p className="text-white/60 mb-8">
+          <h2 className="font-display text-4xl font-bold text-foreground mb-4">Begin Your Journey Today</h2>
+          <p className="text-muted mb-8">
             Join thousands of verified families. Create your free profile in minutes.
           </p>
           <Button variant="gold" size="xl" asChild>
@@ -167,15 +167,15 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.06] py-12 px-4">
+      <footer className="border-t border-border py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Heart size={16} className="text-[#C9972C]" />
-                <span className="font-display font-bold text-white">Jasmine Matrimony</span>
+                <span className="font-display font-bold text-foreground">Jasmine Matrimony</span>
               </div>
-              <p className="text-white/40 text-sm">India's most trusted verified matrimony platform.</p>
+              <p className="text-muted text-sm">India's most trusted verified matrimony platform.</p>
             </div>
             {[
               { title: "Platform", links: [
@@ -198,20 +198,20 @@ export default function HomePage() {
               ]},
             ].map((col) => (
               <div key={col.title}>
-                <div className="font-medium text-white/80 mb-3 text-sm">{col.title}</div>
+                <div className="font-medium text-foreground mb-3 text-sm">{col.title}</div>
                 <ul className="space-y-2">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link href={l.href} className="text-white/40 hover:text-white/70 text-sm transition-colors">{l.label}</Link>
+                      <Link href={l.href} className="text-muted hover:text-foreground text-sm transition-colors">{l.label}</Link>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-          <div className="border-t border-white/[0.06] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-white/30 text-xs">© 2025 Jasmine Matrimony. All rights reserved.</p>
-            <p className="text-white/30 text-xs">Compliant with DPDP Act 2023 • GST Registered • Secured by AES-256</p>
+          <div className="border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-muted text-xs">© 2025 Jasmine Matrimony. All rights reserved.</p>
+            <p className="text-muted text-xs">Compliant with DPDP Act 2023 • GST Registered • Secured by AES-256</p>
           </div>
         </div>
       </footer>

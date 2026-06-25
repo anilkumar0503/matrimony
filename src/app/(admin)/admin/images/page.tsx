@@ -110,8 +110,8 @@ export default function AdminImagesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white">Image Moderation</h1>
-          <p className="text-white/40 text-sm">
+          <h1 className="font-display text-2xl font-bold text-foreground">Image Moderation</h1>
+          <p className="text-muted text-sm">
             {pendingCount} pending · {total} {statusFilter.toLowerCase()} images
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function AdminImagesPage() {
           </Button>
           {selected.size > 0 && (
             <>
-              <span className="text-white/50 text-sm">{selected.size} selected</span>
+              <span className="text-muted text-sm">{selected.size} selected</span>
               <Button variant="glass" size="sm" className="text-emerald-400" onClick={() => bulkAction("APPROVE")} loading={processing}>
                 <CheckCircle size={14} /> Approve Selected
               </Button>
@@ -155,21 +155,21 @@ export default function AdminImagesPage() {
           {[...Array(10)].map((_, i) => <div key={i} className="skeleton aspect-square rounded-xl" />)}
         </div>
       ) : images.length === 0 ? (
-        <div className="glass p-16 text-center text-white/30">No {statusFilter.toLowerCase()} images</div>
+        <div className="glass p-16 text-center text-muted">No {statusFilter.toLowerCase()} images</div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {images.map((img) => (
             <div
               key={img.id}
               className={`relative group rounded-xl overflow-hidden border-2 transition-all cursor-pointer
-                ${selected.has(img.id) ? "border-[#C9972C] ring-2 ring-[rgba(201,151,44,0.3)]" : "border-white/10"}`}
+                ${selected.has(img.id) ? "border-[#C9972C] ring-2 ring-[rgba(201,151,44,0.3)]" : "border-border"}`}
               onClick={() => statusFilter === "PENDING" && toggleSelect(img.id)}
             >
               <div className="aspect-square bg-white/5">
                 {img.signedUrl ? (
                   <img src={img.signedUrl} alt="Profile image" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-white/20 text-xs">No preview</div>
+                  <div className="w-full h-full flex items-center justify-center text-muted text-xs">No preview</div>
                 )}
               </div>
               {/* Overlay */}
@@ -181,15 +181,15 @@ export default function AdminImagesPage() {
                   <Badge variant="glass" className="text-[9px]">{img.category}</Badge>
                 </div>
                 <div>
-                  <div className="text-white text-xs font-medium truncate">{img.user.profile?.fullName || img.user.email}</div>
-                  <div className="text-white/50 text-[10px]">{formatDateTime(img.createdAt)}</div>
+                  <div className="text-foreground text-xs font-medium truncate">{img.user.profile?.fullName || img.user.email}</div>
+                  <div className="text-muted text-[10px]">{formatDateTime(img.createdAt)}</div>
                   {img.status === "PENDING" && (
                     <div className="flex gap-1 mt-2" onClick={(e) => e.stopPropagation()}>
-                      <button className="flex-1 bg-emerald-700/80 text-white text-[10px] py-1 rounded flex items-center justify-center gap-0.5"
+                      <button className="flex-1 bg-emerald-700/80 text-foreground text-[10px] py-1 rounded flex items-center justify-center gap-0.5"
                         onClick={() => singleAction(img.id, "APPROVE")}>
                         <CheckCircle size={10} /> OK
                       </button>
-                      <button className="flex-1 bg-red-800/80 text-white text-[10px] py-1 rounded flex items-center justify-center gap-0.5"
+                      <button className="flex-1 bg-red-800/80 text-foreground text-[10px] py-1 rounded flex items-center justify-center gap-0.5"
                         onClick={() => { setRejectTarget(img.id); setPreview(img); }}>
                         <XCircle size={10} /> Rej.
                       </button>
@@ -211,7 +211,7 @@ export default function AdminImagesPage() {
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-3">
           <Button variant="glass" size="sm" disabled={page === 1} onClick={() => setPage(p => p - 1)}><ChevronLeft size={14} /></Button>
-          <span className="text-white/50 text-sm">Page {page} of {totalPages}</span>
+          <span className="text-muted text-sm">Page {page} of {totalPages}</span>
           <Button variant="glass" size="sm" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}><ChevronRight size={14} /></Button>
         </div>
       )}
@@ -219,9 +219,9 @@ export default function AdminImagesPage() {
       {/* Reject reason modal */}
       {rejectTarget && preview && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => { setRejectTarget(null); setPreview(null); }}>
-          <div className="glass-dark p-6 rounded-2xl max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-semibold text-white mb-4">Reject Image</h3>
-            <p className="text-white/50 text-sm mb-4">{preview.user.profile?.fullName || preview.user.email}</p>
+          <div className="bg-background border border-border p-6 rounded-2xl max-w-sm w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-semibold text-foreground mb-4">Reject Image</h3>
+            <p className="text-muted text-sm mb-4">{preview.user.profile?.fullName || preview.user.email}</p>
             <textarea
               className="input-glass min-h-[80px] mb-4"
               placeholder="Reason for rejection (shown to member)..."

@@ -172,8 +172,8 @@ export default function SettingsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-white mb-1">Account Settings</h1>
-        <p className="text-white/40 text-sm">Manage your notifications, privacy, security, and data rights</p>
+        <h1 className="font-display text-2xl font-bold text-foreground mb-1">Account Settings</h1>
+        <p className="text-muted text-sm">Manage your notifications, privacy, security, and data rights</p>
       </div>
 
       {/* Tab nav */}
@@ -183,7 +183,7 @@ export default function SettingsPage() {
             className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all
               ${tab === key
                 ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]"
-                : "text-white/50 hover:text-white hover:bg-white/[0.05]"
+                : "text-muted hover:text-foreground hover:bg-white/[0.05]"
               } ${key === "danger" ? "text-red-400 hover:text-red-300 hover:bg-red-900/10" : ""}`}>
             <Icon size={14} />{label}
           </button>
@@ -193,11 +193,11 @@ export default function SettingsPage() {
       {/* Notifications */}
       {tab === "notifications" && (
         <div className="glass p-6 space-y-5">
-          <h3 className="font-semibold text-white">Notification Preferences</h3>
+          <h3 className="font-semibold text-foreground">Notification Preferences</h3>
           <div className="space-y-3">
             {NOTIFICATION_PREFS.map((pref) => (
               <label key={pref.key} className="flex items-center justify-between cursor-pointer group">
-                <span className="text-white/70 text-sm group-hover:text-white transition-colors">{pref.label}</span>
+                <span className="text-muted text-sm group-hover:text-foreground transition-colors">{pref.label}</span>
                 <div
                   className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer
                     ${notifPrefs[pref.key] ? "bg-[#C9972C]" : "bg-white/10"}`}
@@ -216,12 +216,12 @@ export default function SettingsPage() {
       {/* Privacy */}
       {tab === "privacy" && (
         <div className="glass p-6 space-y-5">
-          <h3 className="font-semibold text-white">Visibility Controls</h3>
-          <p className="text-white/50 text-sm">Control who can see your sensitive information</p>
+          <h3 className="font-semibold text-foreground">Visibility Controls</h3>
+          <p className="text-muted text-sm">Control who can see your sensitive information</p>
           <div className="space-y-4">
             {VISIBILITY_OPTIONS.map((opt) => (
               <div key={opt.key} className="flex items-center justify-between">
-                <span className="text-white/70 text-sm">{opt.label}</span>
+                <span className="text-muted text-sm">{opt.label}</span>
                 <select
                   className="input-glass w-44 text-sm"
                   value={visPrefs[opt.key]}
@@ -242,7 +242,7 @@ export default function SettingsPage() {
       {/* Security */}
       {tab === "security" && (
         <div className="glass p-6 space-y-5">
-          <h3 className="font-semibold text-white">Change Password</h3>
+          <h3 className="font-semibold text-foreground">Change Password</h3>
           <form onSubmit={pwForm.handleSubmit(changePassword)} className="space-y-4">
             <Input label="Current Password" type="password" placeholder="••••••••"
               icon={<Lock size={15} />} error={pwForm.formState.errors.currentPassword?.message}
@@ -260,23 +260,23 @@ export default function SettingsPage() {
               Update Password
             </Button>
           </form>
-          <hr className="border-white/[0.07]" />
+          <hr className="border-border" />
           <div>
-            <h3 className="font-semibold text-white mb-2">Active Sessions</h3>
-            <p className="text-white/50 text-sm mb-4">Manage your active login sessions across devices.</p>
+            <h3 className="font-semibold text-foreground mb-2">Active Sessions</h3>
+            <p className="text-muted text-sm mb-4">Manage your active login sessions across devices.</p>
             {loadingSessions ? (
-              <div className="text-white/40 text-sm">Loading sessions...</div>
+              <div className="text-muted text-sm">Loading sessions...</div>
             ) : sessions.length === 0 ? (
-              <div className="text-white/40 text-sm">No active sessions found.</div>
+              <div className="text-muted text-sm">No active sessions found.</div>
             ) : (
               <div className="space-y-3">
                 {sessions.map((s) => (
-                  <div key={s.id} className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]">
+                  <div key={s.id} className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-border">
                     <div className="flex items-center gap-3">
-                      <Monitor size={16} className="text-white/40" />
+                      <Monitor size={16} className="text-muted" />
                       <div>
-                        <div className="text-white text-sm">{s.deviceInfo || "Unknown Device"}</div>
-                        <div className="text-white/40 text-xs">
+                        <div className="text-foreground text-sm">{s.deviceInfo || "Unknown Device"}</div>
+                        <div className="text-muted text-xs">
                           {s.ipAddress} • {new Date(s.createdAt).toLocaleDateString()}
                           {s.isCurrent && <span className="ml-2 text-[#C9972C] text-[10px]">(Current)</span>}
                         </div>
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                     {!s.isCurrent && (
                       <button
                         onClick={() => revokeSession(s.id)}
-                        className="text-white/30 hover:text-red-400 transition-colors p-1"
+                        className="text-muted hover:text-red-400 transition-colors p-1"
                         title="Revoke session"
                       >
                         <X size={14} />
@@ -315,10 +315,10 @@ export default function SettingsPage() {
       {tab === "dpdp" && (
         <div className="glass p-6 space-y-6">
           <div>
-            <h3 className="font-semibold text-white flex items-center gap-2 mb-1">
+            <h3 className="font-semibold text-foreground flex items-center gap-2 mb-1">
               <Shield size={16} className="text-[#C9972C]" /> Your Data Rights
             </h3>
-            <p className="text-white/50 text-sm">
+            <p className="text-muted text-sm">
               Under the Digital Personal Data Protection Act 2023, you have the following rights.
             </p>
           </div>
@@ -354,26 +354,26 @@ export default function SettingsPage() {
               action: <Button variant="glass" size="sm" asChild><Link href="/dashboard/settings/consent">Manage Consent</Link></Button>,
             },
           ].map((right) => (
-            <div key={right.title} className="flex items-start justify-between gap-4 border-b border-white/[0.07] pb-4 last:border-0 last:pb-0">
+            <div key={right.title} className="flex items-start justify-between gap-4 border-b border-border pb-4 last:border-0 last:pb-0">
               <div>
-                <div className="font-medium text-white text-sm">{right.title}</div>
-                <div className="text-white/45 text-xs mt-0.5">{right.desc}</div>
+                <div className="font-medium text-foreground text-sm">{right.title}</div>
+                <div className="text-muted text-xs mt-0.5">{right.desc}</div>
               </div>
               {right.action}
             </div>
           ))}
 
-          <div className="glass-dark p-4 rounded-xl text-white/30 text-xs">
+          <div className="glass-dark p-4 rounded-xl text-muted text-xs">
             Data Protection Officer: dpo@matrimony.com · Grievance redressal within 30 days per DPDP Act 2023
           </div>
 
-          <hr className="border-white/[0.07]" />
+          <hr className="border-border" />
 
           <div>
-            <h3 className="font-semibold text-white flex items-center gap-2 mb-1">
+            <h3 className="font-semibold text-foreground flex items-center gap-2 mb-1">
               <Shield size={16} className="text-[#C9972C]" /> Nomination (DPDP Right)
             </h3>
-            <p className="text-white/50 text-sm mb-4">
+            <p className="text-muted text-sm mb-4">
               Nominate a person to manage your account in case of death or incapacity.
             </p>
             <div className="space-y-3">
@@ -415,7 +415,7 @@ export default function SettingsPage() {
           <h3 className="font-semibold text-red-400 flex items-center gap-2">
             <AlertTriangle size={16} /> Danger Zone
           </h3>
-          <p className="text-white/50 text-sm">
+          <p className="text-muted text-sm">
             Deleting your account is irreversible. All your data, matches, and subscription will be permanently removed
             after the 30-day retention period as per DPDP Act 2023.
           </p>
@@ -428,11 +428,11 @@ export default function SettingsPage() {
       {/* Delete modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setShowDeleteModal(false)}>
-          <div className="glass-dark p-6 rounded-2xl max-w-md w-full" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-background border border-border p-6 rounded-2xl max-w-md w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-semibold text-red-400 mb-2 flex items-center gap-2">
               <Trash2 size={16} /> Confirm Account Deletion
             </h3>
-            <p className="text-white/50 text-sm mb-5">
+            <p className="text-muted text-sm mb-5">
               This will permanently delete your profile, photos, matches, and all associated data.
               Your data will be retained for 30 days for compliance, then permanently erased.
             </p>
@@ -441,7 +441,7 @@ export default function SettingsPage() {
                 icon={<Lock size={15} />} error={deleteForm.formState.errors.password?.message}
                 {...deleteForm.register("password", { required: "Password required" })} />
               <div>
-                <label className="block text-xs font-medium text-white/60 mb-1.5">Reason (optional)</label>
+                <label className="block text-xs font-medium text-muted mb-1.5">Reason (optional)</label>
                 <textarea className="input-glass min-h-[70px]" placeholder="Tell us why you're leaving..."
                   {...deleteForm.register("reason")} />
               </div>

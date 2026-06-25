@@ -8,11 +8,11 @@ const badgeVariants = cva(
     variants: {
       variant: {
         gold: "bg-[rgba(201,151,44,0.12)] border border-[rgba(201,151,44,0.35)] text-[#E8C76A] text-xs px-2.5 py-0.5",
-        glass: "bg-white/[0.08] border border-white/[0.12] text-white/85 text-xs px-2.5 py-0.5",
-        success: "bg-emerald-900/30 border border-emerald-700/40 text-emerald-400 text-xs px-2.5 py-0.5",
-        danger: "bg-red-900/30 border border-red-700/40 text-red-400 text-xs px-2.5 py-0.5",
-        warning: "bg-amber-900/30 border border-amber-700/40 text-amber-400 text-xs px-2.5 py-0.5",
-        info: "bg-blue-900/30 border border-blue-700/40 text-blue-400 text-xs px-2.5 py-0.5",
+        glass: "bg-surface border border-border text-muted text-xs px-2.5 py-0.5",
+        success: "bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs px-2.5 py-0.5",
+        danger: "bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 text-xs px-2.5 py-0.5",
+        warning: "bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs px-2.5 py-0.5",
+        info: "bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs px-2.5 py-0.5",
       },
     },
     defaultVariants: { variant: "glass" },

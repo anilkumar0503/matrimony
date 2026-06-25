@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { requireUser, apiResponse, apiError, handleApiError } from "@/lib/auth";
-import { sendNotification, NOTIFICATION_EVENTS } from "@/lib/notifications";
+import { sendNotification, NOTIFICATION_EVENTS, sendWhatsAppMessage } from "@/lib/notifications";
 
 const schema = z.object({ action: z.enum(["ACCEPT", "DECLINE", "WITHDRAW"]) });
 
@@ -49,6 +49,29 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         event: NOTIFICATION_EVENTS.MUTUAL_MATCH,
         variables: { user_name: "" },
       });
+
+      // Send WhatsApp notification to admin about new mutual match
+      const [userA, userB] = await Promise.all([
+        prisma.user.findUnique({
+          where: { id: userAId },
+          include: { profile: { select: { fullName: true, city: true, state: true } } },
+        }),
+        prisma.user.findUnique({
+          where: { id: userBId },
+          include: { profile: { select: { fullName: true, city: true, state: true } } },
+        }),
+      ]);
+
+      const adminWhatsApp = process.env.ADMIN_WHATSAPP_NUMBER;
+      if (adminWhatsApp && userA?.profile && userB?.profile) {
+        const message = `🎉 New Mutual Match Alert!\n\n` +
+          `User A: ${userA.profile.fullName} (${userA.profile.city}, ${userA.profile.state})\n` +
+          `User B: ${userB.profile.fullName} (${userB.profile.city}, ${userB.profile.state})\n\n` +
+          `Match ID: ${match.id}\n` +
+          `Ticket Status: OPEN\n\n` +
+          `Please review in admin panel.`;
+        await sendWhatsAppMessage({ to: adminWhatsApp, message });
+      }
     } else if (action === "DECLINE") {
       await sendNotification({
         userId: interest.senderId,

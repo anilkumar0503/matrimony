@@ -53,10 +53,10 @@ export default function AdminPaymentsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
             <BarChart3 size={22} className="text-[#C9972C]" /> Payments & Revenue
           </h1>
-          <p className="text-white/40 text-sm">{total} transactions</p>
+          <p className="text-muted text-sm">{total} transactions</p>
         </div>
       </div>
 
@@ -69,7 +69,7 @@ export default function AdminPaymentsPage() {
         ].map(s => (
           <div key={s.label} className="glass p-5 text-center">
             <div className="text-2xl font-bold text-[#E8C76A]">{s.value}</div>
-            <div className="text-white/40 text-xs mt-1">{s.label}</div>
+            <div className="text-muted text-xs mt-1">{s.label}</div>
           </div>
         ))}
       </div>
@@ -77,7 +77,7 @@ export default function AdminPaymentsPage() {
       {/* Filters */}
       <div className="flex gap-3 flex-wrap">
         <div className="relative flex-1 min-w-48">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input className="input-glass input-glass-with-icon text-sm" placeholder="Search by name, email, order ID..."
             value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} />
         </div>
@@ -94,31 +94,31 @@ export default function AdminPaymentsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/[0.06]">
+              <tr className="border-b border-border">
                 {["Date", "Member", "Plan", "Amount", "GST", "Total", "Status", "Invoice"].map(h => (
-                  <th key={h} className="text-left px-4 py-3 text-white/40 text-xs font-semibold uppercase tracking-wider">{h}</th>
+                  <th key={h} className="text-left px-4 py-3 text-muted text-xs font-semibold uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 [...Array(8)].map((_, i) => (
-                  <tr key={i} className="border-b border-white/[0.04]">
+                  <tr key={i} className="border-b border-border">
                     {[...Array(8)].map((_, j) => <td key={j} className="px-4 py-3"><div className="skeleton h-4 w-20" /></td>)}
                   </tr>
                 ))
               ) : payments.length === 0 ? (
-                <tr><td colSpan={8} className="px-4 py-12 text-center text-white/30">No payments found</td></tr>
+                <tr><td colSpan={8} className="px-4 py-12 text-center text-muted">No payments found</td></tr>
               ) : payments.map(p => (
-                <tr key={p.id} className="border-b border-white/[0.04] hover:bg-white/[0.02]">
-                  <td className="px-4 py-3 text-white/40 text-xs whitespace-nowrap">{formatDate(p.createdAt)}</td>
+                <tr key={p.id} className="border-b border-border hover:bg-white/[0.02]">
+                  <td className="px-4 py-3 text-muted text-xs whitespace-nowrap">{formatDate(p.createdAt)}</td>
                   <td className="px-4 py-3">
-                    <div className="text-white/80 text-sm font-medium">{p.user.profile?.fullName || "—"}</div>
-                    <div className="text-white/30 text-xs">{p.user.email}</div>
+                    <div className="text-muted text-sm font-medium">{p.user.profile?.fullName || "—"}</div>
+                    <div className="text-muted text-xs">{p.user.email}</div>
                   </td>
-                  <td className="px-4 py-3 text-white/50 text-xs">{p.subscription?.plan.name || "—"}</td>
-                  <td className="px-4 py-3 text-white/70 text-xs">{formatCurrency(p.amount)}</td>
-                  <td className="px-4 py-3 text-white/50 text-xs">{formatCurrency(p.gstAmount)}</td>
+                  <td className="px-4 py-3 text-muted text-xs">{p.subscription?.plan.name || "—"}</td>
+                  <td className="px-4 py-3 text-muted text-xs">{formatCurrency(p.amount)}</td>
+                  <td className="px-4 py-3 text-muted text-xs">{formatCurrency(p.gstAmount)}</td>
                   <td className="px-4 py-3 font-medium text-[#E8C76A] text-sm">{formatCurrency(p.totalAmount)}</td>
                   <td className="px-4 py-3">
                     <Badge variant={
@@ -134,7 +134,7 @@ export default function AdminPaymentsPage() {
                         <Download size={11} /> {p.invoice.invoiceNumber}
                       </a>
                     ) : (
-                      <span className="text-white/20 text-xs">{p.invoice?.invoiceNumber || "—"}</span>
+                      <span className="text-muted text-xs">{p.invoice?.invoiceNumber || "—"}</span>
                     )}
                   </td>
                 </tr>
@@ -143,8 +143,8 @@ export default function AdminPaymentsPage() {
           </table>
         </div>
         {totalPages > 1 && (
-          <div className="px-4 py-3 border-t border-white/[0.06] flex items-center justify-between">
-            <span className="text-white/40 text-xs">Page {page} of {totalPages} · {total} total</span>
+          <div className="px-4 py-3 border-t border-border flex items-center justify-between">
+            <span className="text-muted text-xs">Page {page} of {totalPages} · {total} total</span>
             <div className="flex gap-2">
               <Button variant="glass" size="sm" disabled={page === 1} onClick={() => setPage(p => p - 1)}><ChevronLeft size={14} /></Button>
               <Button variant="glass" size="sm" disabled={page === totalPages} onClick={() => setPage(p => p + 1)}><ChevronRight size={14} /></Button>

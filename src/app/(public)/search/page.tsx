@@ -437,16 +437,16 @@ export default function SearchPage() {
             <div className="inline-flex items-center gap-2 badge-gold mb-4">
               <Search size={13} /> Find Your Match
             </div>
-            <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-4">
               Browse <span className="text-gold">Verified Profiles</span>
             </h1>
-            <p className="text-white/50 max-w-xl mx-auto">
+            <p className="text-muted max-w-xl mx-auto">
               Explore thousands of KYC-verified profiles. Use filters to find your perfect life partner.
             </p>
           </div>
           {/* {isLoggedIn && (
             <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="flex items-center gap-2 text-white/70 hover:text-white text-sm">
+              <Link href="/dashboard" className="flex items-center gap-2 text-muted hover:text-foreground text-sm">
                 <User size={16} />
                 {userName}
               </Link>
@@ -461,7 +461,7 @@ export default function SearchPage() {
         <div className="glass p-4 mb-6">
           <div className="flex gap-3">
             <div className="flex-1 relative">
-              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
               <input
                 type="text"
                 placeholder="Search by name, ID, or location..."
@@ -480,13 +480,13 @@ export default function SearchPage() {
           </div>
 
           {showFilters && (
-            <div className="mt-4 pt-4 border-t border-white/[0.06]">
+            <div className="mt-4 pt-4 border-t border-border">
               {/* Horoscope Match Toggle */}
               <div className="flex items-center gap-3 p-3 bg-[rgba(201,151,44,0.1)] rounded-lg border border-[rgba(201,151,44,0.2)] mb-4">
                 <Sparkles size={18} className="text-[#C9972C]" />
                 <div className="flex-1">
-                  <div className="text-sm font-medium text-white">Horoscope Matching</div>
-                  <div className="text-xs text-white/50">Find matches based on Vedic astrology compatibility</div>
+                  <div className="text-sm font-medium text-foreground">Horoscope Matching</div>
+                  <div className="text-xs text-muted">Find matches based on Vedic astrology compatibility</div>
                 </div>
                 <button
                   className={`w-12 h-6 rounded-full transition-colors cursor-pointer ${useHoroscopeMatch ? "bg-[#C9972C]" : "bg-white/20"}`}
@@ -500,31 +500,31 @@ export default function SearchPage() {
               {useHoroscopeMatch && (
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
                   <div>
-                    <label className="block text-xs text-white/50 mb-1">Nakshatra</label>
+                    <label className="block text-xs text-muted mb-1">Nakshatra</label>
                     <select className="input-glass" value={filters.nakshatra} onChange={(e) => setFilters({ ...filters, nakshatra: e.target.value })}>
                       {NAKSHATRAS.map((n) => <option key={n} value={n}>{n || "Any"}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs text-white/50 mb-1">Rashi</label>
+                    <label className="block text-xs text-muted mb-1">Rashi</label>
                     <select className="input-glass" value={filters.rashi} onChange={(e) => setFilters({ ...filters, rashi: e.target.value })}>
                       {RASHIS.map((r) => <option key={r} value={r}>{r || "Any"}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs text-white/50 mb-1">Nadi</label>
+                    <label className="block text-xs text-muted mb-1">Nadi</label>
                     <select className="input-glass" value={filters.nadi} onChange={(e) => setFilters({ ...filters, nadi: e.target.value })}>
                       {NADIS.map((n) => <option key={n} value={n}>{n || "Any"}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs text-white/50 mb-1">Gana</label>
+                    <label className="block text-xs text-muted mb-1">Gana</label>
                     <select className="input-glass" value={filters.gana} onChange={(e) => setFilters({ ...filters, gana: e.target.value })}>
                       {GANAS.map((g) => <option key={g} value={g}>{g || "Any"}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs text-white/50 mb-1">Min Match Score</label>
+                    <label className="block text-xs text-muted mb-1">Min Match Score</label>
                     <select className="input-glass" value={filters.minMatchScore} onChange={(e) => setFilters({ ...filters, minMatchScore: e.target.value })}>
                       <option value="18">18 (Good)</option>
                       <option value="24">24 (Excellent)</option>
@@ -646,7 +646,7 @@ export default function SearchPage() {
                   <option value="Business">Business</option>
                   <option value="Other">Other</option>
                 </select>
-                <label className="flex items-center gap-2 text-white/70 text-sm cursor-pointer">
+                <label className="flex items-center gap-2 text-muted text-sm cursor-pointer">
                   <input
                     type="checkbox"
                     checked={filters.kycOnly}
@@ -677,8 +677,8 @@ export default function SearchPage() {
             <div className="w-20 h-20 rounded-full bg-[#C9972C]/10 border border-[#C9972C]/20 flex items-center justify-center mx-auto mb-4">
               <Heart size={32} className="text-[#C9972C]" />
             </div>
-            <h3 className="font-display text-xl text-white mb-2">Sign In to View Profiles</h3>
-            <p className="text-white/50 mb-6 max-w-md mx-auto">
+            <h3 className="font-display text-xl text-foreground mb-2">Sign In to View Profiles</h3>
+            <p className="text-muted mb-6 max-w-md mx-auto">
               Create a free account to browse verified profiles, send interests, and find your perfect match.
             </p>
             <div className="flex gap-3 justify-center">
@@ -692,11 +692,11 @@ export default function SearchPage() {
           </div>
         ) : loading ? (
           <div className="text-center py-16">
-            <div className="text-white/50">Loading profiles...</div>
+            <div className="text-muted">Loading profiles...</div>
           </div>
         ) : profiles.length === 0 ? (
           <div className="text-center py-16">
-            <div className="text-white/50">No profiles found matching your criteria.</div>
+            <div className="text-muted">No profiles found matching your criteria.</div>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -744,16 +744,16 @@ export default function SearchPage() {
                   <div className="w-full sm:w-[70%] p-5 flex flex-col">
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h3 className="font-display font-semibold text-white text-xl">
+                        <h3 className="font-display font-semibold text-foreground text-xl">
                           {profile.profile?.fullName || "Unknown"}
                         </h3>
-                        <p className="text-white/50 text-sm mt-1">
+                        <p className="text-muted text-sm mt-1">
                           {profile.age ? `${profile.age} yrs` : ""} {profile.profile?.height ? `• ${cmToFeetInches(profile.profile.height)}` : ""}
                         </p>
                       </div>
                       <button
                         onClick={() => toggleWishlist(profile.id)}
-                        className={`p-2 rounded-full transition-colors cursor-pointer ${wishlist[profile.id] ? "bg-[rgba(201,151,44,0.2)] text-[#C9972C]" : "bg-white/5 text-white/40 hover:text-white/60"}`}
+                        className={`p-2 rounded-full transition-colors cursor-pointer ${wishlist[profile.id] ? "bg-[rgba(201,151,44,0.2)] text-[#C9972C]" : "bg-white/5 text-muted hover:text-muted"}`}
                         disabled={togglingWishlist === profile.id}
                       >
                         <Heart size={20} className={wishlist[profile.id] ? "fill-[#C9972C]" : ""} />
@@ -763,28 +763,28 @@ export default function SearchPage() {
                     {/* Multi-column details */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Location</div>
-                        <div className="text-white text-sm">{profile.profile?.city || ""}, {profile.profile?.state || ""}</div>
+                        <div className="text-muted text-xs mb-1">Location</div>
+                        <div className="text-foreground text-sm">{profile.profile?.city || ""}, {profile.profile?.state || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Religion</div>
-                        <div className="text-white text-sm">{profile.profile?.religion || ""}</div>
+                        <div className="text-muted text-xs mb-1">Religion</div>
+                        <div className="text-foreground text-sm">{profile.profile?.religion || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Caste</div>
-                        <div className="text-white text-sm">{profile.profile?.caste || ""}</div>
+                        <div className="text-muted text-xs mb-1">Caste</div>
+                        <div className="text-foreground text-sm">{profile.profile?.caste || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Profile Completion</div>
-                        <div className="text-white text-sm">{profile.profile?.profileCompletionPct || 0}%</div>
+                        <div className="text-muted text-xs mb-1">Profile Completion</div>
+                        <div className="text-foreground text-sm">{profile.profile?.profileCompletionPct || 0}%</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Gender</div>
-                        <div className="text-white text-sm capitalize">{profile.gender?.toLowerCase() || ""}</div>
+                        <div className="text-muted text-xs mb-1">Gender</div>
+                        <div className="text-foreground text-sm capitalize">{profile.gender?.toLowerCase() || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Status</div>
-                        <div className="text-white text-sm capitalize">{profile.isKycVerified ? "Verified" : "Pending"}</div>
+                        <div className="text-muted text-xs mb-1">Status</div>
+                        <div className="text-foreground text-sm capitalize">{profile.isKycVerified ? "Verified" : "Pending"}</div>
                       </div>
                     </div>
                     
@@ -874,7 +874,7 @@ export default function SearchPage() {
             >
               Previous
             </Button>
-            <div className="text-white/50 text-sm">
+            <div className="text-muted text-sm">
               Page {page} of {totalPages} ({total} results)
             </div>
             <Button
@@ -898,7 +898,7 @@ export default function SearchPage() {
           ].map((f) => (
             <div key={f.title} className="glass p-4 text-center">
               <div className="text-[#C9972C] font-medium mb-1">{f.title}</div>
-              <div className="text-white/40 text-xs">{f.desc}</div>
+              <div className="text-muted text-xs">{f.desc}</div>
             </div>
           ))}
         </div>
@@ -911,9 +911,9 @@ export default function SearchPage() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <Sparkles size={20} className="text-[#C9972C]" />
-                <h2 className="font-display text-xl font-bold text-white">Horoscope Match Details</h2>
+                <h2 className="font-display text-xl font-bold text-foreground">Horoscope Match Details</h2>
               </div>
-              <button onClick={() => setMatchModalOpen(false)} className="text-white/50 hover:text-white cursor-pointer">
+              <button onClick={() => setMatchModalOpen(false)} className="text-muted hover:text-foreground cursor-pointer">
                 <X size={20} />
               </button>
             </div>
@@ -922,11 +922,11 @@ export default function SearchPage() {
             <div className="bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] rounded-xl p-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-white/60 text-sm">Match Score</div>
+                  <div className="text-muted text-sm">Match Score</div>
                   <div className="font-display text-3xl font-bold text-[#C9972C]">
                     {selectedMatch.finalScore}/{selectedMatch.maxScore}
                   </div>
-                  <div className="text-white/40 text-xs mt-1">{selectedMatch.percentage}% compatibility</div>
+                  <div className="text-muted text-xs mt-1">{selectedMatch.percentage}% compatibility</div>
                 </div>
                 <div className={`px-4 py-2 rounded-full text-sm font-semibold ${
                   selectedMatch.category === "Excellent" ? "bg-emerald-900/50 text-emerald-400" :
@@ -940,12 +940,12 @@ export default function SearchPage() {
 
             {/* Breakdown */}
             <div className="space-y-3 mb-6">
-              <h3 className="text-white font-semibold mb-3">Guna Milan Breakdown</h3>
+              <h3 className="text-foreground font-semibold mb-3">Guna Milan Breakdown</h3>
               {Object.entries(selectedMatch.breakdown || {}).map(([key, value]: [string, any]) => (
                 <div key={key} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                   <div>
-                    <div className="text-white font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
-                    <div className="text-white/50 text-xs">{value.description}</div>
+                    <div className="text-foreground font-medium capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                    <div className="text-muted text-xs">{value.description}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-[#C9972C] font-semibold">{value.score}/{value.max}</div>
@@ -957,29 +957,29 @@ export default function SearchPage() {
             {/* Dosha Check */}
             {selectedMatch.doshaCheck && (
               <div className="bg-white/5 rounded-xl p-4 mb-6">
-                <h3 className="text-white font-semibold mb-3">Dosha Check</h3>
+                <h3 className="text-foreground font-semibold mb-3">Dosha Check</h3>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-white/70">Manglik Dosha</span>
+                    <span className="text-muted">Manglik Dosha</span>
                     <span className={selectedMatch.doshaCheck.hasManglikDosha ? "text-red-400" : "text-emerald-400"}>
                       {selectedMatch.doshaCheck.hasManglikDosha ? "Present" : "Absent"}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/70">Nadi Dosha</span>
+                    <span className="text-muted">Nadi Dosha</span>
                     <span className={selectedMatch.doshaCheck.hasNadiDosha ? "text-red-400" : "text-emerald-400"}>
                       {selectedMatch.doshaCheck.hasNadiDosha ? "Present" : "Absent"}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/70">Bhakoot Dosha</span>
+                    <span className="text-muted">Bhakoot Dosha</span>
                     <span className={selectedMatch.doshaCheck.hasBhakootDosha ? "text-red-400" : "text-emerald-400"}>
                       {selectedMatch.doshaCheck.hasBhakootDosha ? "Present" : "Absent"}
                     </span>
                   </div>
                 </div>
                 {selectedMatch.doshaCheck.warnings && selectedMatch.doshaCheck.warnings.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-white/10">
+                  <div className="mt-3 pt-3 border-t border-border">
                     {selectedMatch.doshaCheck.warnings.map((warning: string, i: number) => (
                       <div key={i} className="text-amber-400 text-xs mt-1">⚠️ {warning}</div>
                     ))}
@@ -993,7 +993,7 @@ export default function SearchPage() {
               <div className="bg-amber-900/20 border border-amber-900/30 rounded-xl p-4">
                 <h3 className="text-amber-400 font-semibold mb-2">Recommendations</h3>
                 {selectedMatch.recommendations.map((rec: string, i: number) => (
-                  <div key={i} className="text-white/70 text-sm mt-1">• {rec}</div>
+                  <div key={i} className="text-muted text-sm mt-1">• {rec}</div>
                 ))}
               </div>
             )}

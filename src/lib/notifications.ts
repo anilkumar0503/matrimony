@@ -91,6 +91,50 @@ export function interpolate(template: string, vars: Record<string, string>): str
   return template.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] || `{{${key}}}`);
 }
 
+export async function sendWhatsAppMessage(opts: {
+  to: string;
+  message: string;
+}): Promise<void> {
+  const accessToken = process.env.META_WHATSAPP_ACCESS_TOKEN;
+  const phoneNumberId = process.env.META_WHATSAPP_PHONE_NUMBER_ID;
+
+  if (!accessToken || !phoneNumberId) {
+    console.warn("⚠️ Meta WhatsApp credentials missing. WhatsApp message not sent.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/v19.0/${phoneNumberId}/messages`,
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          to: opts.to,
+          type: "text",
+          text: { body: opts.message },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("❌ WhatsApp API error:", error);
+      throw new Error(`WhatsApp API failed: ${error}`);
+    }
+
+    const data = await response.json();
+    console.log("✅ WhatsApp message sent:", data);
+  } catch (err) {
+    console.error("❌ WhatsApp message failed:", err);
+    throw err;
+  }
+}
+
 export async function sendEmailDirect(opts: {
   to: string;
   subject: string;
@@ -108,6 +152,8 @@ export async function sendEmailDirect(opts: {
     const username = process.env.MAIL_USERNAME;
     const password = process.env.MAIL_PASSWORD;
 
+    console.log("📧 Email config:", { provider, host, port, username: username ? "***" : "missing", password: password ? "***" : "missing" });
+
     const transporter = nodemailer.createTransport({
       host,
       port,
@@ -118,12 +164,18 @@ export async function sendEmailDirect(opts: {
       },
     });
 
-    await transporter.sendMail({
-      from: `"${fromName || "Jasmine Matrimony"}" <${from || "noreply@matrimony.com"}>`,
-      to: opts.to,
-      subject: opts.subject,
-      html: opts.html,
-    });
+    try {
+      const info = await transporter.sendMail({
+        from: `"${fromName || "Jasmine Matrimony"}" <${from || "noreply@matrimony.com"}>`,
+        to: opts.to,
+        subject: opts.subject,
+        html: opts.html,
+      });
+      console.log("✅ Email sent:", info.messageId);
+    } catch (err) {
+      console.error("❌ Email send failed:", err);
+      throw err;
+    }
   } else if (provider === "SENDGRID") {
     const sgMail = require("@sendgrid/mail");
     const apiKey = process.env.SENDGRID_API_KEY || await getSetting(SETTINGS_KEYS.SENDGRID_API_KEY);

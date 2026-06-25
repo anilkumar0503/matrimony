@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Playfair_Display, DM_Serif_Display, Inter } from "ne
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import CookieConsent from "@/components/cookie-consent";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -64,13 +65,15 @@ export default function RootLayout({
       className={`${jakarta.variable} ${playfair.variable} ${dmSerif.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-[#1a0505] text-white antialiased">
-        <div className="blob-bg" aria-hidden="true" />
-        <div className="page-wrapper">
-          {children}
-        </div>
-        <Toaster />
-        <CookieConsent />
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        <ThemeProvider>
+          <div className="blob-bg" aria-hidden="true" />
+          <div className="page-wrapper">
+            {children}
+          </div>
+          <Toaster />
+          <CookieConsent />
+        </ThemeProvider>
       </body>
     </html>
   );

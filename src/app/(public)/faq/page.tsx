@@ -56,8 +56,8 @@ export default async function FAQPage() {
           <div className="inline-flex items-center gap-2 badge-gold mb-4">
             <HelpCircle size={13} /> Help Centre
           </div>
-          <h1 className="font-display text-4xl font-bold text-white mb-3">Frequently Asked Questions</h1>
-          <p className="text-white/50">Everything you need to know about Jasmine Matrimony</p>
+          <h1 className="font-display text-4xl font-bold text-foreground mb-3">Frequently Asked Questions</h1>
+          <p className="text-muted">Everything you need to know about Jasmine Matrimony</p>
         </div>
 
         <div className="space-y-8">
@@ -67,11 +67,11 @@ export default async function FAQPage() {
               <div className="space-y-3">
                 {(items as { question: string; answer: string }[]).map((faq, i) => (
                   <details key={i} className="glass group">
-                    <summary className="p-4 cursor-pointer flex items-center justify-between text-white font-medium list-none hover:text-[#E8C76A] transition-colors">
+                    <summary className="p-4 cursor-pointer flex items-center justify-between text-foreground font-medium list-none hover:text-[#E8C76A] transition-colors">
                       <span>{faq.question}</span>
-                      <span className="text-white/40 group-open:rotate-180 transition-transform text-lg">⌄</span>
+                      <span className="text-muted group-open:rotate-180 transition-transform text-lg">⌄</span>
                     </summary>
-                    <div className="px-4 pb-4 text-white/60 text-sm leading-relaxed border-t border-white/[0.06] pt-3">
+                    <div className="px-4 pb-4 text-muted text-sm leading-relaxed border-t border-border pt-3">
                       {faq.answer}
                     </div>
                   </details>
@@ -82,7 +82,7 @@ export default async function FAQPage() {
         </div>
 
         <div className="mt-10 glass p-6 text-center">
-          <p className="text-white/50 mb-4">Can&apos;t find what you&apos;re looking for?</p>
+          <p className="text-muted mb-4">Can&apos;t find what you&apos;re looking for?</p>
           <div className="flex gap-3 justify-center">
             <Link href="/contact" className="badge-glass">Contact Support</Link>
             <Link href="/register" className="badge-gold">Get Started</Link>

@@ -58,10 +58,10 @@ export default function HowItWorksPage() {
       {/* Hero */}
       <section className="pt-24 pb-16 px-4 text-center">
         <div className="max-w-3xl mx-auto">
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-5">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-5">
             Find Your Match in <span className="text-gradient">5 Simple Steps</span>
           </h1>
-          <p className="text-white/60 text-lg leading-relaxed">
+          <p className="text-muted text-lg leading-relaxed">
             We've designed a thoughtful, secure process that takes you from registration to a meaningful connection — 
             with admin support and privacy protection every step of the way.
           </p>
@@ -84,12 +84,12 @@ export default function HowItWorksPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="font-display text-4xl font-bold text-[#C9972C]/20">{number}</span>
-                  <h3 className="font-display text-xl font-bold text-white">{title}</h3>
+                  <h3 className="font-display text-xl font-bold text-foreground">{title}</h3>
                 </div>
-                <p className="text-white/60 text-sm leading-relaxed mb-4">{desc}</p>
+                <p className="text-muted text-sm leading-relaxed mb-4">{desc}</p>
                 <div className="flex flex-wrap gap-2">
                   {points.map((p) => (
-                    <div key={p} className="flex items-center gap-1.5 text-xs text-white/50">
+                    <div key={p} className="flex items-center gap-1.5 text-xs text-muted">
                       <CheckCircle size={11} className="text-[#C9972C]" /> {p}
                     </div>
                   ))}
@@ -109,12 +109,12 @@ export default function HowItWorksPage() {
               { plan: "Premium", features: ["Unlimited interests", "Full photo visibility", "Advanced search filters"], highlight: true },
               { plan: "VIP", features: ["Everything in Premium", "Priority in search results", "Dedicated relationship manager"] },
             ].map(({ plan, features, highlight }) => (
-              <div key={plan} className={`rounded-2xl p-5 ${highlight ? "bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.3)]" : "bg-white/[0.03] border border-white/[0.08]"}`}>
-                <div className={`font-display text-xl font-bold mb-3 ${highlight ? "text-[#C9972C]" : "text-white"}`}>{plan}</div>
+              <div key={plan} className={`rounded-2xl p-5 ${highlight ? "bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.3)]" : "bg-white/[0.03] border border-border"}`}>
+                <div className={`font-display text-xl font-bold mb-3 ${highlight ? "text-[#C9972C]" : "text-foreground"}`}>{plan}</div>
                 <div className="space-y-2">
                   {features.map((f) => (
-                    <div key={f} className="flex items-center gap-2 text-xs text-white/60">
-                      <CheckCircle size={11} className={highlight ? "text-[#C9972C]" : "text-white/30"} /> {f}
+                    <div key={f} className="flex items-center gap-2 text-xs text-muted">
+                      <CheckCircle size={11} className={highlight ? "text-[#C9972C]" : "text-muted"} /> {f}
                     </div>
                   ))}
                 </div>
@@ -132,12 +132,12 @@ export default function HowItWorksPage() {
       {/* FAQ */}
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto">
-          <h2 className="font-display text-3xl font-bold text-white text-center mb-10">Frequently Asked Questions</h2>
+          <h2 className="font-display text-3xl font-bold text-foreground text-center mb-10">Frequently Asked Questions</h2>
           <div className="space-y-4">
             {faqs.map(({ q, a }) => (
               <div key={q} className="glass rounded-2xl p-5">
-                <h3 className="text-white font-semibold text-sm mb-2">{q}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{a}</p>
+                <h3 className="text-foreground font-semibold text-sm mb-2">{q}</h3>
+                <p className="text-muted text-sm leading-relaxed">{a}</p>
               </div>
             ))}
           </div>
@@ -152,12 +152,12 @@ export default function HowItWorksPage() {
       {/* CTA */}
       <section className="py-16 px-4 text-center">
         <div className="max-w-xl mx-auto">
-          <h2 className="font-display text-3xl font-bold text-white mb-4">Start Your Journey Today</h2>
+          <h2 className="font-display text-3xl font-bold text-foreground mb-4">Start Your Journey Today</h2>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/register" className="px-8 py-3 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors">
               Create Free Profile
             </Link>
-            <Link href="/search" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-white rounded-xl transition-colors border border-white/[0.1]">
+            <Link href="/search" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-foreground rounded-xl transition-colors border border-border">
               Browse Profiles
             </Link>
           </div>

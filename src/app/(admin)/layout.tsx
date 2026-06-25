@@ -7,6 +7,7 @@ import {
   LogOut, Menu, X, Heart, FileText, BarChart3, Bell, Users2,
   BookOpen, Ticket, ChevronDown, ScrollText, KeyRound, Tag
 } from "lucide-react";
+import ThemeToggle from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const navGroups = [
@@ -100,7 +101,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-[#0f0303]">
+    <div className="min-h-screen w-full flex bg-background">
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/60 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
@@ -109,19 +110,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside
         className={cn(
           "fixed top-0 left-0 h-screen w-60 z-50 transition-transform duration-300 flex flex-col",
-          "border-r border-white/[0.06] rounded-none",
-          "bg-gradient-to-b from-[#1a0505] to-[#0f0202]",
+          "border-r border-border rounded-none",
+          "bg-gradient-to-b from-background to-surface",
           sidebarOpen ? "translate-x-0" : "-translate-x-full",
           "lg:translate-x-0"
         )}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between p-4 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between p-4 border-b border-border">
           <Link href="/admin/dashboard" className="flex items-center gap-2">
             <img src="/logo.png" alt="Jasmine Matrimony" className="h-9 w-auto" />
-            <span className="text-white text-xs font-bold">Admin Panel</span>
+            <span className="text-foreground text-xs font-bold">Admin Panel</span>
           </Link>
-          <button className="lg:hidden text-white/40" onClick={() => setSidebarOpen(false)}>
+          <button className="lg:hidden text-muted" onClick={() => setSidebarOpen(false)}>
             <X size={16} />
           </button>
         </div>
@@ -134,7 +135,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div key={group.label} className="mb-1">
                 <button
                   onClick={() => toggleGroup(group.label)}
-                  className="w-full flex items-center justify-between px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-white/30 hover:text-white/50 rounded"
+                  className="w-full flex items-center justify-between px-2 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted hover:text-muted rounded"
                 >
                   {group.label}
                   <ChevronDown size={12} className={cn("transition-transform", isCollapsed && "-rotate-90")} />
@@ -150,7 +151,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                         "flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors",
                         isActive
                           ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.15)]"
-                          : "text-white/50 hover:text-white hover:bg-white/[0.04]"
+                          : "text-muted hover:text-foreground hover:bg-white/[0.04]"
                       )}
                     >
                       <item.icon size={15} />
@@ -164,16 +165,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Admin info + logout */}
-        <div className="p-3 border-t border-white/[0.06]">
+        <div className="p-3 border-t border-border">
           {adminInfo && (
             <div className="px-3 py-2 mb-2">
-              <div className="text-xs font-medium text-white/80">{adminInfo.name}</div>
-              <div className="text-[10px] text-white/30">{adminInfo.role}</div>
+              <div className="text-xs font-medium text-muted">{adminInfo.name}</div>
+              <div className="text-[10px] text-muted">{adminInfo.role}</div>
             </div>
           )}
           <button
             onClick={logout}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-white/40 hover:text-red-400 hover:bg-red-900/20 transition-colors w-full"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-muted hover:text-red-400 hover:bg-red-900/20 transition-colors w-full"
           >
             <LogOut size={14} /> Logout
           </button>
@@ -182,13 +183,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Main */}
       <div className="flex-1 w-full flex flex-col overflow-hidden lg:ml-60">
-        <header className="sticky top-0 z-30 px-4 py-3 flex items-center border-b border-white/[0.06] bg-[#0f0303]/80 backdrop-blur-xl">
-          <button className="lg:hidden text-white/50 hover:text-white mr-3" onClick={() => setSidebarOpen(true)}>
+        <header className="sticky top-0 z-30 px-4 py-3 flex items-center border-b border-border bg-background/80 backdrop-blur-xl">
+          <button className="lg:hidden text-muted hover:text-foreground mr-3" onClick={() => setSidebarOpen(true)}>
             <Menu size={18} />
           </button>
-          <span className="text-white/30 text-xs">Admin</span>
-          <span className="text-white/20 mx-2 text-xs">/</span>
-          <span className="text-white/70 text-xs capitalize">{pathname.split("/").slice(-1)[0]?.replace(/-/g, " ")}</span>
+          <span className="text-muted text-xs">Admin</span>
+          <span className="text-muted mx-2 text-xs">/</span>
+          <span className="text-muted text-xs capitalize">{pathname.split("/").slice(-1)[0]?.replace(/-/g, " ")}</span>
+          <div className="ml-auto">
+            <ThemeToggle />
+          </div>
         </header>
         <main className="flex-1 w-full p-6 overflow-auto">{children}</main>
       </div>

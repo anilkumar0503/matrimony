@@ -80,7 +80,7 @@ export default function TermsPage() {
     <div className="min-h-screen bg-[#1a0505]">
       <div className="blob-bg" />
       <div className="page-wrapper max-w-3xl mx-auto px-4 py-12">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-white/40 hover:text-white/70 text-sm mb-8 transition-colors">
+        <Link href="/" className="inline-flex items-center gap-1.5 text-muted hover:text-muted text-sm mb-8 transition-colors">
           <ChevronLeft size={16} /> Home
         </Link>
 
@@ -88,11 +88,11 @@ export default function TermsPage() {
           <div className="inline-flex items-center gap-2 badge-gold mb-4">
             <FileText size={13} /> Legal
           </div>
-          <h1 className="font-display text-4xl font-bold text-white mb-3">Terms of Service</h1>
-          <p className="text-white/50">Last updated: {LAST_UPDATED}</p>
+          <h1 className="font-display text-4xl font-bold text-foreground mb-3">Terms of Service</h1>
+          <p className="text-muted">Last updated: {LAST_UPDATED}</p>
         </div>
 
-        <div className="glass p-6 mb-6 text-white/60 text-sm leading-relaxed">
+        <div className="glass p-6 mb-6 text-muted text-sm leading-relaxed">
           Please read these Terms of Service carefully before using the Jasmine Matrimony platform. These terms govern
           your access to and use of all features, content, and services provided by us.
         </div>
@@ -100,11 +100,11 @@ export default function TermsPage() {
         <div className="space-y-6">
           {sections.map((section) => (
             <div key={section.title} className="glass p-6">
-              <h2 className="font-display text-lg font-bold text-white mb-4">{section.title}</h2>
-              <div className="text-white/60 text-sm leading-relaxed">
+              <h2 className="font-display text-lg font-bold text-foreground mb-4">{section.title}</h2>
+              <div className="text-muted text-sm leading-relaxed">
                 {section.content.split("\n").map((line, i) => {
                   if (line.startsWith("**") && line.endsWith("**")) {
-                    return <p key={i} className="font-semibold text-white/80 mt-3 mb-1">{line.replace(/\*\*/g, "")}</p>;
+                    return <p key={i} className="font-semibold text-muted mt-3 mb-1">{line.replace(/\*\*/g, "")}</p>;
                   }
                   if (line.startsWith("- ")) {
                     return <li key={i} className="ml-4 mb-1">{line.slice(2).replace(/\*\*(.*?)\*\*/g, (_, t) => t)}</li>;
@@ -117,7 +117,7 @@ export default function TermsPage() {
         </div>
 
         <div className="glass p-6 mt-6 text-center">
-          <p className="text-white/40 text-sm mb-3">By using Jasmine Matrimony, you acknowledge that you have read and understood these terms.</p>
+          <p className="text-muted text-sm mb-3">By using Jasmine Matrimony, you acknowledge that you have read and understood these terms.</p>
           <div className="flex gap-3 justify-center flex-wrap">
             <Link href="/privacy" className="badge-glass text-sm">Privacy Policy</Link>
             <Link href="/contact" className="badge-gold text-sm">Contact Us</Link>

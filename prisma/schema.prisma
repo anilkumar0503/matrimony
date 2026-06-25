@@ -411,6 +411,8 @@ model User {
   notifPreferences   NotificationPreference[]
   grievances         Grievance[]
   nomination         Nomination?
+  galleryAccessGranted  GalleryAccess[] @relation("GalleryOwner")
+  galleryAccessReceived GalleryAccess[] @relation("GalleryGranted")
 }
 
 model UserProfile {
@@ -1162,6 +1164,21 @@ model CommunityAnnouncement {
   content     String
   postedBy    String
   createdAt   DateTime  @default(now())
+}
+
+// ─── GALLERY ACCESS ───────────────────────────────────────────────────────────
+
+model GalleryAccess {
+  id          String   @id @default(cuid())
+  ownerId     String
+  owner       User     @relation("GalleryOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  grantedToId String
+  grantedTo   User     @relation("GalleryGranted", fields: [grantedToId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([ownerId, grantedToId])
+  @@index([ownerId])
+  @@index([grantedToId])
 }
 
 // ─── NOTIFICATIONS ────────────────────────────────────────────────────────────

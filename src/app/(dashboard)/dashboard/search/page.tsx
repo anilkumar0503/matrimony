@@ -347,8 +347,8 @@ export default function SearchPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-white mb-1">Find Your Match</h1>
-          <p className="text-white/40 text-sm">{total > 0 ? `${total} profiles found` : "Search to find compatible matches"}</p>
+          <h1 className="font-display text-2xl font-bold text-foreground mb-1">Find Your Match</h1>
+          <p className="text-muted text-sm">{total > 0 ? `${total} profiles found` : "Search to find compatible matches"}</p>
         </div>
         <Button variant={showFilters ? "gold" : "glass"} onClick={() => setShowFilters(!showFilters)} className="cursor-pointer">
           <SlidersHorizontal size={16} /> Filters {showFilters && <X size={14} />}
@@ -358,7 +358,7 @@ export default function SearchPage() {
       {/* Search bar */}
       <div className="flex gap-3">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input
             className="input-glass input-glass-with-icon"
             placeholder="Search by location, religion, name..."
@@ -375,8 +375,8 @@ export default function SearchPage() {
           <div className="sm:col-span-2 lg:col-span-4 flex items-center gap-3 p-3 bg-[rgba(201,151,44,0.1)] rounded-lg border border-[rgba(201,151,44,0.2)]">
             <Sparkles size={18} className="text-[#C9972C]" />
             <div className="flex-1">
-              <div className="text-sm font-medium text-white">Horoscope Matching</div>
-              <div className="text-xs text-white/50">Find matches based on Vedic astrology compatibility</div>
+              <div className="text-sm font-medium text-foreground">Horoscope Matching</div>
+              <div className="text-xs text-muted">Find matches based on Vedic astrology compatibility</div>
             </div>
             <button
               className={`w-12 h-6 rounded-full transition-colors cursor-pointer ${useHoroscopeMatch ? "bg-[#C9972C]" : "bg-white/20"}`}
@@ -390,31 +390,31 @@ export default function SearchPage() {
           {useHoroscopeMatch && (
             <>
               <div>
-                <label className="block text-xs text-white/50 mb-1">Nakshatra</label>
+                <label className="block text-xs text-muted mb-1">Nakshatra</label>
                 <select className="input-glass" value={filters.nakshatra} onChange={(e) => F("nakshatra", e.target.value)}>
                   {NAKSHATRAS.map((n) => <option key={n} value={n}>{n || "Any"}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-white/50 mb-1">Rashi (Moon Sign)</label>
+                <label className="block text-xs text-muted mb-1">Rashi (Moon Sign)</label>
                 <select className="input-glass" value={filters.rashi} onChange={(e) => F("rashi", e.target.value)}>
                   {RASHIS.map((r) => <option key={r} value={r}>{r || "Any"}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-white/50 mb-1">Nadi</label>
+                <label className="block text-xs text-muted mb-1">Nadi</label>
                 <select className="input-glass" value={filters.nadi} onChange={(e) => F("nadi", e.target.value)}>
                   {NADIS.map((n) => <option key={n} value={n}>{n || "Any"}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-white/50 mb-1">Gana</label>
+                <label className="block text-xs text-muted mb-1">Gana</label>
                 <select className="input-glass" value={filters.gana} onChange={(e) => F("gana", e.target.value)}>
                   {GANAS.map((g) => <option key={g} value={g}>{g || "Any"}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-white/50 mb-1">Min Match Score</label>
+                <label className="block text-xs text-muted mb-1">Min Match Score</label>
                 <input className="input-glass" type="number" min="0" max="36" value={filters.minMatchScore} onChange={(e) => F("minMatchScore", e.target.value)} />
               </div>
             </>
@@ -422,7 +422,7 @@ export default function SearchPage() {
 
           {/* Regular Filters */}
           <div>
-            <label className="block text-xs text-white/50 mb-1">Gender</label>
+            <label className="block text-xs text-muted mb-1">Gender</label>
             <select className="input-glass" value={filters.gender} onChange={(e) => F("gender", e.target.value)}>
               <option value="">Any</option>
               <option value="MALE">Male</option>
@@ -430,30 +430,30 @@ export default function SearchPage() {
             </select>
           </div>
           <div>
-            <label className="block text-xs text-white/50 mb-1">Age Range</label>
+            <label className="block text-xs text-muted mb-1">Age Range</label>
             <div className="flex gap-2">
               <input className="input-glass" type="number" placeholder="Min" min={18} value={filters.ageMin} onChange={(e) => F("ageMin", e.target.value)} />
               <input className="input-glass" type="number" placeholder="Max" min={18} value={filters.ageMax} onChange={(e) => F("ageMax", e.target.value)} />
             </div>
           </div>
           <div>
-            <label className="block text-xs text-white/50 mb-1">Religion</label>
+            <label className="block text-xs text-muted mb-1">Religion</label>
             <select className="input-glass" value={filters.religion} onChange={(e) => F("religion", e.target.value)}>
               {RELIGIONS.map((r) => <option key={r} value={r}>{r || "Any"}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs text-white/50 mb-1">Marital Status</label>
+            <label className="block text-xs text-muted mb-1">Marital Status</label>
             <select className="input-glass" value={filters.maritalStatus} onChange={(e) => F("maritalStatus", e.target.value)}>
               {MARITAL.map((m) => <option key={m} value={m}>{m ? m.replace(/_/g, " ") : "Any"}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-xs text-white/50 mb-1">State</label>
+            <label className="block text-xs text-muted mb-1">State</label>
             <input className="input-glass" placeholder="e.g. Tamil Nadu" value={filters.state} onChange={(e) => F("state", e.target.value)} />
           </div>
           <div>
-            <label className="block text-xs text-white/50 mb-1">Caste</label>
+            <label className="block text-xs text-muted mb-1">Caste</label>
             <input className="input-glass" placeholder="Any" value={filters.caste} onChange={(e) => F("caste", e.target.value)} />
           </div>
           <div className="sm:col-span-2 flex items-end gap-3">
@@ -477,8 +477,8 @@ export default function SearchPage() {
         </div>
       ) : profiles.length === 0 ? (
         <div className="glass p-16 text-center">
-          <Search size={40} className="text-white/20 mx-auto mb-3" />
-          <p className="text-white/40">No profiles found. Try adjusting your filters.</p>
+          <Search size={40} className="text-muted mx-auto mb-3" />
+          <p className="text-muted">No profiles found. Try adjusting your filters.</p>
           <Button variant="gold" size="sm" className="mt-4 cursor-pointer" onClick={() => search(1)}>Search All</Button>
         </div>
       ) : (
@@ -528,16 +528,16 @@ export default function SearchPage() {
                   <div className="w-full sm:w-[70%] p-5 flex flex-col">
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h3 className="font-display font-semibold text-white text-xl">
+                        <h3 className="font-display font-semibold text-foreground text-xl">
                           {profile.profile?.fullName || "Unknown"}
                         </h3>
-                        <p className="text-white/50 text-sm mt-1">
+                        <p className="text-muted text-sm mt-1">
                           {profile.age ? `${profile.age} yrs` : ""} {profile.profile?.height ? `• ${cmToFeetInches(profile.profile.height)}` : ""}
                         </p>
                       </div>
                       <button
                         onClick={() => toggleWishlist(profile.id)}
-                        className={`p-2 rounded-full transition-colors cursor-pointer ${wishlist[profile.id] ? "bg-[rgba(201,151,44,0.2)] text-[#C9972C]" : "bg-white/5 text-white/40 hover:text-white/60"}`}
+                        className={`p-2 rounded-full transition-colors cursor-pointer ${wishlist[profile.id] ? "bg-[rgba(201,151,44,0.2)] text-[#C9972C]" : "bg-white/5 text-muted hover:text-muted"}`}
                         disabled={togglingWishlist === profile.id}
                       >
                         <Heart size={20} className={wishlist[profile.id] ? "fill-[#C9972C]" : ""} />
@@ -547,28 +547,28 @@ export default function SearchPage() {
                     {/* Multi-column details */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Location</div>
-                        <div className="text-white text-sm">{profile.profile?.city || ""}, {profile.profile?.state || ""}</div>
+                        <div className="text-muted text-xs mb-1">Location</div>
+                        <div className="text-foreground text-sm">{profile.profile?.city || ""}, {profile.profile?.state || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Religion</div>
-                        <div className="text-white text-sm">{profile.profile?.religion || ""}</div>
+                        <div className="text-muted text-xs mb-1">Religion</div>
+                        <div className="text-foreground text-sm">{profile.profile?.religion || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Caste</div>
-                        <div className="text-white text-sm">{profile.profile?.caste || ""}</div>
+                        <div className="text-muted text-xs mb-1">Caste</div>
+                        <div className="text-foreground text-sm">{profile.profile?.caste || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Profile Completion</div>
-                        <div className="text-white text-sm">{profile.profile?.profileCompletionPct || 0}%</div>
+                        <div className="text-muted text-xs mb-1">Profile Completion</div>
+                        <div className="text-foreground text-sm">{profile.profile?.profileCompletionPct || 0}%</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Gender</div>
-                        <div className="text-white text-sm capitalize">{profile.gender?.toLowerCase() || ""}</div>
+                        <div className="text-muted text-xs mb-1">Gender</div>
+                        <div className="text-foreground text-sm capitalize">{profile.gender?.toLowerCase() || ""}</div>
                       </div>
                       <div>
-                        <div className="text-white/40 text-xs mb-1">Status</div>
-                        <div className="text-white text-sm capitalize">{profile.isKycVerified ? "Verified" : "Pending"}</div>
+                        <div className="text-muted text-xs mb-1">Status</div>
+                        <div className="text-foreground text-sm capitalize">{profile.isKycVerified ? "Verified" : "Pending"}</div>
                       </div>
                     </div>
                     
@@ -662,9 +662,9 @@ export default function SearchPage() {
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <Sparkles size={20} className="text-[#C9972C]" />
-                <h2 className="font-display text-xl font-bold text-white">Horoscope Match Details</h2>
+                <h2 className="font-display text-xl font-bold text-foreground">Horoscope Match Details</h2>
               </div>
-              <button onClick={() => setMatchModalOpen(false)} className="text-white/50 hover:text-white cursor-pointer">
+              <button onClick={() => setMatchModalOpen(false)} className="text-muted hover:text-foreground cursor-pointer">
                 <X size={20} />
               </button>
             </div>
@@ -673,7 +673,7 @@ export default function SearchPage() {
             <div className="bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] rounded-xl p-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-white/60 text-sm">Match Score</div>
+                  <div className="text-muted text-sm">Match Score</div>
                   <div className="font-display text-3xl font-bold text-[#C9972C]">
                     {selectedMatch.finalScore}/{selectedMatch.maxScore}
                   </div>
@@ -687,20 +687,20 @@ export default function SearchPage() {
                   }`}>
                     {selectedMatch.category}
                   </div>
-                  <div className="text-white/50 text-xs">{selectedMatch.percentage}%</div>
+                  <div className="text-muted text-xs">{selectedMatch.percentage}%</div>
                 </div>
               </div>
             </div>
 
             {/* Guna Breakdown */}
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-white mb-3">Guna Milan Breakdown</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Guna Milan Breakdown</h3>
               <div className="space-y-2">
                 {Object.entries(selectedMatch.breakdown).map(([guna, data]: [string, any]) => (
                   <div key={guna} className="flex items-center justify-between text-sm">
-                    <span className="text-white/70 capitalize">{guna.replace(/([A-Z])/g, ' $1')}</span>
+                    <span className="text-muted capitalize">{guna.replace(/([A-Z])/g, ' $1')}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-white/50">{data.score}/{data.max}</span>
+                      <span className="text-muted">{data.score}/{data.max}</span>
                       <div className="w-16 h-1.5 bg-white/10 rounded-full overflow-hidden">
                         <div
                           className={`h-full ${
@@ -719,14 +719,14 @@ export default function SearchPage() {
 
             {/* Dosha Check */}
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-white mb-3">Dosha Check</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Dosha Check</h3>
               <div className={`p-3 rounded-lg ${
                 selectedMatch.doshaCheck.severity === "none" ? "bg-emerald-900/20 border border-emerald-700/30" :
                 selectedMatch.doshaCheck.severity === "mild" ? "bg-amber-900/20 border border-amber-700/30" :
                 selectedMatch.doshaCheck.severity === "moderate" ? "bg-orange-900/20 border border-orange-700/30" :
                 "bg-red-900/20 border border-red-700/30"
               }`}>
-                <div className="text-sm text-white/70 mb-2">
+                <div className="text-sm text-muted mb-2">
                   Severity: <span className={`font-semibold ${
                     selectedMatch.doshaCheck.severity === "none" ? "text-emerald-400" :
                     selectedMatch.doshaCheck.severity === "mild" ? "text-amber-400" :
@@ -735,7 +735,7 @@ export default function SearchPage() {
                   } capitalize`}>{selectedMatch.doshaCheck.severity}</span>
                 </div>
                 {selectedMatch.doshaCheck.warnings.length > 0 && (
-                  <ul className="text-xs text-white/50 space-y-1">
+                  <ul className="text-xs text-muted space-y-1">
                     {selectedMatch.doshaCheck.warnings.map((warning: string, i: number) => (
                       <li key={i}>• {warning}</li>
                     ))}
@@ -747,8 +747,8 @@ export default function SearchPage() {
             {/* Recommendations */}
             {selectedMatch.recommendations.length > 0 && (
               <div>
-                <h3 className="text-sm font-semibold text-white mb-3">Recommendations</h3>
-                <ul className="text-xs text-white/60 space-y-1">
+                <h3 className="text-sm font-semibold text-foreground mb-3">Recommendations</h3>
+                <ul className="text-xs text-muted space-y-1">
                   {selectedMatch.recommendations.map((rec: string, i: number) => (
                     <li key={i}>• {rec}</li>
                   ))}

@@ -30,10 +30,10 @@ export default function AboutPage() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] text-[#C9972C] text-xs font-medium mb-6">
             <Award size={12} /> Our Story
           </div>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-5">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-5">
             Redefining Matrimony for <span className="text-gradient">Modern India</span>
           </h1>
-          <p className="text-white/60 text-lg leading-relaxed">
+          <p className="text-muted text-lg leading-relaxed">
             Jasmine Matrimony was founded with a singular mission: create a matrimony platform that families can truly trust. 
             In a space cluttered with unverified profiles and privacy breaches, we built something different — 
             a human-first platform where every connection is meaningful.
@@ -47,7 +47,7 @@ export default function AboutPage() {
           {stats.map(({ value, label }) => (
             <div key={label} className="glass rounded-2xl p-6 text-center">
               <div className="font-display text-3xl font-bold text-[#C9972C] mb-1">{value}</div>
-              <div className="text-white/50 text-sm">{label}</div>
+              <div className="text-muted text-sm">{label}</div>
             </div>
           ))}
         </div>
@@ -58,21 +58,21 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto">
           <div className="glass rounded-3xl p-8 md:p-12 grid md:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="font-display text-3xl font-bold text-white mb-4">Our Mission</h2>
-              <p className="text-white/60 leading-relaxed mb-4">
+              <h2 className="font-display text-3xl font-bold text-foreground mb-4">Our Mission</h2>
+              <p className="text-muted leading-relaxed mb-4">
                 We believe finding a life partner is one of life's most important decisions. Our platform exists to make 
                 that journey safe, dignified, and successful — not just for individuals, but for entire families.
               </p>
-              <p className="text-white/60 leading-relaxed">
+              <p className="text-muted leading-relaxed">
                 Every feature we build, every policy we enforce, is guided by one question: 
-                <em className="text-white/80"> "Does this serve the genuine matchmaker?"</em>
+                <em className="text-muted"> "Does this serve the genuine matchmaker?"</em>
               </p>
             </div>
             <div className="space-y-4">
               {["Admin-verified profiles only", "Zero tolerance for fake accounts", "Family-friendly communication", "DPDP Act 2023 compliant data handling", "Transparent subscription model"].map((point) => (
                 <div key={point} className="flex items-center gap-3">
                   <CheckCircle size={16} className="text-[#C9972C] shrink-0" />
-                  <span className="text-white/70 text-sm">{point}</span>
+                  <span className="text-muted text-sm">{point}</span>
                 </div>
               ))}
             </div>
@@ -83,7 +83,7 @@ export default function AboutPage() {
       {/* Values */}
       <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
-          <h2 className="font-display text-3xl font-bold text-white text-center mb-10">What We Stand For</h2>
+          <h2 className="font-display text-3xl font-bold text-foreground text-center mb-10">What We Stand For</h2>
           <div className="grid sm:grid-cols-2 gap-5">
             {values.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="glass rounded-2xl p-6 flex gap-4">
@@ -91,8 +91,8 @@ export default function AboutPage() {
                   <Icon size={18} className="text-[#C9972C]" />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold mb-1">{title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{desc}</p>
+                  <h3 className="text-foreground font-semibold mb-1">{title}</h3>
+                  <p className="text-muted text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -105,8 +105,8 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto">
           <div className="glass rounded-3xl p-8 border border-[rgba(201,151,44,0.15)] text-center">
             <Lock size={32} className="text-[#C9972C] mx-auto mb-4" />
-            <h2 className="font-display text-2xl font-bold text-white mb-3">DPDP Act 2023 Compliant</h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-sm leading-relaxed mb-6">
+            <h2 className="font-display text-2xl font-bold text-foreground mb-3">DPDP Act 2023 Compliant</h2>
+            <p className="text-muted max-w-2xl mx-auto text-sm leading-relaxed mb-6">
               We are fully compliant with India's Digital Personal Data Protection Act 2023. 
               We collect only what we need, store data securely, and give you complete control 
               over your personal information at all times.
@@ -125,13 +125,13 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="py-16 px-4 text-center">
         <div className="max-w-xl mx-auto">
-          <h2 className="font-display text-3xl font-bold text-white mb-4">Ready to Begin?</h2>
-          <p className="text-white/60 mb-8">Join thousands of verified profiles and find your perfect match today.</p>
+          <h2 className="font-display text-3xl font-bold text-foreground mb-4">Ready to Begin?</h2>
+          <p className="text-muted mb-8">Join thousands of verified profiles and find your perfect match today.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/register" className="px-8 py-3 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors">
               Create Free Profile
             </Link>
-            <Link href="/how-it-works" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-white rounded-xl transition-colors border border-white/[0.1]">
+            <Link href="/how-it-works" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-foreground rounded-xl transition-colors border border-border">
               How It Works
             </Link>
           </div>
