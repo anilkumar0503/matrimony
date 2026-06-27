@@ -413,6 +413,7 @@ model User {
   nomination         Nomination?
   galleryAccessGranted  GalleryAccess[] @relation("GalleryOwner")
   galleryAccessReceived GalleryAccess[] @relation("GalleryGranted")
+  enquiries            Enquiry[]
 }
 
 model UserProfile {
@@ -1164,6 +1165,31 @@ model CommunityAnnouncement {
   content     String
   postedBy    String
   createdAt   DateTime  @default(now())
+}
+
+// ─── ENQUIRIES ───────────────────────────────────────────────────────────────
+
+model Enquiry {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  message     String
+  status      EnquiryStatus @default(PENDING)
+  userId      String?  // If account was created from this enquiry
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([userId])
+}
+
+enum EnquiryStatus {
+  PENDING
+  IN_PROGRESS
+  CONVERTED
+  CLOSED
 }
 
 // ─── GALLERY ACCESS ───────────────────────────────────────────────────────────

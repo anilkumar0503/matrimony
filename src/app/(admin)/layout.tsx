@@ -5,7 +5,7 @@ import Link from "next/link";
 import {
   LayoutDashboard, Users, Shield, Image, CreditCard, Settings,
   LogOut, Menu, X, Heart, FileText, BarChart3, Bell, Users2,
-  BookOpen, Ticket, ChevronDown, ScrollText, KeyRound, Tag
+  BookOpen, Ticket, ChevronDown, ScrollText, KeyRound, Tag, MessageSquare
 } from "lucide-react";
 import ThemeToggle from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,7 @@ const navGroups = [
     label: "Member Management",
     items: [
       { href: "/admin/users", icon: Users, label: "Members" },
+      { href: "/admin/enquiries", icon: MessageSquare, label: "Enquiries" },
       { href: "/admin/kyc", icon: Shield, label: "KYC Queue" },
       { href: "/admin/images", icon: Image, label: "Image Moderation" },
     ],
