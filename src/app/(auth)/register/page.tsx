@@ -109,7 +109,7 @@ export default function RegisterPage() {
               <Input
                 label="Mobile Number"
                 type="tel"
-                placeholder="+91 98765 43210"
+                placeholder="Enter Phone Number"
                 icon={<Phone size={16} />}
                 error={form.formState.errors.phone?.message}
                 {...form.register("phone", {

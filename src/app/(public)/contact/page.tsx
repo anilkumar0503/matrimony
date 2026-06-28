@@ -41,7 +41,7 @@ export default function ContactPage() {
           <div className="space-y-4">
             {[
               { icon: Mail, label: "Email", value: "support@matrimony.com", href: "mailto:support@matrimony.com" },
-              { icon: Phone, label: "Phone", value: "+91 98765 43210", href: "tel:+919876543210" },
+              { icon: Phone, label: "Phone", value: "+91 8886999444", href: "tel:+918886999444" },
               { icon: Clock, label: "Support Hours", value: "Mon–Sat, 9am–6pm IST", href: null },
               { icon: MapPin, label: "Address", value: "123 Business Park, Bengaluru, Karnataka 560001", href: null },
             ].map(({ icon: Icon, label, value, href }) => (

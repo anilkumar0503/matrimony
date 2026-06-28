@@ -88,7 +88,7 @@ export default function EnquiryPage() {
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#C9972C] transition-colors"
-                  placeholder="+91 98765 43210"
+                  placeholder="Enter Phone Number"
                 />
               </div>
             </div>

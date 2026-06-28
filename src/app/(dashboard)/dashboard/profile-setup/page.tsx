@@ -392,7 +392,7 @@ function EditModal({
 
         <div className="space-y-4">
           {sectionId === "basic" && (<>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <Input label="First Name" placeholder="First name" {...form.register("firstName")} />
               <Input label="Middle Name" placeholder="Middle name" {...form.register("middleName")} />
               <Input label="Last Name" placeholder="Last name" {...form.register("lastName")} />
@@ -401,7 +401,7 @@ function EditModal({
               <div><Label>Marital Status</Label><Sel name="maritalStatus" options={MARITAL_STATUS} placeholder="Select" /></div>
               <div><Label>Blood Group</Label><Sel name="bloodGroup" options={BLOOD_GROUPS} placeholder="Select" /></div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <Input label="Height (cm)" type="number" placeholder="170" {...form.register("height", { valueAsNumber: true })} />
               <Input label="Weight (kg)" type="number" placeholder="70" {...form.register("weight", { valueAsNumber: true })} />
               <div><Label>Complexion</Label><Sel name="complexion" options={COMPLEXION} placeholder="Select" /></div>
@@ -416,10 +416,10 @@ function EditModal({
           {sectionId === "contact" && (<>
             <div className="grid grid-cols-2 gap-3">
               <div><Label>Mobile Number</Label><Input type="tel" value={userData.phone || ""} disabled /></div>
-              <Input label="Alternate Mobile" type="tel" placeholder="+91 98765 43211" {...form.register("alternatePhone")} />
+              <Input label="Alternate Mobile" type="tel" placeholder="Enter Alternate Mobile Number" {...form.register("alternatePhone")} />
             </div>
             <div><Label>Email</Label><Input type="email" value={userData.email || ""} disabled /></div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><Label>State</Label><Sel name="state" options={STATES_INDIA} placeholder="Select" /></div>
               <div><Label>City</Label><Sel name="city" options={selectedState ? STATE_CITIES[selectedState] || [] : []} placeholder="Select" /></div>
               <Input label="Postal Code" placeholder="600001" {...form.register("postalCode")} />
@@ -456,17 +456,17 @@ function EditModal({
               <Input label="Time of Birth" type="time" {...form.register("timeOfBirth")} />
               <Input label="Place of Birth" placeholder="e.g. Chennai" {...form.register("placeOfBirth")} />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><Label>Rashi</Label><Sel name="rashi" options={RASHI} placeholder="Select" /></div>
               <div><Label>Nakshatra</Label><Sel name="nakshatra" options={NAKSHATRA} placeholder="Select" /></div>
               <div><Label>Lagna</Label><Sel name="lagna" options={LAGNA} placeholder="Select" /></div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><Label>Nadi</Label><Sel name="nadi" options={NADI} placeholder="Select" /></div>
               <div><Label>Gana</Label><Sel name="gana" options={GANA} placeholder="Select" /></div>
               <div><Label>Yoni</Label><Sel name="yoni" options={YONI} placeholder="Select" /></div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><Label>Rajju</Label><Sel name="rajju" options={RAJJU} placeholder="Select" /></div>
               <div><Label>Mahendra</Label><Sel name="mahendra" options={MAHENDRA} placeholder="Select" /></div>
               <div><Label>Vedha</Label><Sel name="vedha" options={VEDHA} placeholder="Select" /></div>
@@ -531,7 +531,7 @@ function EditModal({
               <Input label="Sisters" type="number" min={0} {...form.register("sistersCount", { valueAsNumber: true })} />
               <Input label="Married Sisters" type="number" min={0} {...form.register("marriedSisters", { valueAsNumber: true })} />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><Label>Family Type</Label><Sel name="familyType" options={FAMILY_TYPES} placeholder="Select" /></div>
               <div><Label>Family Values</Label><Sel name="familyValues" options={FAMILY_VALUES} placeholder="Select" /></div>
               <div><Label>Family Status</Label><Sel name="familyStatus" options={["MIDDLE_CLASS", "UPPER_MIDDLE_CLASS", "AFFLUENT"]} placeholder="Select" /></div>
@@ -651,7 +651,7 @@ function EditModal({
               <Input label="Education Preference" {...form.register("educationPref")} />
               <Input label="Income Preference" placeholder="e.g. 10-15 LPA" {...form.register("incomePref")} />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div><Label>Diet Preference</Label><Sel name="dietPref" options={["Any", ...DIET]} placeholder="Any" /></div>
               <div><Label>Smoking Preference</Label><Sel name="smokingPref" options={["Any", ...SMOKING]} placeholder="Any" /></div>
               <div><Label>Drinking Preference</Label><Sel name="drinkingPref" options={["Any", ...DRINKING]} placeholder="Any" /></div>
