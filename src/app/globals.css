@@ -353,6 +353,8 @@ html[data-theme="light"] .btn-glass:hover {
   outline: none;
 }
 .input-glass::placeholder { color: var(--color-muted); }
+
+html[data-theme="light"] .input-glass::placeholder { color: #9ca3af; }
 .input-glass:focus {
   border-color: var(--color-border-gold);
   background: var(--color-surface-hover);
