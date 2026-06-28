@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        gold: "bg-gradient-to-r from-[#C9972C] via-[#E8C76A] to-[#C9972C] bg-[length:200%_auto] text-[#1a0505] font-bold hover:bg-right hover:shadow-[0_0_20px_rgba(201,151,44,0.5)] hover:-translate-y-0.5",
+        gold: "bg-[linear-gradient(135deg,var(--btn-gold-from)_0%,var(--btn-gold-via)_50%,var(--btn-gold-from)_100%)] bg-[length:200%_auto] text-[var(--btn-gold-text)] font-bold hover:bg-right hover:shadow-[0_0_20px_rgba(201,151,44,0.5)] hover:-translate-y-0.5",
         glass:
           "bg-surface text-foreground border border-border backdrop-blur-sm hover:bg-surface-hover hover:border-border-gold",
         "glass-gold":

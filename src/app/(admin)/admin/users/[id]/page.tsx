@@ -4,11 +4,12 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ChevronLeft, UserCheck, UserX, Trash2, LogOut, Shield,
-  Image, CreditCard, Bell, CheckCircle, XCircle, AlertTriangle, Edit2
+  Image, CreditCard, Bell, CheckCircle, XCircle, AlertTriangle, Edit2, Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { calculateAge, formatDateTime, formatDate } from "@/lib/utils";
+import { generateProfilePDF } from "@/lib/generate-profile-pdf";
 
 interface UserDetail {
   id: string;
@@ -46,6 +47,7 @@ export default function AdminUserDetailPage() {
   const [actionModal, setActionModal] = useState<string | null>(null);
   const [reason, setReason] = useState("");
   const [processing, setProcessing] = useState(false);
+  const [generatingPDF, setGeneratingPDF] = useState(false);
   
   // Profile edit modal
   const [showProfileEdit, setShowProfileEdit] = useState(false);
@@ -113,6 +115,36 @@ export default function AdminUserDetailPage() {
     }
   };
 
+  const handleDownloadPDF = async () => {
+    if (!user) return;
+    setGeneratingPDF(true);
+    try {
+      // Fetch approved images with signed URLs from admin images API
+      const res = await fetch(`/api/admin/images?status=APPROVED&limit=100`, {
+        headers: { Authorization: `Bearer ${token()}` },
+      });
+      const json = await res.json();
+      
+      const imageUrls: string[] = [];
+      if (json.success && json.images) {
+        const userImages = json.images.filter((i: any) => i.user.id === user.id);
+        for (const img of userImages) {
+          if (img.signedUrl) {
+            imageUrls.push(img.signedUrl);
+          }
+        }
+      }
+      
+      console.log(`Generating PDF with ${imageUrls.length} images`);
+      await generateProfilePDF(user, imageUrls);
+    } catch (err) {
+      console.error("PDF generation error:", err);
+      alert("Failed to generate PDF. Please try again.");
+    } finally {
+      setGeneratingPDF(false);
+    }
+  };
+
   if (loading) return <div className="space-y-4">{[...Array(4)].map((_, i) => <div key={i} className="skeleton h-32" />)}</div>;
   if (!user) return <div className="text-muted">User not found</div>;
 
@@ -125,6 +157,9 @@ export default function AdminUserDetailPage() {
           <p className="text-muted text-xs">{user.email} · ID: {user.id.slice(0, 8)}…</p>
         </div>
         <div className="ml-auto flex gap-2 flex-wrap">
+          <Button variant="glass" size="sm" onClick={handleDownloadPDF} loading={generatingPDF}>
+            <Download size={14} /> Download PDF
+          </Button>
           <Button variant="glass" size="sm" onClick={openProfileEdit}>
             <Edit2 size={14} /> Edit Profile
           </Button>

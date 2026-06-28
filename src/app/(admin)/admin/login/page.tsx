@@ -41,8 +41,8 @@ export default function AdminLoginPage() {
 
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7B1D1D] to-[#C9972C] flex items-center justify-center mx-auto mb-5">
-            <Shield size={24} className="text-white" />
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--gradient-maroon)] to-[var(--gradient-gold)] flex items-center justify-center mx-auto mb-5">
+            <Shield size={24} className="text-[var(--icon-on-gradient)]" />
           </div>
           <h1 className="font-display text-3xl font-bold text-foreground mb-2">Admin Panel</h1>
           <p className="text-muted text-sm">Authorized personnel only</p>
@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
             <Input
               label="Admin Email"
               type="email"
-              placeholder="admin@example.com"
+              placeholder="admin@example.com" 
               icon={<Mail size={16} />}
               error={errors.email?.message}
               {...register("email", { required: "Email is required" })}

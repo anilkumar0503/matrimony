@@ -113,7 +113,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       include: {
         profile: { include: { partnerPreferences: true } },
         kycSubmissions: { orderBy: { createdAt: "desc" } },
-        images: { orderBy: { sortOrder: "asc" } },
+        images: { orderBy: { sortOrder: "asc" }, select: { id: true, status: true, isPrimary: true, category: true, originalUrl: true, sortOrder: true } },
         subscriptions: { include: { plan: true }, orderBy: { createdAt: "desc" } },
         communityMembers: { include: { community: true } },
         consentRecords: { orderBy: { createdAt: "desc" }, take: 20 },

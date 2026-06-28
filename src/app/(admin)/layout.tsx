@@ -119,11 +119,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       >
         {/* Logo */}
         <div className="flex items-center justify-between p-4 border-b border-border">
-          <Link href="/admin/dashboard" className="flex items-center gap-2">
+          <Link href="/admin/dashboard" className="flex items-center justify-center w-full">
             <img src="/logo.png" alt="Jasmine Matrimony" className="h-9 w-auto" />
-            <span className="text-foreground text-xs font-bold">Admin Panel</span>
           </Link>
-          <button className="lg:hidden text-muted" onClick={() => setSidebarOpen(false)}>
+          <button className="lg:hidden text-muted absolute right-4" onClick={() => setSidebarOpen(false)}>
             <X size={16} />
           </button>
         </div>

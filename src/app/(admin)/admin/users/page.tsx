@@ -180,25 +180,25 @@ export default function AdminUsersPage() {
       </div>
 
       {/* Filters */}
-      <div className="glass p-4 flex flex-wrap gap-3">
-        <div className="relative flex-1 min-w-[200px]">
+      <div className="glass p-4 flex flex-wrap md:flex-nowrap gap-3">
+        <div className="relative flex-1">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input
-            className="input-glass input-glass-with-icon"
+            className="input-glass input-glass-with-icon w-full"
             placeholder="Search by name, email, phone..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           />
         </div>
-        <select className="input-glass w-48" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
+        <select className="input-glass flex-1" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
           <option value="">All Statuses</option>
           {STATUS_OPTIONS.filter(Boolean).map((s) => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
         </select>
-        <select className="input-glass w-40" value={kycStatus} onChange={(e) => { setKycStatus(e.target.value); setPage(1); }}>
+        <select className="input-glass flex-1" value={kycStatus} onChange={(e) => { setKycStatus(e.target.value); setPage(1); }}>
           <option value="">All KYC</option>
           {KYC_OPTIONS.filter(Boolean).map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
-        <Button variant="glass" size="sm" onClick={fetchUsers}>
+        <Button variant="glass" size="sm" className="flex-1" onClick={fetchUsers}>
           <Filter size={14} /> Apply
         </Button>
       </div>
