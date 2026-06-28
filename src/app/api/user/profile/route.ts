@@ -6,44 +6,97 @@ import { getProfileCompletionPct } from "@/lib/utils";
 import { getSignedDownloadUrl } from "@/lib/storage";
 
 const personalSchema = z.object({
-  fullName: z.string().min(2).max(100).optional(),
-  height: z.number().int().min(100).max(250).optional(),
-  weight: z.number().int().min(30).max(200).optional(),
-  complexion: z.string().optional(),
-  motherTongue: z.string().optional(),
-  religion: z.string().optional(),
-  caste: z.string().optional(),
-  subCaste: z.string().optional(),
-  citizenship: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  aboutMe: z.string().max(1000).optional(),
-  maritalStatus: z.enum(["NEVER_MARRIED", "DIVORCED", "WIDOWED", "AWAITING_DIVORCE"]).optional(),
-  // Family
-  fatherName: z.string().optional(),
-  fatherOccupation: z.string().optional(),
-  motherName: z.string().optional(),
-  motherOccupation: z.string().optional(),
-  siblingsCount: z.number().int().min(0).optional(),
-  familyType: z.enum(["NUCLEAR", "JOINT"]).optional(),
-  familyStatus: z.enum(["MIDDLE_CLASS", "UPPER_MIDDLE_CLASS", "AFFLUENT"]).optional(),
-  familyValues: z.enum(["TRADITIONAL", "MODERATE", "LIBERAL"]).optional(),
-  // Education
-  qualification: z.string().optional(),
-  university: z.string().optional(),
-  occupationType: z.string().optional(),
-  employerName: z.string().optional(),
-  annualIncome: z.string().optional(),
-  workCity: z.string().optional(),
-  workState: z.string().optional(),
-  // Horoscope
-  timeOfBirth: z.string().optional(),
-  placeOfBirth: z.string().optional(),
-  nakshatra: z.string().optional(),
-  rashi: z.string().optional(),
-  gothram: z.string().optional(),
-  dosham: z.union([z.string(), z.array(z.string())]).optional(),
-  horoscopeNotes: z.string().max(500).optional(),
+  // Basic Personal Information
+  profileCreatedBy: z.enum(["SELF", "PARENT", "SIBLING", "RELATIVE", "FRIEND"]).nullish(),
+  firstName: z.string().nullish(),
+  middleName: z.string().nullish(),
+  lastName: z.string().nullish(),
+  fullName: z.string().min(2).max(100).nullish(),
+  height: z.number().int().min(100).max(250).nullish(),
+  weight: z.number().int().min(30).max(200).nullish(),
+  bloodGroup: z.enum(["A_POSITIVE", "A_NEGATIVE", "B_POSITIVE", "B_NEGATIVE", "AB_POSITIVE", "AB_NEGATIVE", "O_POSITIVE", "O_NEGATIVE"]).nullish(),
+  physicalStatus: z.enum(["NORMAL", "PHYSICALLY_CHALLENGED"]).nullish(),
+  complexion: z.string().nullish(),
+  aboutMe: z.string().max(1000).nullish(),
+  maritalStatus: z.enum(["NEVER_MARRIED", "DIVORCED", "WIDOWED", "AWAITING_DIVORCE"]).nullish(),
+  
+  // Contact Information
+  alternatePhone: z.string().nullish(),
+  currentAddress: z.string().nullish(),
+  permanentAddress: z.string().nullish(),
+  city: z.string().nullish(),
+  state: z.string().nullish(),
+  country: z.string().nullish(),
+  postalCode: z.string().nullish(),
+  
+  // Religion & Community
+  motherTongue: z.string().nullish(),
+  religion: z.string().nullish(),
+  community: z.string().nullish(),
+  caste: z.string().nullish(),
+  subCaste: z.string().nullish(),
+  gothram: z.string().nullish(),
+  languagesKnown: z.array(z.string()).nullish(),
+  
+  // Horoscope / Astrology
+  timeOfBirth: z.string().nullish(),
+  placeOfBirth: z.string().nullish(),
+  nakshatra: z.string().nullish(),
+  rashi: z.string().nullish(),
+  lagna: z.string().nullish(),
+  dosham: z.union([z.string(), z.array(z.string())]).nullish(),
+  nadi: z.string().nullish(),
+  gana: z.string().nullish(),
+  yoni: z.string().nullish(),
+  rajju: z.string().nullish(),
+  mahendra: z.string().nullish(),
+  vedha: z.string().nullish(),
+  dasaDetails: z.string().nullish(),
+  horoscopeNotes: z.string().max(500).nullish(),
+  
+  // Education & Professional
+  qualification: z.string().nullish(),
+  university: z.string().nullish(),
+  occupationType: z.string().nullish(),
+  employerName: z.string().nullish(),
+  annualIncome: z.string().nullish(),
+  workCity: z.string().nullish(),
+  workState: z.string().nullish(),
+  
+  // Family Details
+  fatherName: z.string().nullish(),
+  fatherOccupation: z.string().nullish(),
+  fatherIncome: z.string().nullish(),
+  motherName: z.string().nullish(),
+  motherOccupation: z.string().nullish(),
+  brothersCount: z.number().int().min(0).nullish(),
+  marriedBrothers: z.number().int().min(0).nullish(),
+  sistersCount: z.number().int().min(0).nullish(),
+  marriedSisters: z.number().int().min(0).nullish(),
+  familyType: z.enum(["NUCLEAR", "JOINT"]).nullish(),
+  familyStatus: z.enum(["MIDDLE_CLASS", "UPPER_MIDDLE_CLASS", "AFFLUENT"]).nullish(),
+  familyValues: z.enum(["TRADITIONAL", "MODERATE", "LIBERAL"]).nullish(),
+  
+  // Lifestyle
+  diet: z.enum(["VEG", "NON_VEG", "EGGETARIAN"]).nullish(),
+  smoking: z.enum(["NEVER", "OCCASIONALLY", "REGULARLY"]).nullish(),
+  drinking: z.enum(["NEVER", "OCCASIONALLY", "REGULARLY"]).nullish(),
+  fitnessLevel: z.enum(["SEDENTARY", "MODERATE", "ACTIVE"]).nullish(),
+  exerciseHabits: z.string().nullish(),
+  sleepSchedule: z.enum(["EARLY_BIRD", "NIGHT_OWL", "IRREGULAR"]).nullish(),
+  hasPets: z.boolean().nullish(),
+  petsDetails: z.string().nullish(),
+  
+  // Personality & Values
+  personalityType: z.string().nullish(),
+  isIntrovert: z.boolean().nullish(),
+  isExtrovert: z.boolean().nullish(),
+  isFamilyOriented: z.boolean().nullish(),
+  isCareerOriented: z.boolean().nullish(),
+  religiousBeliefs: z.string().nullish(),
+  futureGoals: z.string().nullish(),
+  lifePriorities: z.string().nullish(),
+  partnerExpectations: z.string().nullish(),
 });
 
 export async function GET(req: NextRequest) {
@@ -122,10 +175,21 @@ export async function PUT(req: NextRequest) {
       dosham = doshamArray.map(d => doshamMap[d] || d).filter(d => ["MANGAL_DOSHAM", "NADI_DOSHAM", "CHEVVAI_DOSHAM", "NO_DOSHAM"].includes(d));
     }
 
+    // Filter out null/undefined values to avoid Prisma type errors
+    const updateData: any = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== null && value !== undefined) {
+        updateData[key] = value;
+      }
+    }
+    if (dosham) {
+      updateData.dosham = dosham;
+    }
+
     const profile = await prisma.userProfile.upsert({
       where: { userId: user.id },
-      create: { userId: user.id, ...data, dosham: dosham as any },
-      update: { ...data, dosham: dosham as any },
+      create: { userId: user.id, ...updateData },
+      update: updateData,
     });
 
     const completionPct = getProfileCompletionPct(profile as unknown as Record<string, unknown>);

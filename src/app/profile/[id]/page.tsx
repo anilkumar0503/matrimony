@@ -422,7 +422,7 @@ export default function ProfileViewPage() {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#1a0505] p-4 sm:p-8">
+    <div className="min-h-screen bg-background p-4 sm:p-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="skeleton h-[400px] rounded-2xl" />
         <div className="skeleton h-48 rounded-2xl" />
@@ -431,7 +431,7 @@ export default function ProfileViewPage() {
   );
 
   if (!profile) return (
-    <div className="min-h-screen bg-[#1a0505] flex items-center justify-center text-muted">
+    <div className="min-h-screen bg-background flex items-center justify-center text-muted">
       Profile not found
     </div>
   );
@@ -441,7 +441,7 @@ export default function ProfileViewPage() {
   const photos = profile.images.sort((a, b) => (b.isPrimary ? 1 : 0) - (a.isPrimary ? 1 : 0));
 
   return (
-    <div className="min-h-screen bg-[#1a0505]">
+    <div className="min-h-screen bg-background">
       <Navbar />
       <div className="max-w-2xl mx-auto px-4 py-6">
         {/* Back */}

@@ -24,16 +24,20 @@ const statusVariant: Record<string, "success" | "warning" | "danger" | "glass"> 
 };
 
 export default function InterestsPage() {
-  const [tab, setTab] = useState<"received" | "sent">("received");
+  const [tab, setTab] = useState<"received" | "sent" | "accepted" | "rejected">("received");
   const [interests, setInterests] = useState<Interest[]>([]);
   const [loading, setLoading] = useState(true);
   const [acting, setActing] = useState<string | null>(null);
 
   const token = () => localStorage.getItem("accessToken");
 
-  const fetchInterests = async (type: "received" | "sent") => {
+  const fetchInterests = async (type: "received" | "sent" | "accepted" | "rejected") => {
     setLoading(true);
-    const res = await fetch(`/api/user/interests?type=${type}`, { headers: { Authorization: `Bearer ${token()}` } });
+    let url = `/api/user/interests?type=${type === "accepted" || type === "rejected" ? "received" : type}`;
+    if (type === "accepted") url += "&status=ACCEPTED";
+    if (type === "rejected") url += "&status=DECLINED";
+    
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token()}` } });
     const json = await res.json();
     if (json.success) setInterests(json.data.interests);
     setLoading(false);
@@ -56,7 +60,10 @@ export default function InterestsPage() {
     }
   };
 
-  const profile = (interest: Interest) => tab === "received" ? interest.sender : interest.receiver;
+  const profile = (interest: Interest) => {
+    if (tab === "sent") return interest.receiver;
+    return interest.sender;
+  };
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -66,18 +73,30 @@ export default function InterestsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <button
           onClick={() => setTab("received")}
-          className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${tab === "received" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
+          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${tab === "received" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
         >
           <Heart size={14} className="inline mr-1.5" /> Received
         </button>
         <button
           onClick={() => setTab("sent")}
-          className={`px-5 py-2 rounded-xl text-sm font-medium transition-all ${tab === "sent" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
+          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${tab === "sent" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
         >
           <Send size={14} className="inline mr-1.5" /> Sent
+        </button>
+        <button
+          onClick={() => setTab("accepted")}
+          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${tab === "accepted" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
+        >
+          <Check size={14} className="inline mr-1.5" /> Accepted
+        </button>
+        <button
+          onClick={() => setTab("rejected")}
+          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${tab === "rejected" ? "bg-[rgba(201,151,44,0.12)] text-[#E8C76A] border border-[rgba(201,151,44,0.25)]" : "text-muted hover:text-foreground"}`}
+        >
+          <X size={14} className="inline mr-1.5" /> Rejected
         </button>
       </div>
 

@@ -65,7 +65,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     });
 
     if (!user) return apiError("Profile not found", 404);
-    if (user.status !== "ACTIVE") return apiError("Profile not available", 403);
+    // Allow viewing own profile even if not active, but restrict others
+    if (user.status !== "ACTIVE" && viewerId !== id) return apiError("Profile not available", 403);
 
     const isKycVerified = user.kycSubmissions.length > 0;
     const subscriptionTier = user.subscriptions[0]?.plan?.tier || "FREE";

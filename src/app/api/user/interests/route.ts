@@ -15,10 +15,18 @@ export async function GET(req: NextRequest) {
     const user = await requireUser(req);
     const { searchParams } = new URL(req.url);
     const type = searchParams.get("type") || "sent";
+    const status = searchParams.get("status");
 
     if (type === "sent") {
+      const where: any = { senderId: user.id };
+      if (status) {
+        where.status = status;
+      } else {
+        where.status = { not: "WITHDRAWN" };
+      }
+      
       const interests = await prisma.interest.findMany({
-        where: { senderId: user.id, status: { not: "WITHDRAWN" } },
+        where,
         include: {
           receiver: {
             include: { profile: { select: { fullName: true, city: true, state: true } } },
@@ -29,8 +37,16 @@ export async function GET(req: NextRequest) {
       return apiResponse({ interests });
     }
 
+    // received
+    const where: any = { receiverId: user.id };
+    if (status) {
+      where.status = status;
+    } else {
+      where.status = "PENDING";
+    }
+
     const interests = await prisma.interest.findMany({
-      where: { receiverId: user.id, status: "PENDING" },
+      where,
       include: {
         sender: {
           include: { profile: { select: { fullName: true, city: true, state: true } } },
