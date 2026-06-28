@@ -34,18 +34,18 @@
   --btn-gold-from: #C9972C;
   --btn-gold-via: #E8C76A;
   --btn-gold-text: #1a0505;
-  --text-gold-color: #C9972C;
-  --text-gold-light-color: #E8C76A;
-  --shimmer-from: #C9972C;
-  --shimmer-via: #E8C76A;
-  --gold-bg-10: rgba(201,151,44,0.10);
-  --gold-bg-12: rgba(201,151,44,0.12);
-  --gold-bg-20: rgba(201,151,44,0.20);
-  --gold-border-25: rgba(201,151,44,0.25);
-  --gold-border-30: rgba(201,151,44,0.30);
-  --gold-border-35: rgba(201,151,44,0.35);
+  --text-gold-color: #f78222;
+  --text-gold-light-color: #ffa055;
+  --shimmer-from: #f78222;
+  --shimmer-via: #ffa055;
+  --gold-bg-10: rgba(247,130,34,0.10);
+  --gold-bg-12: rgba(247,130,34,0.12);
+  --gold-bg-20: rgba(247,130,34,0.20);
+  --gold-border-25: rgba(247,130,34,0.25);
+  --gold-border-30: rgba(247,130,34,0.30);
+  --gold-border-35: rgba(247,130,34,0.35);
   --gradient-maroon: #7B1D1D;
-  --gradient-gold: #C9972C;
+  --gradient-gold: #f78222;
   --icon-on-gradient: #ffffff;
 }
 
@@ -101,22 +101,22 @@ html[data-theme="light"] {
   --color-surface: rgba(255,255,255,0.75);
   --color-surface-hover: rgba(255,255,255,0.95);
   --color-border: rgba(0,0,0,0.09);
-  --color-border-gold: rgba(201,151,44,0.45);
-  --btn-gold-from: oklch(0.553 0.195 38.402);
-  --btn-gold-via: oklch(0.65 0.19 38.402);
-  --btn-gold-text: oklch(0.98 0.016 73.684);
-  --text-gold-color: oklch(0.47 0.157 38.402);
-  --text-gold-light-color: oklch(0.553 0.195 38.402);
-  --shimmer-from: oklch(0.47 0.157 38.402);
-  --shimmer-via: oklch(0.553 0.195 38.402);
-  --gold-bg-10: rgba(201,151,44,0.08);
-  --gold-bg-12: rgba(201,151,44,0.10);
-  --gold-bg-20: rgba(201,151,44,0.15);
-  --gold-border-25: rgba(201,151,44,0.20);
-  --gold-border-30: rgba(201,151,44,0.22);
-  --gold-border-35: rgba(201,151,44,0.25);
+  --color-border-gold: rgba(247,130,34,0.45);
+  --btn-gold-from: #f78222;
+  --btn-gold-via: #ffa055;
+  --btn-gold-text: #ffffff;
+  --text-gold-color: #f78222;
+  --text-gold-light-color: #ffa055;
+  --shimmer-from: #f78222;
+  --shimmer-via: #ffa055;
+  --gold-bg-10: rgba(247,130,34,0.08);
+  --gold-bg-12: rgba(247,130,34,0.10);
+  --gold-bg-20: rgba(247,130,34,0.15);
+  --gold-border-25: rgba(247,130,34,0.20);
+  --gold-border-30: rgba(247,130,34,0.22);
+  --gold-border-35: rgba(247,130,34,0.25);
   --gradient-maroon: #7B1D1D;
-  --gradient-gold: oklch(0.553 0.195 38.402);
+  --gradient-gold: #f78222;
   --icon-on-gradient: #ffffff;
 
 }

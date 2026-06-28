@@ -34,6 +34,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
                 { label: "Privacy Policy", href: "/privacy" },
                 { label: "Terms of Service", href: "/terms" },
                 { label: "DPDP Rights", href: "/dashboard/settings#dpdp" },
+                { label: "Razorpay Activation", href: "/razorpay-activation" },
               ]},
             ].map((col) => (
               <div key={col.title}>
