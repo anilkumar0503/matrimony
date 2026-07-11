@@ -414,6 +414,7 @@ model User {
   galleryAccessGranted  GalleryAccess[] @relation("GalleryOwner")
   galleryAccessReceived GalleryAccess[] @relation("GalleryGranted")
   enquiries            Enquiry[]
+  chatMessages         ChatMessage[]   @relation("ChatSender")
 }
 
 model UserProfile {
@@ -896,9 +897,24 @@ model MutualMatch {
   interest    Interest? @relation(fields: [interestId], references: [id])
   createdAt   DateTime  @default(now())
 
-  ticket MatchTicket?
+  ticket   MatchTicket?
+  messages ChatMessage[]
 
   @@unique([userAId, userBId])
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  matchId   String
+  match     MutualMatch @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  senderId  String
+  sender    User        @relation("ChatSender", fields: [senderId], references: [id])
+  content   String
+  isRead    Boolean     @default(false)
+  createdAt DateTime    @default(now())
+
+  @@index([matchId, createdAt])
+  @@index([senderId])
 }
 
 model MatchTicket {

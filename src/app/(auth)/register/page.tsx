@@ -98,7 +98,7 @@ export default function RegisterPage() {
                 label="Email Address"
                 type="email"
                 placeholder="you@example.com"
-                icon={<Mail size={16} />}
+                
                 error={form.formState.errors.email?.message}
                 {...form.register("email", {
                   required: "Email is required",
@@ -110,7 +110,7 @@ export default function RegisterPage() {
                 label="Mobile Number"
                 type="tel"
                 placeholder="Enter Phone Number"
-                icon={<Phone size={16} />}
+                
                 error={form.formState.errors.phone?.message}
                 {...form.register("phone", {
                   required: "Mobile number is required",
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                 label="Password"
                 type={showPw ? "text" : "password"}
                 placeholder="Min. 8 characters"
-                icon={<Lock size={16} />}
+               
                 error={form.formState.errors.password?.message}
                 rightIcon={
                   <button type="button" onClick={() => setShowPw(!showPw)}>
@@ -139,7 +139,7 @@ export default function RegisterPage() {
                 label="Confirm Password"
                 type="password"
                 placeholder="Repeat your password"
-                icon={<Lock size={16} />}
+               
                 error={form.formState.errors.confirmPassword?.message}
                 {...form.register("confirmPassword", { required: "Please confirm your password" })}
               />
@@ -149,7 +149,7 @@ export default function RegisterPage() {
                 <label className="flex items-start gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 mt-0.5 rounded accent-[#C9972C]"
+                    className="w-4 h-4 mt-0.5 rounded accent-[#f78222]"
                     {...form.register("terms", { required: true })}
                   />
                   <span className="text-xs text-muted">
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                 <label className="flex items-start gap-2.5 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 mt-0.5 rounded accent-[#C9972C]"
+                    className="w-4 h-4 mt-0.5 rounded accent-[#f78222]"
                     {...form.register("dpdpConsent", { required: true })}
                   />
                   <span className="text-xs text-muted">

@@ -191,7 +191,7 @@ export default function AdminUserDetailPage() {
         <div className="ml-auto flex items-center gap-2">
           <span className="text-muted text-xs">Profile {user.profile?.profileCompletionPct || 0}% complete</span>
           <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-[#C9972C] to-[#E8C76A] rounded-full" style={{ width: `${user.profile?.profileCompletionPct || 0}%` }} />
+            <div className="h-full bg-gradient-to-r from-[#f78222] to-[#E8C76A] rounded-full" style={{ width: `${user.profile?.profileCompletionPct || 0}%` }} />
           </div>
         </div>
       </div>
@@ -219,7 +219,7 @@ export default function AdminUserDetailPage() {
         {/* KYC */}
         <div className="glass p-5">
           <h3 className="font-semibold text-foreground text-sm mb-4 flex items-center gap-2">
-            <Shield size={14} className="text-[#C9972C]" /> KYC Submissions
+            <Shield size={14} className="text-[#f78222]" /> KYC Submissions
           </h3>
           {user.kycSubmissions.length === 0 ? (
             <p className="text-muted text-xs">No KYC submissions</p>
@@ -244,7 +244,7 @@ export default function AdminUserDetailPage() {
         {/* Subscription */}
         <div className="glass p-5">
           <h3 className="font-semibold text-foreground text-sm mb-4 flex items-center gap-2">
-            <CreditCard size={14} className="text-[#C9972C]" /> Subscription
+            <CreditCard size={14} className="text-[#f78222]" /> Subscription
           </h3>
           {user.subscriptions.length === 0 ? (
             <p className="text-muted text-xs">Free plan</p>
@@ -262,7 +262,7 @@ export default function AdminUserDetailPage() {
         {/* Images */}
         <div className="glass p-5">
           <h3 className="font-semibold text-foreground text-sm mb-4 flex items-center gap-2">
-            <Image size={14} className="text-[#C9972C]" /> Images ({user.images.length})
+            <Image size={14} className="text-[#f78222]" /> Images ({user.images.length})
           </h3>
           {user.images.length === 0 ? (
             <p className="text-muted text-xs">No images uploaded</p>
@@ -292,7 +292,7 @@ export default function AdminUserDetailPage() {
       {(user.auditLogs?.length ?? 0) > 0 && (
         <div className="glass p-5">
           <h3 className="font-semibold text-foreground text-sm mb-4 flex items-center gap-2">
-            <Bell size={14} className="text-[#C9972C]" /> Recent Activity
+            <Bell size={14} className="text-[#f78222]" /> Recent Activity
           </h3>
           <div className="space-y-2">
             {user.auditLogs?.slice(0, 10).map((log) => (

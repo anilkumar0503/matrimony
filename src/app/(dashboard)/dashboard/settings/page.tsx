@@ -200,7 +200,7 @@ export default function SettingsPage() {
                 <span className="text-muted text-sm group-hover:text-foreground transition-colors">{pref.label}</span>
                 <div
                   className={`w-10 h-5 rounded-full relative transition-colors cursor-pointer
-                    ${notifPrefs[pref.key] ? "bg-[#C9972C]" : "bg-white/10"}`}
+                    ${notifPrefs[pref.key] ? "bg-[#f78222]" : "bg-white/10"}`}
                   onClick={() => setNotifPrefs((prev) => ({ ...prev, [pref.key]: !prev[pref.key] }))}
                 >
                   <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform
@@ -278,7 +278,7 @@ export default function SettingsPage() {
                         <div className="text-foreground text-sm">{s.deviceInfo || "Unknown Device"}</div>
                         <div className="text-muted text-xs">
                           {s.ipAddress} • {new Date(s.createdAt).toLocaleDateString()}
-                          {s.isCurrent && <span className="ml-2 text-[#C9972C] text-[10px]">(Current)</span>}
+                          {s.isCurrent && <span className="ml-2 text-[#f78222] text-[10px]">(Current)</span>}
                         </div>
                       </div>
                     </div>
@@ -316,7 +316,7 @@ export default function SettingsPage() {
         <div className="glass p-6 space-y-6">
           <div>
             <h3 className="font-semibold text-foreground flex items-center gap-2 mb-1">
-              <Shield size={16} className="text-[#C9972C]" /> Your Data Rights
+              <Shield size={16} className="text-[#f78222]" /> Your Data Rights
             </h3>
             <p className="text-muted text-sm">
               Under the Digital Personal Data Protection Act 2023, you have the following rights.
@@ -371,7 +371,7 @@ export default function SettingsPage() {
 
           <div>
             <h3 className="font-semibold text-foreground flex items-center gap-2 mb-1">
-              <Shield size={16} className="text-[#C9972C]" /> Nomination (DPDP Right)
+              <Shield size={16} className="text-[#f78222]" /> Nomination (DPDP Right)
             </h3>
             <p className="text-muted text-sm mb-4">
               Nominate a person to manage your account in case of death or incapacity.

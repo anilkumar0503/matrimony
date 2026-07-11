@@ -75,7 +75,7 @@ export default function HowItWorksPage() {
             <div key={number} className="glass rounded-3xl p-7 flex gap-6 relative">
               <div className="shrink-0 flex flex-col items-center">
                 <div className="w-12 h-12 rounded-2xl bg-[rgba(201,151,44,0.15)] border border-[rgba(201,151,44,0.2)] flex items-center justify-center">
-                  <Icon size={20} className="text-[#C9972C]" />
+                  <Icon size={20} className="text-[#f78222]" />
                 </div>
                 {index < steps.length - 1 && (
                   <div className="w-px flex-1 bg-gradient-to-b from-[rgba(201,151,44,0.3)] to-transparent mt-3 min-h-[24px]" />
@@ -83,14 +83,14 @@ export default function HowItWorksPage() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="font-display text-4xl font-bold text-[#C9972C]/20">{number}</span>
+                  <span className="font-display text-4xl font-bold text-[#f78222]/20">{number}</span>
                   <h3 className="font-display text-xl font-bold text-foreground">{title}</h3>
                 </div>
                 <p className="text-muted text-sm leading-relaxed mb-4">{desc}</p>
                 <div className="flex flex-wrap gap-2">
                   {points.map((p) => (
                     <div key={p} className="flex items-center gap-1.5 text-xs text-muted">
-                      <CheckCircle size={11} className="text-[#C9972C]" /> {p}
+                      <CheckCircle size={11} className="text-[#f78222]" /> {p}
                     </div>
                   ))}
                 </div>
@@ -110,11 +110,11 @@ export default function HowItWorksPage() {
               { plan: "VIP", features: ["Everything in Premium", "Priority in search results", "Dedicated relationship manager"] },
             ].map(({ plan, features, highlight }) => (
               <div key={plan} className={`rounded-2xl p-5 ${highlight ? "bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.3)]" : "bg-white/[0.03] border border-border"}`}>
-                <div className={`font-display text-xl font-bold mb-3 ${highlight ? "text-[#C9972C]" : "text-foreground"}`}>{plan}</div>
+                <div className={`font-display text-xl font-bold mb-3 ${highlight ? "text-[#f78222]" : "text-foreground"}`}>{plan}</div>
                 <div className="space-y-2">
                   {features.map((f) => (
                     <div key={f} className="flex items-center gap-2 text-xs text-muted">
-                      <CheckCircle size={11} className={highlight ? "text-[#C9972C]" : "text-muted"} /> {f}
+                      <CheckCircle size={11} className={highlight ? "text-[#f78222]" : "text-muted"} /> {f}
                     </div>
                   ))}
                 </div>
@@ -122,7 +122,7 @@ export default function HowItWorksPage() {
             ))}
           </div>
           <div className="text-center mt-6">
-            <Link href="/plans" className="inline-flex items-center gap-2 px-6 py-3 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors text-sm">
+            <Link href="/plans" className="inline-flex items-center gap-2 px-6 py-3 bg-[#f78222] hover:bg-[#B8861B] text-[#ffffff] font-semibold rounded-xl transition-colors text-sm">
               View All Plans <ArrowRight size={14} />
             </Link>
           </div>
@@ -142,7 +142,7 @@ export default function HowItWorksPage() {
             ))}
           </div>
           <div className="text-center mt-8">
-            <Link href="/faq" className="text-[#C9972C] hover:text-[#E8C76A] text-sm transition-colors">
+            <Link href="/faq" className="text-[#f78222] hover:text-[#E8C76A] text-sm transition-colors">
               View all FAQs →
             </Link>
           </div>
@@ -154,7 +154,7 @@ export default function HowItWorksPage() {
         <div className="max-w-xl mx-auto">
           <h2 className="font-display text-3xl font-bold text-foreground mb-4">Start Your Journey Today</h2>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/register" className="px-8 py-3 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors">
+            <Link href="/register" className="px-8 py-3 bg-[#f78222] hover:bg-[#B8861B] text-[#ffffff] font-semibold rounded-xl transition-colors">
               Create Free Profile
             </Link>
             <Link href="/search" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-foreground rounded-xl transition-colors border border-border">

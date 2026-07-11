@@ -126,7 +126,7 @@ export default function AdminCmsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <BookOpen size={22} className="text-[#C9972C]" /> CMS & Content
+            <BookOpen size={22} className="text-[#f78222]" /> CMS & Content
           </h1>
           <p className="text-muted text-sm">{total} posts</p>
         </div>
@@ -220,7 +220,7 @@ export default function AdminCmsPage() {
           <div className="glass-dark rounded-2xl p-6 max-w-3xl w-full my-4" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-semibold text-foreground text-lg flex items-center gap-2">
-                <FileText size={18} className="text-[#C9972C]" />
+                <FileText size={18} className="text-[#f78222]" />
                 {editSlug ? "Edit Post" : "New Post"}
               </h3>
               <button onClick={() => setShowEditor(false)} className="text-muted hover:text-foreground"><X size={20} /></button>

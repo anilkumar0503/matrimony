@@ -54,7 +54,7 @@ export default function AdminPaymentsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <BarChart3 size={22} className="text-[#C9972C]" /> Payments & Revenue
+            <BarChart3 size={22} className="text-[#f78222]" /> Payments & Revenue
           </h1>
           <p className="text-muted text-sm">{total} transactions</p>
         </div>
@@ -130,7 +130,7 @@ export default function AdminPaymentsPage() {
                   <td className="px-4 py-3">
                     {p.invoice?.fileUrl ? (
                       <a href={p.invoice.fileUrl} target="_blank" rel="noopener noreferrer"
-                        className="text-[#C9972C] hover:text-[#E8C76A] text-xs flex items-center gap-1">
+                        className="text-[#f78222] hover:text-[#E8C76A] text-xs flex items-center gap-1">
                         <Download size={11} /> {p.invoice.invoiceNumber}
                       </a>
                     ) : (

@@ -27,7 +27,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="pt-24 pb-16 px-4 text-center">
         <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] text-[#C9972C] text-xs font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] text-[#f78222] text-xs font-medium mb-6">
             <Award size={12} /> Our Story
           </div>
           <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-5">
@@ -46,7 +46,7 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map(({ value, label }) => (
             <div key={label} className="glass rounded-2xl p-6 text-center">
-              <div className="font-display text-3xl font-bold text-[#C9972C] mb-1">{value}</div>
+              <div className="font-display text-3xl font-bold text-[#f78222] mb-1">{value}</div>
               <div className="text-muted text-sm">{label}</div>
             </div>
           ))}
@@ -71,7 +71,7 @@ export default function AboutPage() {
             <div className="space-y-4">
               {["Admin-verified profiles only", "Zero tolerance for fake accounts", "Family-friendly communication", "DPDP Act 2023 compliant data handling", "Transparent subscription model"].map((point) => (
                 <div key={point} className="flex items-center gap-3">
-                  <CheckCircle size={16} className="text-[#C9972C] shrink-0" />
+                  <CheckCircle size={16} className="text-[#f78222] shrink-0" />
                   <span className="text-muted text-sm">{point}</span>
                 </div>
               ))}
@@ -88,7 +88,7 @@ export default function AboutPage() {
             {values.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="glass rounded-2xl p-6 flex gap-4">
                 <div className="w-10 h-10 rounded-xl bg-[rgba(201,151,44,0.15)] flex items-center justify-center shrink-0">
-                  <Icon size={18} className="text-[#C9972C]" />
+                  <Icon size={18} className="text-[#f78222]" />
                 </div>
                 <div>
                   <h3 className="text-foreground font-semibold mb-1">{title}</h3>
@@ -104,7 +104,7 @@ export default function AboutPage() {
       <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="glass rounded-3xl p-8 border border-[rgba(201,151,44,0.15)] text-center">
-            <Lock size={32} className="text-[#C9972C] mx-auto mb-4" />
+            <Lock size={32} className="text-[#f78222] mx-auto mb-4" />
             <h2 className="font-display text-2xl font-bold text-foreground mb-3">DPDP Act 2023 Compliant</h2>
             <p className="text-muted max-w-2xl mx-auto text-sm leading-relaxed mb-6">
               We are fully compliant with India's Digital Personal Data Protection Act 2023. 
@@ -113,7 +113,7 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               {["Right to Access", "Right to Correction", "Right to Erasure", "Consent-Based Processing", "Data Breach Notification"].map((right) => (
-                <span key={right} className="px-3 py-1.5 rounded-full bg-[rgba(201,151,44,0.08)] border border-[rgba(201,151,44,0.15)] text-[#C9972C] text-xs">
+                <span key={right} className="px-3 py-1.5 rounded-full bg-[rgba(201,151,44,0.08)] border border-[rgba(201,151,44,0.15)] text-[#f78222] text-xs">
                   {right}
                 </span>
               ))}
@@ -128,7 +128,7 @@ export default function AboutPage() {
           <h2 className="font-display text-3xl font-bold text-foreground mb-4">Ready to Begin?</h2>
           <p className="text-muted mb-8">Join thousands of verified profiles and find your perfect match today.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/register" className="px-8 py-3 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors">
+            <Link href="/register" className="px-8 py-3 bg-[#f78222] hover:bg-[#B8861B] text-[#ffffff] font-semibold rounded-xl transition-colors">
               Create Free Profile
             </Link>
             <Link href="/how-it-works" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-foreground rounded-xl transition-colors border border-border">

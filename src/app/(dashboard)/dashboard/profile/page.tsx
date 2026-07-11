@@ -302,7 +302,7 @@ export default function ProfilePage() {
             <span className="text-[#E8C76A] text-xs font-semibold">{completionPct}%</span>
           </div>
           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-[#C9972C] to-[#E8C76A] rounded-full transition-all" style={{ width: `${completionPct}%` }} />
+            <div className="h-full bg-gradient-to-r from-[#f78222] to-[#E8C76A] rounded-full transition-all" style={{ width: `${completionPct}%` }} />
           </div>
         </div>
         {!isKyc && (
@@ -316,7 +316,7 @@ export default function ProfilePage() {
       {/* Photos */}
       <div className="glass p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-foreground flex items-center gap-2"><Camera size={16} className="text-[#C9972C]" /> Profile Photos</h3>
+          <h3 className="font-semibold text-foreground flex items-center gap-2"><Camera size={16} className="text-[#f78222]" /> Profile Photos</h3>
           <Button
             variant="glass"
             size="sm"
@@ -341,7 +341,7 @@ export default function ProfilePage() {
               <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-border group">
                 <img src={img.signedUrl || img.watermarkedUrl || img.originalUrl} alt="" className="w-full h-full object-cover" />
                 {img.isPrimary && (
-                  <div className="absolute top-1 left-1 bg-[rgba(201,151,44,0.9)] text-[#1a0505] text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                  <div className="absolute top-1 left-1 bg-[rgba(201,151,44,0.9)] text-[#ffffff] text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                     Primary
                   </div>
                 )}
@@ -424,7 +424,7 @@ export default function ProfilePage() {
       {/* Profile details - Section 1: Basic Personal Information */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <User size={16} className="text-[#C9972C]" /> Basic Personal Information
+          <User size={16} className="text-[#f78222]" /> Basic Personal Information
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -460,7 +460,7 @@ export default function ProfilePage() {
       {/* Section 2: Contact Information */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Shield size={16} className="text-[#C9972C]" /> Contact Information
+          <Shield size={16} className="text-[#f78222]" /> Contact Information
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -485,7 +485,7 @@ export default function ProfilePage() {
       {/* Section 3: Religion & Community */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Star size={16} className="text-[#C9972C]" /> Religion & Community Details
+          <Star size={16} className="text-[#f78222]" /> Religion & Community Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -508,7 +508,7 @@ export default function ProfilePage() {
       {/* Section 4: Horoscope / Astrology */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Target size={16} className="text-[#C9972C]" /> Horoscope / Astrology Details
+          <Target size={16} className="text-[#f78222]" /> Horoscope / Astrology Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -538,7 +538,7 @@ export default function ProfilePage() {
       {/* Section 5: Education */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <BookOpen size={16} className="text-[#C9972C]" /> Education Details
+          <BookOpen size={16} className="text-[#f78222]" /> Education Details
         </h3>
         {education && education.length > 0 ? (
           <div className="space-y-4">
@@ -581,7 +581,7 @@ export default function ProfilePage() {
       {/* Section 6: Professional Details */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Briefcase size={16} className="text-[#C9972C]" /> Professional Details
+          <Briefcase size={16} className="text-[#f78222]" /> Professional Details
         </h3>
         {career && career.length > 0 ? (
           <div className="space-y-4">
@@ -629,7 +629,7 @@ export default function ProfilePage() {
       {/* Section 7: Family Details */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Users size={16} className="text-[#C9972C]" /> Family Details
+          <Users size={16} className="text-[#f78222]" /> Family Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -657,7 +657,7 @@ export default function ProfilePage() {
       {/* Section 8: Lifestyle */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Utensils size={16} className="text-[#C9972C]" /> Lifestyle Details
+          <Utensils size={16} className="text-[#f78222]" /> Lifestyle Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -681,7 +681,7 @@ export default function ProfilePage() {
       {/* Section 9: Interests */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Heart size={16} className="text-[#C9972C]" /> Interests
+          <Heart size={16} className="text-[#f78222]" /> Interests
         </h3>
         {interests && interests.length > 0 ? (
           <div className="flex flex-wrap gap-2">
@@ -697,7 +697,7 @@ export default function ProfilePage() {
       {/* Section 10: Hobbies */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Star size={16} className="text-[#C9972C]" /> Hobbies
+          <Star size={16} className="text-[#f78222]" /> Hobbies
         </h3>
         {hobbies && hobbies.length > 0 ? (
           <div className="flex flex-wrap gap-2">
@@ -713,7 +713,7 @@ export default function ProfilePage() {
       {/* Section 11: Favorites */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Heart size={16} className="text-[#C9972C]" /> Favorites
+          <Heart size={16} className="text-[#f78222]" /> Favorites
         </h3>
         {favorites && favorites.length > 0 ? (
           <div className="grid sm:grid-cols-2 gap-y-3 gap-x-6">
@@ -732,7 +732,7 @@ export default function ProfilePage() {
       {/* Section 12: Personality & Values */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <User size={16} className="text-[#C9972C]" /> Personality & Values
+          <User size={16} className="text-[#f78222]" /> Personality & Values
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -764,7 +764,7 @@ export default function ProfilePage() {
       {/* Section 13: Assets */}
       <div className="glass p-6">
         <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-          <Home size={16} className="text-[#C9972C]" /> Assets & Financial Details
+          <Home size={16} className="text-[#f78222]" /> Assets & Financial Details
         </h3>
         <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
           {[
@@ -788,7 +788,7 @@ export default function ProfilePage() {
       {partnerPreferences && (
         <div className="glass p-6">
           <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2">
-            <Heart size={16} className="text-[#C9972C]" /> Partner Preferences
+            <Heart size={16} className="text-[#f78222]" /> Partner Preferences
           </h3>
           <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
             {[

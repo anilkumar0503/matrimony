@@ -187,7 +187,7 @@ export default function SubscriptionPlansPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <CreditCard size={22} className="text-[#C9972C]" /> Subscription Plans
+            <CreditCard size={22} className="text-[#f78222]" /> Subscription Plans
           </h1>
           <p className="text-muted text-sm">Manage subscription tiers, pricing, and features</p>
         </div>

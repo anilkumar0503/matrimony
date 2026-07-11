@@ -52,7 +52,7 @@ export default function AdminSubscriptionsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-          <CreditCard size={22} className="text-[#C9972C]" /> Subscriptions
+          <CreditCard size={22} className="text-[#f78222]" /> Subscriptions
         </h1>
         <p className="text-muted text-sm">{total} total subscriptions</p>
       </div>

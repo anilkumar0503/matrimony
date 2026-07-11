@@ -57,7 +57,7 @@ export default function AuditLogsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <FileText size={22} className="text-[#C9972C]" /> Audit Logs
+            <FileText size={22} className="text-[#f78222]" /> Audit Logs
           </h1>
           <p className="text-muted text-sm">{total} events logged</p>
         </div>

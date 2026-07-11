@@ -29,11 +29,11 @@ const eventIcon: Record<string, React.ElementType> = {
 const eventColor: Record<string, string> = {
   "interest.received": "text-pink-400 bg-pink-900/20",
   "interest.accepted": "text-emerald-400 bg-emerald-900/20",
-  "match.mutual": "text-[#C9972C] bg-[rgba(201,151,44,0.1)]",
+  "match.mutual": "text-[#f78222] bg-[rgba(201,151,44,0.1)]",
   "kyc.approved": "text-emerald-400 bg-emerald-900/20",
   "kyc.rejected": "text-red-400 bg-red-900/20",
   "profile.approved": "text-emerald-400 bg-emerald-900/20",
-  "subscription.activated": "text-[#C9972C] bg-[rgba(201,151,44,0.1)]",
+  "subscription.activated": "text-[#f78222] bg-[rgba(201,151,44,0.1)]",
   "payment.confirmed": "text-blue-400 bg-blue-900/20",
   "payment.failed": "text-red-400 bg-red-900/20",
 };
@@ -131,7 +131,7 @@ export default function NotificationsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
-            <Bell size={22} className="text-[#C9972C]" /> Notifications
+            <Bell size={22} className="text-[#f78222]" /> Notifications
           </h1>
           <p className="text-muted text-sm">
             {unreadCount > 0 ? `${unreadCount} unread` : "All caught up"} · {total} total
@@ -160,7 +160,7 @@ export default function NotificationsPage() {
             const isPhotoRequest = notif.eventKey?.startsWith("photo.request:") && !notif.eventKey?.includes(":done") && !notif.eventKey?.includes("approved");
             const Icon = isPhotoRequest ? ImagePlus : (eventIcon[notif.eventKey] || Info);
             const colorClass = isPhotoRequest
-              ? "text-[#C9972C] bg-[rgba(201,151,44,0.1)]"
+              ? "text-[#f78222] bg-[rgba(201,151,44,0.1)]"
               : (eventColor[notif.eventKey] || "text-muted bg-white/5");
 
             return (
@@ -205,7 +205,7 @@ export default function NotificationsPage() {
                       )}
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      {!notif.isRead && <span className="w-2 h-2 rounded-full bg-[#C9972C]" />}
+                      {!notif.isRead && <span className="w-2 h-2 rounded-full bg-[#f78222]" />}
                       <span className="text-muted text-[10px]">{formatDateTime(notif.createdAt)}</span>
                     </div>
                   </div>

@@ -62,7 +62,7 @@ export default async function CommunitySlugPage({ params }: Props) {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 {community.category && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] text-[#C9972C] text-xs">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] text-[#f78222] text-xs">
                     {community.category}
                   </span>
                 )}
@@ -80,7 +80,7 @@ export default async function CommunitySlugPage({ params }: Props) {
             <div className="flex gap-3 shrink-0">
               <Link
                 href="/register"
-                className="flex items-center gap-2 px-5 py-2.5 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors text-sm"
+                className="flex items-center gap-2 px-5 py-2.5 bg-[#f78222] hover:bg-[#B8861B] text-[#ffffff] font-semibold rounded-xl transition-colors text-sm"
               >
                 <Heart size={14} /> Join Community
               </Link>
@@ -94,7 +94,7 @@ export default async function CommunitySlugPage({ params }: Props) {
         <section className="py-8 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="font-display text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <Megaphone size={18} className="text-[#C9972C]" /> Announcements
+              <Megaphone size={18} className="text-[#f78222]" /> Announcements
             </h2>
             <div className="space-y-3">
               {community.announcements.map((ann) => (
@@ -113,7 +113,7 @@ export default async function CommunitySlugPage({ params }: Props) {
         <section className="py-12 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="font-display text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-              <Trophy size={20} className="text-[#C9972C]" /> Success Stories from {community.name}
+              <Trophy size={20} className="text-[#f78222]" /> Success Stories from {community.name}
             </h2>
             <div className="grid sm:grid-cols-3 gap-5">
               {community.successStories.map((story) => (
@@ -133,7 +133,7 @@ export default async function CommunitySlugPage({ params }: Props) {
               ))}
             </div>
             <div className="text-center mt-6">
-              <Link href="/success-stories" className="inline-flex items-center gap-2 text-[#C9972C] hover:text-[#E8C76A] text-sm transition-colors">
+              <Link href="/success-stories" className="inline-flex items-center gap-2 text-[#f78222] hover:text-[#E8C76A] text-sm transition-colors">
                 View all success stories <ArrowRight size={14} />
               </Link>
             </div>
@@ -144,7 +144,7 @@ export default async function CommunitySlugPage({ params }: Props) {
       {/* Register CTA */}
       <section className="py-16 px-4">
         <div className="max-w-2xl mx-auto glass rounded-3xl p-8 text-center border border-[rgba(201,151,44,0.15)]">
-          <Heart size={32} className="text-[#C9972C] mx-auto mb-4" />
+          <Heart size={32} className="text-[#f78222] mx-auto mb-4" />
           <h2 className="font-display text-2xl font-bold text-foreground mb-3">
             Find Your Match in the {community.name} Community
           </h2>
@@ -152,7 +152,7 @@ export default async function CommunitySlugPage({ params }: Props) {
             Join {approvedMembersCount.toLocaleString()}+ verified members from {community.name}. Register today and discover your perfect match within your community.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/register" className="px-8 py-3 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] font-semibold rounded-xl transition-colors">
+            <Link href="/register" className="px-8 py-3 bg-[#f78222] hover:bg-[#B8861B] text-[#ffffff] font-semibold rounded-xl transition-colors">
               Create Free Profile
             </Link>
             <Link href="/search" className="px-8 py-3 bg-white/[0.08] hover:bg-white/[0.12] text-foreground rounded-xl transition-colors border border-border">

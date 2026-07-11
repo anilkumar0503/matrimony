@@ -488,7 +488,7 @@ export default function ProfileViewPage() {
         {pendingPhotoRequestNotifId && (
           <div className="glass border-[rgba(201,151,44,0.3)] p-4 mb-4 flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-[rgba(201,151,44,0.12)] flex items-center justify-center shrink-0">
-              <ImagePlus size={16} className="text-[#C9972C]" />
+              <ImagePlus size={16} className="text-[#f78222]" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-foreground">Photo request</p>
@@ -530,7 +530,7 @@ export default function ProfileViewPage() {
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60">
                   <Lock size={24} className="text-muted mb-2" />
                   <span className="text-muted text-sm font-medium">Register to view full photos</span>
-                  <Link href="/register" className="mt-3 px-4 py-2 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] text-xs font-semibold rounded-lg transition-colors">
+                  <Link href="/register" className="mt-3 px-4 py-2 bg-[#f78222] hover:bg-[#B8861B] text-[#ffffff] text-xs font-semibold rounded-lg transition-colors">
                     Create Free Account
                   </Link>
                 </div>
@@ -558,7 +558,7 @@ export default function ProfileViewPage() {
               </span>
             )}
             {profile.subscriptionTier !== "FREE" && (
-              <span className="bg-[rgba(201,151,44,0.85)] text-[#1a0505] text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
+              <span className="bg-[rgba(201,151,44,0.85)] text-[#ffffff] text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1">
                 <Crown size={10} /> {profile.subscriptionTier}
               </span>
             )}
@@ -592,7 +592,7 @@ export default function ProfileViewPage() {
               <button
                 key={ph.id}
                 onClick={() => setCurrentPhoto(idx)}
-                className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 ${currentPhoto === idx ? "border-[#C9972C]" : "border-border"}`}
+                className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 ${currentPhoto === idx ? "border-[#f78222]" : "border-border"}`}
               >
                 <img src={ph.signedUrl || ph.watermarkedUrl || ph.originalUrl} alt="" className="w-full h-full object-cover" />
               </button>
@@ -606,7 +606,7 @@ export default function ProfileViewPage() {
         {currentUserId && currentUserId !== id && (galleryHidden || hasNoPhotos) && (
           <div className="glass p-4 mb-4 flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-[rgba(201,151,44,0.12)] flex items-center justify-center shrink-0">
-              <ImageOff size={16} className="text-[#C9972C]" />
+              <ImageOff size={16} className="text-[#f78222]" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-foreground">
@@ -649,7 +649,7 @@ export default function ProfileViewPage() {
             disabled={togglingWishlist || currentUserId === id}
             loading={togglingWishlist}
           >
-            <Star size={16} className={wishlisted ? "fill-[#C9972C] text-[#C9972C]" : ""} />
+            <Star size={16} className={wishlisted ? "fill-[#f78222] text-[#f78222]" : ""} />
           </Button>
         </div>
 
@@ -666,7 +666,7 @@ export default function ProfileViewPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                 activeTab === tab.id
-                  ? "bg-[#C9972C] text-[#1a0505]"
+                  ? "bg-[#f78222] text-[#ffffff]"
                   : "glass text-muted hover:text-foreground"
               }`}
             >
@@ -771,7 +771,7 @@ export default function ProfileViewPage() {
               {horoscopeMatch && (
                 <div className="glass rounded-xl p-4 mt-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <Sparkles size={18} className="text-[#C9972C]" />
+                    <Sparkles size={18} className="text-[#f78222]" />
                     <h3 className="font-semibold text-foreground">Horoscope Compatibility with You</h3>
                   </div>
                   
@@ -779,7 +779,7 @@ export default function ProfileViewPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-muted text-sm">Match Score</div>
-                        <div className="font-display text-3xl font-bold text-[#C9972C]">
+                        <div className="font-display text-3xl font-bold text-[#f78222]">
                           {horoscopeMatch.finalScore}/{horoscopeMatch.maxScore}
                         </div>
                         <div className="text-muted text-xs mt-1">{horoscopeMatch.percentage}% compatibility</div>
@@ -980,7 +980,7 @@ function AccordionSection({ title, icon: Icon, expanded, onToggle, children }: {
         className="w-full flex items-center justify-between p-4 text-left"
       >
         <div className="flex items-center gap-2">
-          <Icon size={16} className="text-[#C9972C]" />
+          <Icon size={16} className="text-[#f78222]" />
           <span className="font-medium text-foreground text-sm">{title}</span>
         </div>
         {expanded ? <ChevronUp size={16} className="text-muted" /> : <ChevronDown size={16} className="text-muted" />}

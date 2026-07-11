@@ -130,7 +130,7 @@ export default function AdminMatchTicketsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <Ticket size={22} className="text-[#C9972C]" /> Match Tickets
+            <Ticket size={22} className="text-[#f78222]" /> Match Tickets
           </h1>
           <p className="text-muted text-sm">{total} tickets</p>
         </div>

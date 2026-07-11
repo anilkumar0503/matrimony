@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto">
           <h2 style="color:#7B1D1D">Your OTP</h2>
-          <div style="font-size:2rem;font-weight:bold;letter-spacing:0.5rem;color:#C9972C;padding:1rem 0">${otp}</div>
+          <div style="font-size:2rem;font-weight:bold;letter-spacing:0.5rem;color:#f78222;padding:1rem 0">${otp}</div>
           <p style="color:#666">Expires in 10 minutes. Do not share.</p>
         </div>
       `,

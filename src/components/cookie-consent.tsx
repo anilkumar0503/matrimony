@@ -41,13 +41,13 @@ export default function CookieConsent() {
       <div className="max-w-4xl mx-auto glass border border-[rgba(201,151,44,0.2)] rounded-2xl p-5 shadow-2xl">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 flex-1">
-            <Cookie size={20} className="text-[#C9972C] shrink-0 mt-0.5" />
+            <Cookie size={20} className="text-[#f78222] shrink-0 mt-0.5" />
             <div>
               <h3 className="text-foreground font-semibold text-sm mb-1">We value your privacy</h3>
               <p className="text-muted text-xs leading-relaxed">
                 We use cookies to enhance your experience, personalise content, and analyse platform usage. 
                 Under the <strong className="text-muted">DPDP Act 2023</strong>, you have full control over your data preferences.{" "}
-                <a href="/privacy" className="text-[#C9972C] underline hover:text-[#E8C76A]">Privacy Policy</a>
+                <a href="/privacy" className="text-[#f78222] underline hover:text-[#E8C76A]">Privacy Policy</a>
               </p>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function CookieConsent() {
                     <label
                       htmlFor={`cookie-${key}`}
                       className={`flex w-9 h-5 rounded-full cursor-pointer transition-colors ${
-                        prefs[key as keyof ConsentState] ? "bg-[#C9972C]" : "bg-white/20"
+                        prefs[key as keyof ConsentState] ? "bg-[#f78222]" : "bg-white/20"
                       } ${locked ? "cursor-not-allowed" : "cursor-pointer"}`}
                     >
                       <span className={`inline-block w-4 h-4 bg-white rounded-full shadow transition-transform m-0.5 ${
@@ -106,7 +106,7 @@ export default function CookieConsent() {
         <div className="flex flex-wrap gap-2 mt-4">
           <button
             onClick={acceptAll}
-            className="px-4 py-2 bg-[#C9972C] hover:bg-[#B8861B] text-[#1a0505] text-xs font-semibold rounded-lg transition-colors"
+            className="px-4 py-2 bg-[#f78222] hover:bg-[#B8861B] text-[#ffffff] text-xs font-semibold rounded-lg transition-colors"
           >
             Accept All
           </button>

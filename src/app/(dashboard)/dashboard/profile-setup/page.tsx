@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
@@ -41,9 +41,99 @@ const RAJJU = ["Sarp", "Brahma", "Deva", "Manushya", "Chandra", "Gandharva", "Sk
 const MAHENDRA = ["Mesha", "Vrishabha", "Mithuna", "Karka", "Simha", "Kanya", "Tula", "Vrishchika", "Dhanu", "Makara", "Kumbha", "Meena"];
 const VEDHA = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu"];
 const DOSHAM = ["No Dosham", "Chevvai Dosham", "Rahu Dosham", "Ketu Dosham", "Kala Sarpa Dosham", "Other"];
-const COMMUNITY_HINDU = ["Brahmin", "Kshatriya", "Vaishya", "Shudra", "Other"];
-const COMMUNITY_MUSLIM = ["Sunni", "Shia", "Bohra", "Memon", "Other"];
-const COMMUNITY_CHRISTIAN = ["Catholic", "Protestant", "Anglican", "Marthoma", "Other"];
+const RELIGION_COMMUNITIES: Record<string, string[]> = {
+  "Hindu":     ["Brahmin", "Kshatriya", "Vaishya", "OBC", "SC/ST", "Other"],
+  "Muslim":    ["Sunni", "Shia", "Bohra", "Memon", "Sufi", "Other"],
+  "Christian": ["Catholic", "Protestant", "Marthoma", "CSI", "Pentecostal", "Baptist", "Methodist", "Orthodox", "Other"],
+  "Sikh":      ["Keshdhari", "Sahajdhari", "Other"],
+  "Jain":      ["Digambara", "Shvetambara", "Other"],
+  "Buddhist":  ["Theravada", "Mahayana", "Vajrayana", "Other"],
+  "Other":     ["Other"],
+};
+
+const RELIGION_CASTES: Record<string, string[]> = {
+  "Hindu": [
+    "Brahmin", "Kshatriya", "Rajput", "Maratha", "Nair",
+    "Reddy", "Kamma", "Velama", "Kapu", "Naidu",
+    "Chettiar", "Mudaliar", "Pillai", "Gounder",
+    "Vokkaliga", "Lingayat", "Gowda", "Bunt", "Kodava",
+    "Ezhava", "Nambiar", "Namboodiri",
+    "Agarwal", "Bania", "Marwari", "Khatri", "Arora", "Kayastha",
+    "Yadav", "Kurmi", "Jat", "Gujar",
+    "Mahar", "Adi Dravidar", "SC/ST", "Other",
+  ],
+  "Muslim":    ["Sheikh", "Sayyid", "Mughal", "Pathan", "Ansari", "Qureshi", "Siddiqui", "Mapilla", "Memon", "Bohra", "Other"],
+  "Christian": ["Latin Catholic", "Syrian", "Knanaya", "Nadar Christian", "Dalit Christian", "Other"],
+  "Sikh":      ["Jat Sikh", "Khatri Sikh", "Arora Sikh", "Saini", "Ramgarhia", "Mazabi Sikh", "Other"],
+  "Jain":      ["Digambara", "Shvetambara", "Sthanakvasi", "Other"],
+  "Buddhist":  ["Mahar", "Navayana", "Theravada", "Other"],
+  "Other":     ["Other"],
+};
+
+const CASTE_SUB_CASTES: Record<string, string[]> = {
+  "Brahmin":       ["Iyer", "Iyengar (Vadakalai)", "Iyengar (Thenkalai)", "Vadama", "Vathima", "Brahacharanam", "Ashtasahasram", "Smartha", "Saivite", "Niyogi", "Vaidiki", "Kanyakubja", "Maithil", "Goud Saraswat", "Chitrapur Saraswat", "Gaur", "Chitpavan", "Deshasta", "Karhade", "Namboothiri", "Embranthiri", "Potti", "Havyaka", "Shivalli", "Hebbar", "Madhwa", "Tulu Brahmin", "Karnataka Brahmin", "Uttaradi Math", "Other"],
+  "Kshatriya":     ["Rajput", "Kshatriya Raju", "Nair", "Maratha", "Other"],
+  "Rajput":        ["Chauhan", "Sisodiya", "Rathore", "Tomar", "Kachchwaha", "Panwar", "Bhati", "Gahlot", "Parihar", "Solanki", "Chandela", "Suryavanshi", "Chandravanshi", "Other"],
+  "Maratha":       ["Deshastha", "Koknastha (Chitpavan)", "CKP", "Chandraseniya Kayastha Prabhu", "Karadkar", "Other"],
+  "Nair":          ["Kiriyathil Nair", "Karuppanadan", "Valluvanad", "Nedumangad", "Illam", "Vilakkithala", "Chakkala", "Vellala Nair", "Other"],
+  "Reddy":         ["Kamma Reddy", "Golla Reddy", "Motati Reddy", "Panta Reddy", "Desai Reddy", "Vanni Reddy", "Other"],
+  "Kamma":         ["Kamma Naidu", "Kamma Chetty", "Kamma Raju", "Kamma Kapu", "Other"],
+  "Velama":        ["Pedda Velama", "Chinna Velama", "Kamma Velama", "Reddy Velama", "Other"],
+  "Kapu":          ["Telaga", "Munnuru Kapu", "Turpu Kapu", "Ontari Kapu", "Other"],
+  "Naidu":         ["Kamma Naidu", "Balija Naidu", "Gavara Naidu", "Gajula Naidu", "Ediga Naidu", "Other"],
+  "Chettiar":      ["Nattukotai Chettiar", "Vaniya Chettiar", "Sourashtran Chettiar", "Devanga Chettiar", "Other"],
+  "Mudaliar":      ["Saiva Mudaliar", "Karkatta Mudaliar", "Vellala Mudaliar", "Agamudaiyar", "Other"],
+  "Pillai":        ["Nair Pillai", "Vellala Pillai", "Karimanal Pillai", "Saiva Pillai", "Other"],
+  "Gounder":       ["Kongu Vellala Gounder", "Nattu Gounder", "Konga Vellala", "Okkaliga Gounder", "Other"],
+  "Vokkaliga":     ["Kunchitiga", "Morasu Vokkaliga", "Gangadikara Vokkaliga", "Hallikara Vokkaliga", "Nonaba Vokkaliga", "Other"],
+  "Lingayat":      ["Banajiga", "Panchamasali", "Sadar", "Veerashaiva", "Reddy Lingayat", "Other"],
+  "Gowda":         ["Idiga Gowda", "Okkaliga Gowda", "Sadara Gowda", "Morasu Gowda", "Other"],
+  "Bunt":          ["Shetty Bunt", "Rai Bunt", "Other"],
+  "Kodava":        ["Kodava", "Amma Kodava", "Kigga Kodava", "Other"],
+  "Ezhava":        ["Thiyya", "Billava", "Choyan", "Dheevara", "Other"],
+  "Nambiar":       ["Panan Nambiar", "Kiriyathil Nambiar", "Other"],
+  "Namboodiri":    ["Namboothiri", "Namboothiripad", "Bhattathiri", "Embranthiri", "Other"],
+  "Agarwal":       ["Garg", "Bansal", "Singhal", "Jindal", "Mittal", "Gupta", "Other"],
+  "Bania":         ["Agarwal", "Oswal", "Maheshwari", "Vaishya Sahu", "Other"],
+  "Marwari":       ["Oswal", "Maheshwari", "Khandelwal", "Soni", "Marwari Jain", "Other"],
+  "Khatri":        ["Kapoor", "Malhotra", "Khanna", "Mehta", "Sethi", "Chopra", "Bedi", "Anand", "Other"],
+  "Arora":         ["Bhatia", "Soni Arora", "Other"],
+  "Kayastha":      ["Mathur", "Srivastava", "Bhatnagar", "Saxena", "Kulshrestha", "Ambashtha", "Other"],
+  "Yadav":         ["Ahir", "Gwala", "Gopal", "Gopa", "Other"],
+  "Kurmi":         ["Patel", "Patidar", "Kunbi", "Kurmvanshi", "Lodhi", "Other"],
+  "Jat":           ["Balyan", "Dahiya", "Malik", "Hooda", "Nain", "Sangwan", "Sheoran", "Hindu Jat", "Sikh Jat", "Other"],
+  "Gujar":         ["Chamar Gujar", "Baniya Gujar", "Other"],
+  "Mahar":         ["Nav Buddha", "Mahar", "Other"],
+  "Adi Dravidar":  ["Paraiyar", "Arunthathiyar", "Pallan", "Chakkiliyar", "Kuravar", "Valluvan", "Other"],
+  "SC/ST":         ["Chamar", "Dusadh", "Musahar", "Paswan", "Dhobi", "Valmiki", "Balmiki", "Other"],
+  "Sheikh":        ["Siddiqui", "Ansari", "Farooqui", "Other"],
+  "Sayyid":        ["Alvi", "Rizvi", "Naqvi", "Hussaini", "Other"],
+  "Mughal":        ["Barlas", "Dughlat", "Other"],
+  "Pathan":        ["Afridi", "Yusufzai", "Shinwari", "Waziri", "Mehsud", "Other"],
+  "Ansari":        ["Momin Ansari", "Julaha Ansari", "Other"],
+  "Qureshi":       ["Lodi Qureshi", "Other"],
+  "Siddiqui":      ["Shaikh Siddiqui", "Other"],
+  "Mapilla":       ["Thangal", "Musaliyar", "Ossans", "Pookoyathangal", "Other"],
+  "Memon":         ["Kutchi Memon", "Sindhi Memon", "Other"],
+  "Bohra":         ["Dawoodi Bohra", "Sulaimani Bohra", "Alavi Bohra", "Hafizi Bohra", "Other"],
+  "Latin Catholic":    ["Roman Catholic", "Other"],
+  "Syrian":            ["Jacobite Syrian", "Orthodox Syrian", "Marthoma Syrian", "Malankara Catholic", "Chaldean Syrian", "Other"],
+  "Knanaya":           ["Knanaya Catholic", "Knanaya Jacobite", "Other"],
+  "Nadar Christian":   ["CSI", "Church of South India", "Other"],
+  "Dalit Christian":   ["SC Christian", "Adi Dravida Christian", "Other"],
+  "Jat Sikh":          ["Dhaliwal", "Sidhu", "Grewal", "Gill", "Sandhu", "Randhawa", "Mann", "Other"],
+  "Khatri Sikh":       ["Khatri", "Chadha", "Anand", "Talwar", "Other"],
+  "Arora Sikh":        ["Arora", "Bhatia", "Other"],
+  "Saini":             ["Saini", "Other"],
+  "Ramgarhia":         ["Tarkhan", "Ramgarhia", "Other"],
+  "Mazabi Sikh":       ["Balmiki", "Mazhabi", "Other"],
+  "Digambara":         ["Bisapanthi", "Terapanthi", "Taranpanthi", "Other"],
+  "Shvetambara":       ["Murtipujaka", "Sthanakvasi", "Terapanthi", "Other"],
+  "Sthanakvasi":       ["Sthanakvasi", "Other"],
+  "Navayana":          ["Ambedkarite", "Other"],
+  "Theravada":         ["Theravada", "Other"],
+  "Other":             ["Other"],
+};
 const MOTHER_TONGUES = ["Tamil", "Telugu", "Malayalam", "Kannada", "Hindi", "Marathi", "Gujarati", "Bengali", "Punjabi", "Urdu", "Odia", "Assamese", "Konkani", "Sindhi", "Nepali", "English", "Other"];
 const LANGUAGES_KNOWN = ["Tamil", "Telugu", "Malayalam", "Kannada", "Hindi", "Marathi", "Gujarati", "Bengali", "Punjabi", "Urdu", "Odia", "Assamese", "Konkani", "Sindhi", "Nepali", "Sanskrit", "English", "Other"];
 const EDUCATION_LEVELS = ["10th", "12th", "Diploma", "Bachelor's", "Master's", "PhD", "Professional", "Other"];
@@ -168,13 +258,13 @@ function SectionCard({
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-[rgba(201,151,44,0.12)] flex items-center justify-center">
-            <Icon size={15} className="text-[#C9972C]" />
+            <Icon size={15} className="text-[#f78222]" />
           </div>
           <h3 className="font-semibold text-foreground text-sm">{section.label}</h3>
         </div>
         <button
           onClick={onEdit}
-          className="p-1.5 rounded-lg text-muted hover:text-[#C9972C] hover:bg-[rgba(201,151,44,0.08)] transition-colors"
+          className="p-1.5 rounded-lg text-muted hover:text-[#f78222] hover:bg-[rgba(201,151,44,0.08)] transition-colors"
           title="Edit"
         >
           <Edit2 size={14} />
@@ -184,7 +274,7 @@ function SectionCard({
       {!hasData ? (
         <button
           onClick={onEdit}
-          className="text-sm text-[#C9972C] hover:underline"
+          className="text-sm text-[#f78222] hover:underline"
         >
           + Add Details
         </button>
@@ -344,6 +434,25 @@ function EditModal({
   const stateValue = form.watch("state");
   useEffect(() => { if (stateValue) setSelectedState(stateValue); }, [stateValue]);
 
+  const watchedReligion = form.watch("religion");
+  const watchedCaste = form.watch("caste");
+  const prevReligion = useRef(profile.religion ?? "");
+  const prevCaste = useRef(profile.caste ?? "");
+  useEffect(() => {
+    if (sectionId === "religion" && prevReligion.current !== watchedReligion) {
+      form.setValue("community", "");
+      form.setValue("caste", "");
+      form.setValue("subCaste", "");
+    }
+    prevReligion.current = watchedReligion;
+  }, [watchedReligion]);
+  useEffect(() => {
+    if (sectionId === "religion" && prevCaste.current !== watchedCaste) {
+      form.setValue("subCaste", "");
+    }
+    prevCaste.current = watchedCaste;
+  }, [watchedCaste]);
+
   const token = () => typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
   const handleSave = async () => {
@@ -436,11 +545,17 @@ function EditModal({
           {sectionId === "religion" && (<>
             <div className="grid grid-cols-2 gap-3">
               <div><Label>Religion</Label><Sel name="religion" options={RELIGIONS} placeholder="Select" /></div>
-              <div><Label>Community</Label><Sel name="community" options={COMMUNITY_HINDU} placeholder="Select" /></div>
+              <div><Label>Community</Label>
+                <Sel key={`community-${watchedReligion}`} name="community" options={RELIGION_COMMUNITIES[watchedReligion] ?? ["Other"]} placeholder="Select" />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <Input label="Caste" placeholder="e.g. Vellalar" {...form.register("caste")} />
-              <Input label="Sub Caste" placeholder="e.g. Kamma" {...form.register("subCaste")} />
+              <div><Label>Caste</Label>
+                <Sel key={`caste-${watchedReligion}`} name="caste" options={RELIGION_CASTES[watchedReligion] ?? ["Other"]} placeholder="Select" />
+              </div>
+              <div><Label>Sub Caste</Label>
+                <Sel key={`subcaste-${watchedCaste}`} name="subCaste" options={CASTE_SUB_CASTES[watchedCaste] ?? ["Other"]} placeholder="Select" />
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div><Label>Gothram</Label><Sel name="gothram" options={GOTHRAM} placeholder="Select" /></div>
@@ -568,7 +683,7 @@ function EditModal({
               <div className="grid grid-cols-3 gap-2 mt-1">
                 {INTERESTS_OPTIONS.map((i) => (
                   <label key={i} className="flex items-center gap-2 cursor-pointer text-sm text-muted">
-                    <input type="checkbox" value={i} className="w-4 h-4 rounded accent-[#C9972C]" {...form.register("interests")} />
+                    <input type="checkbox" value={i} className="w-4 h-4 rounded accent-[#f78222]" {...form.register("interests")} />
                     {i}
                   </label>
                 ))}
@@ -578,7 +693,7 @@ function EditModal({
               <div className="grid grid-cols-3 gap-2 mt-1">
                 {HOBBIES_OPTIONS.map((h) => (
                   <label key={h} className="flex items-center gap-2 cursor-pointer text-sm text-muted">
-                    <input type="checkbox" value={h} className="w-4 h-4 rounded accent-[#C9972C]" {...form.register("hobbies")} />
+                    <input type="checkbox" value={h} className="w-4 h-4 rounded accent-[#f78222]" {...form.register("hobbies")} />
                     {h}
                   </label>
                 ))}
@@ -610,7 +725,7 @@ function EditModal({
             <div className="grid grid-cols-2 gap-3">
               {[["isIntrovert","Introvert"],["isExtrovert","Extrovert"],["isFamilyOriented","Family Oriented"],["isCareerOriented","Career Oriented"]].map(([k,l]) => (
                 <label key={k} className="flex items-center gap-2 cursor-pointer text-sm text-muted">
-                  <input type="checkbox" className="w-4 h-4 rounded accent-[#C9972C]" {...form.register(k)} />{l}
+                  <input type="checkbox" className="w-4 h-4 rounded accent-[#f78222]" {...form.register(k)} />{l}
                 </label>
               ))}
             </div>
@@ -624,7 +739,7 @@ function EditModal({
             <div className="grid grid-cols-2 gap-3">
               {[["ownHouse","Own House"],["ownFlat","Own Flat"],["agriculturalLand","Agricultural Land"],["commercialProperty","Commercial Property"]].map(([k,l]) => (
                 <label key={k} className="flex items-center gap-2 cursor-pointer text-sm text-muted">
-                  <input type="checkbox" className="w-4 h-4 rounded accent-[#C9972C]" {...form.register(k)} />{l}
+                  <input type="checkbox" className="w-4 h-4 rounded accent-[#f78222]" {...form.register(k)} />{l}
                 </label>
               ))}
             </div>
@@ -723,7 +838,7 @@ export default function ProfileSetupPage() {
           <p className="text-muted text-sm mt-1">{completedSections} of {SECTIONS.length} sections completed</p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-[#C9972C]">{pct}%</div>
+          <div className="text-2xl font-bold text-[#f78222]">{pct}%</div>
           <p className="text-muted text-xs">Complete</p>
         </div>
       </div>
@@ -731,14 +846,14 @@ export default function ProfileSetupPage() {
       {/* Progress bar */}
       <div className="h-2 bg-border rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-[#C9972C] to-[#E8C76A] rounded-full transition-all duration-500"
+          className="h-full bg-gradient-to-r from-[#f78222] to-[#E8C76A] rounded-full transition-all duration-500"
           style={{ width: `${pct}%` }}
         />
       </div>
 
       {pct === 100 && (
         <div className="glass-gold p-4 flex items-center gap-3">
-          <CheckCircle size={18} className="text-[#C9972C]" />
+          <CheckCircle size={18} className="text-[#f78222]" />
           <div>
             <p className="text-sm font-semibold text-foreground">Profile Complete!</p>
             <p className="text-xs text-muted">You can now proceed to KYC verification.</p>

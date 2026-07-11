@@ -86,7 +86,7 @@ export default function AdminNotificationsPage() {
     <div className="space-y-6 max-w-5xl">
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-          <Bell size={22} className="text-[#C9972C]" /> Notifications
+          <Bell size={22} className="text-[#f78222]" /> Notifications
         </h1>
         <p className="text-muted text-sm">Manage notification templates and send broadcasts</p>
       </div>
@@ -144,7 +144,7 @@ export default function AdminNotificationsPage() {
       {/* Broadcast tab */}
       {tab === "Send Broadcast" && (
         <div className="glass p-6 max-w-xl">
-          <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2"><Users size={16} className="text-[#C9972C]" /> Broadcast Message</h3>
+          <h3 className="font-semibold text-foreground mb-5 flex items-center gap-2"><Users size={16} className="text-[#f78222]" /> Broadcast Message</h3>
           {broadcastResult && (
             <div className="mb-4 glass-dark p-3 rounded-xl text-sm text-emerald-400">{broadcastResult}</div>
           )}
@@ -186,12 +186,12 @@ export default function AdminNotificationsPage() {
         <div className="fixed inset-0 bg-black/80 z-50 overflow-y-auto flex items-start justify-center p-4 pt-8" onClick={() => setEditTemplate(null)}>
           <div className="glass-dark p-6 rounded-2xl max-w-2xl w-full my-4" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-semibold text-foreground">Edit Template: <span className="font-mono text-[#C9972C] text-sm">{editTemplate.eventKey}</span></h3>
+              <h3 className="font-semibold text-foreground">Edit Template: <span className="font-mono text-[#f78222] text-sm">{editTemplate.eventKey}</span></h3>
               <button onClick={() => setEditTemplate(null)} className="text-muted hover:text-foreground"><X size={18} /></button>
             </div>
             {editTemplate.variables && editTemplate.variables.length > 0 && (
               <div className="mb-4 p-3 bg-white/[0.04] rounded-xl text-xs text-muted">
-                Available variables: {editTemplate.variables.map(v => <code key={v} className="mx-1 text-[#C9972C]">{`{{${v}}}`}</code>)}
+                Available variables: {editTemplate.variables.map(v => <code key={v} className="mx-1 text-[#f78222]">{`{{${v}}}`}</code>)}
               </div>
             )}
             <form onSubmit={templateForm.handleSubmit(onSaveTemplate)} className="space-y-4">

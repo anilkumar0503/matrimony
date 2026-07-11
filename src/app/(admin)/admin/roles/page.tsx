@@ -88,7 +88,7 @@ export default function AdminRolesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <Shield size={22} className="text-[#C9972C]" /> Roles & Permissions
+            <Shield size={22} className="text-[#f78222]" /> Roles & Permissions
           </h1>
           <p className="text-muted text-sm">{roles.length} roles · {permissions.length} permissions</p>
         </div>
@@ -165,9 +165,9 @@ export default function AdminRolesPage() {
                             <div
                               onClick={() => togglePerm(perm.id)}
                               className={`w-4 h-4 rounded border mt-0.5 flex items-center justify-center shrink-0 transition-colors cursor-pointer
-                                ${selectedPerms.includes(perm.id) ? "bg-[#C9972C] border-[#C9972C]" : "border-border hover:border-border"}`}
+                                ${selectedPerms.includes(perm.id) ? "bg-[#f78222] border-[#f78222]" : "border-border hover:border-border"}`}
                             >
-                              {selectedPerms.includes(perm.id) && <Check size={10} className="text-[#1a0505]" />}
+                              {selectedPerms.includes(perm.id) && <Check size={10} className="text-[#ffffff]" />}
                             </div>
                             <div>
                               <div className="text-muted text-xs font-mono group-hover:text-foreground transition-colors">{perm.code}</div>

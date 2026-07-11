@@ -133,7 +133,7 @@ export default function DashboardPage() {
         <div className="glass border-[rgba(201,151,44,0.2)] p-5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-[rgba(201,151,44,0.1)] flex items-center justify-center shrink-0">
-              <TrendingUp size={20} className="text-[#C9972C]" />
+              <TrendingUp size={20} className="text-[#f78222]" />
             </div>
             <div>
               <div className="text-sm font-medium text-foreground mb-1">
@@ -141,7 +141,7 @@ export default function DashboardPage() {
               </div>
               <div className="w-48 h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-[#C9972C] to-[#E8C76A] rounded-full transition-all"
+                  className="h-full bg-gradient-to-r from-[#f78222] to-[#E8C76A] rounded-full transition-all"
                   style={{ width: `${completionPct}%` }}
                 />
               </div>
@@ -218,7 +218,7 @@ export default function DashboardPage() {
         {[
           { icon: Eye, label: "Profile Views", value: data?.stats.profileViews || 0, color: "text-blue-400" },
           { icon: Heart, label: "Interests Received", value: data?.pendingInterests || 0, color: "text-pink-400", highlight: (data?.pendingInterests || 0) > 0 },
-          { icon: Star, label: "Wishlisted", value: data?.stats.wishlists || 0, color: "text-[#C9972C]" },
+          { icon: Star, label: "Wishlisted", value: data?.stats.wishlists || 0, color: "text-[#f78222]" },
           { icon: Users, label: "Mutual Matches", value: data?.stats.matches || 0, color: "text-emerald-400" },
         ].map((stat) => (
           <Card key={stat.label} className={`text-center py-6 ${stat.highlight ? "border-[rgba(201,151,44,0.3)]" : ""}`}>
@@ -248,7 +248,7 @@ export default function DashboardPage() {
           >
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-xl bg-[rgba(201,151,44,0.1)] flex items-center justify-center shrink-0">
-                <action.icon size={18} className="text-[#C9972C]" />
+                <action.icon size={18} className="text-[#f78222]" />
               </div>
               <div>
                 <div className="font-medium text-foreground text-sm">{action.title}</div>
@@ -266,7 +266,7 @@ export default function DashboardPage() {
       {(data?.unreadNotifications || 0) > 0 && (
         <div className="glass p-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Bell size={18} className="text-[#C9972C]" />
+            <Bell size={18} className="text-[#f78222]" />
             <div>
               <div className="text-sm font-medium text-foreground">
                 {data?.unreadNotifications} unread notification{(data?.unreadNotifications || 0) > 1 ? "s" : ""}
@@ -284,7 +284,7 @@ export default function DashboardPage() {
       {data?.subscription?.plan?.tier === "FREE" && (
         <Card variant="gold" className="flex flex-col sm:flex-row items-center gap-6">
           <div className="flex-1">
-            <Crown size={24} className="text-[#C9972C] mb-3" />
+            <Crown size={24} className="text-[#f78222] mb-3" />
             <h3 className="font-display text-xl font-bold text-foreground mb-2">Upgrade to Premium</h3>
             <p className="text-muted text-sm">Get advanced search, unlimited interests, anonymous browsing, and more from ₹999/month.</p>
           </div>

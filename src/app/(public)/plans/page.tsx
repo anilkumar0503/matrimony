@@ -25,9 +25,9 @@ export default async function PlansPage() {
       badge: "",
     },
     PREMIUM: {
-      icon: <Sparkles size={22} className="text-[#C9972C]" />,
+      icon: <Sparkles size={22} className="text-[#f78222]" />,
       color: "text-[#E8C76A]",
-      border: "border-[#C9972C]/40",
+      border: "border-[#f78222]/40",
       featured: true,
       badge: "Most Popular",
     },
@@ -84,7 +84,7 @@ export default async function PlansPage() {
         <div className="grid md:grid-cols-3 gap-6 mb-10">
           {displayPlans.map((plan: typeof displayPlans[number]) => (
             <div key={plan.id}
-              className={`glass p-6 relative flex flex-col border ${plan.config.border} ${plan.config.featured ? "ring-1 ring-[#C9972C]/30" : ""}`}>
+              className={`glass p-6 relative flex flex-col border ${plan.config.border} ${plan.config.featured ? "ring-1 ring-[#f78222]/30" : ""}`}>
               {plan.config.badge && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 badge-gold text-[11px] whitespace-nowrap">
                   {plan.config.badge}
@@ -117,7 +117,7 @@ export default async function PlansPage() {
               <ul className="space-y-2.5 mb-8 flex-1">
                 {(plan.features as string[]).map((feature, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-muted">
-                    <Check size={14} className="text-[#C9972C] mt-0.5 shrink-0" />
+                    <Check size={14} className="text-[#f78222] mt-0.5 shrink-0" />
                     {feature}
                   </li>
                 ))}

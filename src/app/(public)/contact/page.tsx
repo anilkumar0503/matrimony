@@ -46,8 +46,8 @@ export default function ContactPage() {
               { icon: MapPin, label: "Address", value: "123 Business Park, Bengaluru, Karnataka 560001", href: null },
             ].map(({ icon: Icon, label, value, href }) => (
               <div key={label} className="glass p-4 flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#C9972C]/10 border border-[#C9972C]/20 flex items-center justify-center shrink-0">
-                  <Icon size={15} className="text-[#C9972C]" />
+                <div className="w-8 h-8 rounded-lg bg-[#f78222]/10 border border-[#f78222]/20 flex items-center justify-center shrink-0">
+                  <Icon size={15} className="text-[#f78222]" />
                 </div>
                 <div>
                   <div className="text-muted text-xs mb-0.5">{label}</div>
@@ -62,7 +62,7 @@ export default function ContactPage() {
 
             <div className="glass p-4">
               <div className="text-muted text-xs mb-2">For DPO / DPDP Queries</div>
-              <a href="mailto:dpo@matrimony.com" className="text-[#C9972C] text-sm hover:text-[#E8C76A]">dpo@matrimony.com</a>
+              <a href="mailto:dpo@matrimony.com" className="text-[#f78222] text-sm hover:text-[#E8C76A]">dpo@matrimony.com</a>
             </div>
           </div>
 

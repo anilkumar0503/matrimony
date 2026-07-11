@@ -112,7 +112,7 @@ export default function AdminUsersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <Shield size={22} className="text-[#C9972C]" /> Admin Users
+            <Shield size={22} className="text-[#f78222]" /> Admin Users
           </h1>
           <p className="text-muted text-sm">{adminUsers.length} admin accounts</p>
         </div>

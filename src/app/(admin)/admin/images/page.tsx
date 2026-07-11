@@ -121,7 +121,7 @@ export default function AdminImagesPage() {
               onClick={() => { setStatusFilter(s); setPage(1); setSelected(new Set()); }}>
               {s}
               {s === "PENDING" && pendingCount > 0 && (
-                <span className="ml-1 bg-amber-500/80 text-[#1a0505] text-[10px] font-bold px-1 rounded-full">{pendingCount}</span>
+                <span className="ml-1 bg-amber-500/80 text-[#ffffff] text-[10px] font-bold px-1 rounded-full">{pendingCount}</span>
               )}
             </Button>
           ))}
@@ -162,7 +162,7 @@ export default function AdminImagesPage() {
             <div
               key={img.id}
               className={`relative group rounded-xl overflow-hidden border-2 transition-all cursor-pointer
-                ${selected.has(img.id) ? "border-[#C9972C] ring-2 ring-[rgba(201,151,44,0.3)]" : "border-border"}`}
+                ${selected.has(img.id) ? "border-[#f78222] ring-2 ring-[rgba(201,151,44,0.3)]" : "border-border"}`}
               onClick={() => statusFilter === "PENDING" && toggleSelect(img.id)}
             >
               <div className="aspect-square bg-white/5">
@@ -198,8 +198,8 @@ export default function AdminImagesPage() {
                 </div>
               </div>
               {selected.has(img.id) && (
-                <div className="absolute top-2 left-2 w-5 h-5 bg-[#C9972C] rounded-full flex items-center justify-center">
-                  <CheckCircle size={12} className="text-[#1a0505]" />
+                <div className="absolute top-2 left-2 w-5 h-5 bg-[#f78222] rounded-full flex items-center justify-center">
+                  <CheckCircle size={12} className="text-[#ffffff]" />
                 </div>
               )}
             </div>

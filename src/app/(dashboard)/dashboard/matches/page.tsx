@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Heart, Ticket, CheckCircle } from "lucide-react";
+import { Heart, Ticket, CheckCircle, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { calculateAge, formatDate } from "@/lib/utils";
@@ -42,7 +42,7 @@ export default function MatchesPage() {
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
-          <Heart size={22} className="text-[#C9972C] fill-[#C9972C]" /> Mutual Matches
+          <Heart size={22} className="text-[#f78222] fill-[#f78222]" /> Mutual Matches
         </h1>
         <p className="text-muted text-sm">{matches.length} mutual match{matches.length !== 1 ? "es" : ""}</p>
       </div>
@@ -69,7 +69,7 @@ export default function MatchesPage() {
                   {photo ? (
                     <img src={photo.originalUrl} alt="" className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-[#C9972C] font-bold text-xl">
+                    <div className="w-full h-full flex items-center justify-center text-[#f78222] font-bold text-xl">
                       {other.profile?.fullName?.[0] || "?"}
                     </div>
                   )}
@@ -94,6 +94,11 @@ export default function MatchesPage() {
                 </div>
                 <div className="flex flex-col gap-2 shrink-0">
                   <Button variant="gold" size="sm" asChild>
+                    <Link href={`/dashboard/chat/${match.id}`}>
+                      <MessageCircle size={14} /> Chat
+                    </Link>
+                  </Button>
+                  <Button variant="ghost" size="sm" asChild>
                     <Link href={`/profile/${other.id}`}>View Profile</Link>
                   </Button>
                 </div>

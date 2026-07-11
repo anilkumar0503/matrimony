@@ -1212,7 +1212,7 @@ SMS is implemented in **Phase 1** and can be globally enabled or disabled from *
 |---|---|---|
 | Maroon 700 | `#7B1D1D` | Primary brand, active states |
 | Maroon 800 | `#5C1212` | Darker hover states |
-| Gold 500 | `#C9972C` | CTA buttons, accents, borders |
+| Gold 500 | `#f78222` | CTA buttons, accents, borders |
 | Gold 300 | `#E8C76A` | Highlights, shimmer text |
 | Background | `#1a0505` | Page base |
 | Glass Surface | `rgba(255,255,255,0.05–0.08)` | All cards and panels |

@@ -26,7 +26,7 @@ export default function RazorpayActivationPage() {
           {/* Business Information */}
           <div className="glass p-6">
             <div className="flex items-center gap-3 mb-4">
-              <Shield className="text-[#C9972C]" size={24} />
+              <Shield className="text-[#f78222]" size={24} />
               <h2 className="font-display text-xl font-bold text-foreground">Business Information</h2>
             </div>
             <div className="space-y-3 text-sm">
@@ -52,24 +52,24 @@ export default function RazorpayActivationPage() {
           {/* Services Offered */}
           <div className="glass p-6">
             <div className="flex items-center gap-3 mb-4">
-              <CheckCircle className="text-[#C9972C]" size={24} />
+              <CheckCircle className="text-[#f78222]" size={24} />
               <h2 className="font-display text-xl font-bold text-foreground">Services Offered</h2>
             </div>
             <ul className="space-y-2 text-sm text-muted">
               <li className="flex items-start gap-2">
-                <CheckCircle size={16} className="text-[#C9972C] mt-0.5 shrink-0" />
+                <CheckCircle size={16} className="text-[#f78222] mt-0.5 shrink-0" />
                 Premium subscription plans for enhanced matchmaking features
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle size={16} className="text-[#C9972C] mt-0.5 shrink-0" />
+                <CheckCircle size={16} className="text-[#f78222] mt-0.5 shrink-0" />
                 VIP membership with dedicated matchmaking services
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle size={16} className="text-[#C9972C] mt-0.5 shrink-0" />
+                <CheckCircle size={16} className="text-[#f78222] mt-0.5 shrink-0" />
                 Community-based membership plans
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle size={16} className="text-[#C9972C] mt-0.5 shrink-0" />
+                <CheckCircle size={16} className="text-[#f78222] mt-0.5 shrink-0" />
                 Profile verification and KYC services
               </li>
             </ul>
@@ -78,7 +78,7 @@ export default function RazorpayActivationPage() {
           {/* Compliance & Security */}
           <div className="glass p-6">
             <div className="flex items-center gap-3 mb-4">
-              <Lock className="text-[#C9972C]" size={24} />
+              <Lock className="text-[#f78222]" size={24} />
               <h2 className="font-display text-xl font-bold text-foreground">Compliance & Security</h2>
             </div>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
@@ -104,7 +104,7 @@ export default function RazorpayActivationPage() {
           {/* Refund Policy */}
           <div className="glass p-6">
             <div className="flex items-center gap-3 mb-4">
-              <AlertCircle className="text-[#C9972C]" size={24} />
+              <AlertCircle className="text-[#f78222]" size={24} />
               <h2 className="font-display text-xl font-bold text-foreground">Refund & Cancellation Policy</h2>
             </div>
             <div className="text-sm text-muted space-y-3">
@@ -125,19 +125,19 @@ export default function RazorpayActivationPage() {
           {/* Contact Information */}
           <div className="glass p-6">
             <div className="flex items-center gap-3 mb-4">
-              <Shield className="text-[#C9972C]" size={24} />
+              <Shield className="text-[#f78222]" size={24} />
               <h2 className="font-display text-xl font-bold text-foreground">Contact Information</h2>
             </div>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2 text-muted">
                 <span className="text-foreground">Email:</span>
-                <a href="mailto:support@jasminematrimony.com" className="text-[#C9972C] hover:underline">
+                <a href="mailto:support@jasminematrimony.com" className="text-[#f78222] hover:underline">
                   support@jasminematrimony.com
                 </a>
               </div>
               <div className="flex items-center gap-2 text-muted">
                 <span className="text-foreground">Support:</span>
-                <a href="/contact" className="text-[#C9972C] hover:underline">
+                <a href="/contact" className="text-[#f78222] hover:underline">
                   Contact Form
                 </a>
               </div>
@@ -145,7 +145,7 @@ export default function RazorpayActivationPage() {
           </div>
 
           {/* Disclaimer */}
-          <div className="glass p-6 border-l-4 border-[#C9972C]">
+          <div className="glass p-6 border-l-4 border-[#f78222]">
             <p className="text-xs text-muted">
               This page is provided for payment gateway activation and compliance purposes. 
               All information is accurate as of the last update date. For the most current business information, 

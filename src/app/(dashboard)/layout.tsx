@@ -4,7 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
   Heart, LayoutDashboard, User, Search, Star,
-  Bell, CreditCard, Settings, LogOut, Menu, X, Shield, Users2, Images
+  Bell, CreditCard, Settings, LogOut, Menu, X, Shield, Users2, Images, MessageCircle
 } from "lucide-react";
 import ThemeToggle from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,7 @@ const navItems = [
   { href: "/dashboard/interests", icon: Heart, label: "Interests" },
   { href: "/dashboard/wishlist", icon: Star, label: "Wishlist" },
   { href: "/dashboard/matches", icon: Shield, label: "Matches" },
+  { href: "/dashboard/chat", icon: MessageCircle, label: "Messages" },
   { href: "/dashboard/communities", icon: Users2, label: "Communities" },
   { href: "/dashboard/notifications", icon: Bell, label: "Notifications" },
   { href: "/dashboard/subscription", icon: CreditCard, label: "Subscription" },
@@ -28,6 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadMsgCount, setUnreadMsgCount] = useState(0);
   const [authed, setAuthed] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -47,6 +49,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         const data = await r.json();
         if (data.success) setUnreadCount(data.data.unreadCount);
       })
+      .catch(() => {});
+
+    fetch("/api/user/chat/unread", { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => r.json())
+      .then((data) => { if (data.success) setUnreadMsgCount(data.data.count); })
       .catch(() => {});
   }, []);
 
@@ -111,8 +118,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <item.icon size={17} />
                   {item.label}
                   {item.href === "/dashboard/notifications" && unreadCount > 0 && (
-                    <span className="ml-auto bg-[#C9972C] text-[#1a0505] text-xs font-bold px-1.5 py-0.5 rounded-full">
+                    <span className="ml-auto bg-[#f78222] text-[#ffffff] text-xs font-bold px-1.5 py-0.5 rounded-full">
                       {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                  {item.href === "/dashboard/chat" && unreadMsgCount > 0 && (
+                    <span className="ml-auto bg-emerald-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                      {unreadMsgCount > 99 ? "99+" : unreadMsgCount}
                     </span>
                   )}
                 </Link>
@@ -146,11 +158,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <img src="/logo.png" alt="Jasmine Matrimony" className="h-15 w-auto" />
           </div>
           <div className="flex items-center gap-3 ml-auto">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
             <Link href="/dashboard/notifications" className="relative p-2 text-muted hover:text-foreground">
               <Bell size={18} />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-[#C9972C] rounded-full" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-[#f78222] rounded-full" />
               )}
             </Link>
           </div>

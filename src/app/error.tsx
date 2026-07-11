@@ -18,7 +18,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={reset}
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-[rgba(201,151,44,0.15)] border border-[rgba(201,151,44,0.3)] text-[#C9972C] rounded-xl text-sm font-medium hover:bg-[rgba(201,151,44,0.25)] transition-colors"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-[rgba(201,151,44,0.15)] border border-[rgba(201,151,44,0.3)] text-[#f78222] rounded-xl text-sm font-medium hover:bg-[rgba(201,151,44,0.25)] transition-colors"
           >
             <RefreshCw size={16} /> Try Again
           </button>

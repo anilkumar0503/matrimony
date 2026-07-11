@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         <div style="font-family:sans-serif;max-width:480px;margin:auto">
           <h2 style="color:#7B1D1D">Reset Your Password</h2>
           <p>Your password reset OTP is:</p>
-          <div style="font-size:2rem;font-weight:bold;letter-spacing:0.5rem;color:#C9972C;padding:1rem 0">${otp}</div>
+          <div style="font-size:2rem;font-weight:bold;letter-spacing:0.5rem;color:#f78222;padding:1rem 0">${otp}</div>
           <p style="color:#666">Expires in 10 minutes. If you didn't request this, ignore this email.</p>
         </div>
       `,

@@ -150,7 +150,7 @@ export default function KycPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
-          <Shield size={22} className="text-[#C9972C]" /> KYC Verification
+          <Shield size={22} className="text-[#f78222]" /> KYC Verification
         </h1>
         <p className="text-muted text-sm">Verify your identity to activate your profile</p>
       </div>
@@ -197,17 +197,17 @@ export default function KycPage() {
       {!approved && (
         <div className="glass p-6 space-y-5">
           <div className="flex items-center gap-2 mb-2">
-            <Camera size={18} className="text-[#C9972C]" />
+            <Camera size={18} className="text-[#f78222]" />
             <h3 className="font-semibold text-foreground">Mode A — Selfie with Code</h3>
             <Badge variant="gold" className="text-[10px]">Recommended</Badge>
           </div>
 
           <div className="bg-[rgba(201,151,44,0.05)] border border-[rgba(201,151,44,0.15)] rounded-xl p-4">
             <ol className="text-muted text-sm space-y-2">
-              <li className="flex gap-2"><span className="text-[#C9972C] font-bold">1.</span> Get your verification code below</li>
-              <li className="flex gap-2"><span className="text-[#C9972C] font-bold">2.</span> Write the code clearly on plain white paper</li>
-              <li className="flex gap-2"><span className="text-[#C9972C] font-bold">3.</span> Take a selfie holding the paper — face and code must be clearly visible</li>
-              <li className="flex gap-2"><span className="text-[#C9972C] font-bold">4.</span> Capture the selfie using camera below</li>
+              <li className="flex gap-2"><span className="text-[#f78222] font-bold">1.</span> Get your verification code below</li>
+              <li className="flex gap-2"><span className="text-[#f78222] font-bold">2.</span> Write the code clearly on plain white paper</li>
+              <li className="flex gap-2"><span className="text-[#f78222] font-bold">3.</span> Take a selfie holding the paper — face and code must be clearly visible</li>
+              <li className="flex gap-2"><span className="text-[#f78222] font-bold">4.</span> Capture the selfie using camera below</li>
             </ol>
           </div>
 
@@ -298,7 +298,7 @@ export default function KycPage() {
       {!approved && config.modeBEnabled && (
         <div className="glass p-6 space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <FileText size={18} className="text-[#C9972C]" />
+            <FileText size={18} className="text-[#f78222]" />
             <h3 className="font-semibold text-foreground">Mode B — Government ID Upload</h3>
           </div>
           <p className="text-muted text-sm">Upload a clear photo of your Aadhaar card, PAN card, or passport.</p>

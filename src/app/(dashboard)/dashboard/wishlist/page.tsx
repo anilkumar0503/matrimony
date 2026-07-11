@@ -64,7 +64,7 @@ export default function WishlistPage() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
-          <Star size={22} className="text-[#C9972C]" /> Wishlist
+          <Star size={22} className="text-[#f78222]" /> Wishlist
         </h1>
         <p className="text-muted text-sm">{items.length} saved profiles</p>
       </div>
@@ -97,7 +97,7 @@ export default function WishlistPage() {
                     {photo ? (
                       <img src={photo.watermarkedUrl || photo.originalUrl} alt="" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[#C9972C] font-bold text-xl">
+                      <div className="w-full h-full flex items-center justify-center text-[#f78222] font-bold text-xl">
                         {prof?.fullName?.[0] || "?"}
                       </div>
                     )}

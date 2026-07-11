@@ -89,10 +89,10 @@ export default function AdminDashboardPage() {
           { icon: Shield, label: "Pending KYC", value: kpis?.pendingKyc, sub: `${kpis?.kycSlaBreach} SLA breach`, href: "/admin/kyc", color: "text-amber-400", alert: (kpis?.kycSlaBreach || 0) > 0 },
           { icon: Image, label: "Pending Images", value: kpis?.pendingImages, sub: "Awaiting moderation", href: "/admin/images", color: "text-purple-400" },
           { icon: CheckCircle, label: "Pending Approval", value: kpis?.pendingApproval, sub: "Profile reviews", href: "/admin/users?status=PENDING_APPROVAL", color: "text-emerald-400" },
-          { icon: Ticket, label: "Open Tickets", value: kpis?.openTickets, sub: "Match assistance", href: "/admin/match-tickets", color: "text-[#C9972C]" },
+          { icon: Ticket, label: "Open Tickets", value: kpis?.openTickets, sub: "Match assistance", href: "/admin/match-tickets", color: "text-[#f78222]" },
           { icon: Activity, label: "Total Matches", value: kpis?.totalMatches, sub: `${data?.conversionRate}% conversion`, href: "/admin/match-tickets", color: "text-pink-400" },
           { icon: Users, label: "Communities", value: kpis?.totalCommunities, sub: "Active groups", href: "/admin/communities", color: "text-cyan-400" },
-          { icon: CreditCard, label: "Revenue Today", value: formatCurrency(revenue?.today || 0), sub: `₹${((revenue?.thisMonth || 0) / 100000).toFixed(1)}L this month`, href: "/admin/payments", color: "text-[#C9972C]" },
+          { icon: CreditCard, label: "Revenue Today", value: formatCurrency(revenue?.today || 0), sub: `₹${((revenue?.thisMonth || 0) / 100000).toFixed(1)}L this month`, href: "/admin/payments", color: "text-[#f78222]" },
         ].map((kpi) => (
           <Link
             key={kpi.label}
@@ -140,7 +140,7 @@ export default function AdminDashboardPage() {
             return (
               <div key={d.date} className="flex-1 flex flex-col items-center gap-1">
                 <div
-                  className="w-full bg-gradient-to-t from-[#C9972C] to-[#E8C76A] rounded-sm transition-all"
+                  className="w-full bg-gradient-to-t from-[#f78222] to-[#E8C76A] rounded-sm transition-all"
                   style={{ height: `${Math.max(pct, 4)}%` }}
                 />
                 <span className="text-[9px] text-muted">{new Date(d.date).getDate()}</span>
@@ -160,7 +160,7 @@ export default function AdminDashboardPage() {
         ].map((action) => (
           <Button key={action.label} variant="glass" asChild className="h-auto py-4 flex-col gap-2">
             <Link href={action.href}>
-              <action.icon size={20} className="text-[#C9972C]" />
+              <action.icon size={20} className="text-[#f78222]" />
               <span className="text-xs">{action.label}</span>
             </Link>
           </Button>

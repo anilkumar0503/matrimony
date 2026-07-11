@@ -68,7 +68,6 @@ export default function Navbar() {
 
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle />
             {isLoggedIn ? (
               <>
                 <Link href="/dashboard" className="flex items-center gap-2 text-muted hover:text-foreground text-sm">

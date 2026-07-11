@@ -31,7 +31,7 @@ interface Subscription {
 }
 
 const tierIcon = { FREE: Star, PREMIUM: Crown, VIP: Zap };
-const tierColor = { FREE: "text-muted", PREMIUM: "text-[#C9972C]", VIP: "text-purple-400" };
+const tierColor = { FREE: "text-muted", PREMIUM: "text-[#f78222]", VIP: "text-purple-400" };
 
 declare global {
   interface Window {
@@ -81,7 +81,7 @@ export default function SubscriptionPage() {
         order_id: orderId,
         name: "Jasmine Matrimony",
         description: "Subscription",
-        theme: { color: "#C9972C" },
+        theme: { color: "#f78222" },
         handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
           await fetch("/api/payments/verify", {
             method: "POST",
@@ -118,7 +118,7 @@ export default function SubscriptionPage() {
       {currentSub && currentSub.status === "ACTIVE" && (
         <div className="glass-gold p-5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Crown size={22} className="text-[#C9972C]" />
+            <Crown size={22} className="text-[#f78222]" />
             <div>
               <div className="font-semibold text-foreground">{currentSub.plan.name} — Active</div>
               <div className="text-muted text-xs">Valid until {formatDate(currentSub.endDate)}</div>
@@ -203,7 +203,7 @@ export default function SubscriptionPage() {
                   { label: "Admin-assisted matching", active: plan.adminAssistance },
                 ].map((feature) => (
                   <li key={feature.label} className={`flex items-center gap-2 text-sm ${feature.active ? "text-muted" : "text-muted line-through"}`}>
-                    <CheckCircle size={14} className={feature.active ? "text-[#C9972C] shrink-0" : "text-muted shrink-0"} />
+                    <CheckCircle size={14} className={feature.active ? "text-[#f78222] shrink-0" : "text-muted shrink-0"} />
                     {feature.label}
                   </li>
                 ))}

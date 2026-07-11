@@ -58,7 +58,7 @@ export default function EnquiryPage() {
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#C9972C] transition-colors"
+                className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#f78222] transition-colors"
                 placeholder="Your full name"
                 required
               />
@@ -72,7 +72,7 @@ export default function EnquiryPage() {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#C9972C] transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#f78222] transition-colors"
                   placeholder="your@email.com"
                   required
                 />
@@ -87,7 +87,7 @@ export default function EnquiryPage() {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#C9972C] transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#f78222] transition-colors"
                   placeholder="Enter Phone Number"
                 />
               </div>
@@ -101,7 +101,7 @@ export default function EnquiryPage() {
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   rows={4}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#C9972C] transition-colors resize-none"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground placeholder-muted focus:outline-none focus:border-[#f78222] transition-colors resize-none"
                   placeholder="Tell us about yourself or ask any questions..."
                 />
               </div>
@@ -121,7 +121,7 @@ export default function EnquiryPage() {
         </div>
 
         <p className="text-center text-muted text-sm mt-6">
-          Already have an account? <a href="/login" className="text-[#C9972C] hover:underline">Login</a>
+          Already have an account? <a href="/login" className="text-[#f78222] hover:underline">Login</a>
         </p>
       </div>
     </div>

@@ -483,13 +483,13 @@ export default function SearchPage() {
             <div className="mt-4 pt-4 border-t border-border">
               {/* Horoscope Match Toggle */}
               <div className="flex items-center gap-3 p-3 bg-[rgba(201,151,44,0.1)] rounded-lg border border-[rgba(201,151,44,0.2)] mb-4">
-                <Sparkles size={18} className="text-[#C9972C]" />
+                <Sparkles size={18} className="text-[#f78222]" />
                 <div className="flex-1">
                   <div className="text-sm font-medium text-foreground">Horoscope Matching</div>
                   <div className="text-xs text-muted">Find matches based on Vedic astrology compatibility</div>
                 </div>
                 <button
-                  className={`w-12 h-6 rounded-full transition-colors cursor-pointer ${useHoroscopeMatch ? "bg-[#C9972C]" : "bg-white/20"}`}
+                  className={`w-12 h-6 rounded-full transition-colors cursor-pointer ${useHoroscopeMatch ? "bg-[#f78222]" : "bg-white/20"}`}
                   onClick={() => setUseHoroscopeMatch(!useHoroscopeMatch)}
                 >
                   <div className={`w-5 h-5 rounded-full bg-white transition-transform ${useHoroscopeMatch ? "translate-x-6" : "translate-x-0.5"}`} />
@@ -651,7 +651,7 @@ export default function SearchPage() {
                     type="checkbox"
                     checked={filters.kycOnly}
                     onChange={(e) => setFilters({ ...filters, kycOnly: e.target.checked })}
-                    className="w-4 h-4 rounded accent-[#C9972C]"
+                    className="w-4 h-4 rounded accent-[#f78222]"
                   />
                   KYC Verified Only
                 </label>
@@ -674,8 +674,8 @@ export default function SearchPage() {
         {/* Results */}
         {!isLoggedIn ? (
           <div className="text-center py-16">
-            <div className="w-20 h-20 rounded-full bg-[#C9972C]/10 border border-[#C9972C]/20 flex items-center justify-center mx-auto mb-4">
-              <Heart size={32} className="text-[#C9972C]" />
+            <div className="w-20 h-20 rounded-full bg-[#f78222]/10 border border-[#f78222]/20 flex items-center justify-center mx-auto mb-4">
+              <Heart size={32} className="text-[#f78222]" />
             </div>
             <h3 className="font-display text-xl text-foreground mb-2">Sign In to View Profiles</h3>
             <p className="text-muted mb-6 max-w-md mx-auto">
@@ -710,7 +710,7 @@ export default function SearchPage() {
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <div className="w-20 h-20 rounded-full bg-[rgba(201,151,44,0.1)] flex items-center justify-center">
-                          <span className="text-3xl font-display font-bold text-[#C9972C]">
+                          <span className="text-3xl font-display font-bold text-[#f78222]">
                             {profile.profile?.fullName?.[0] || "?"}
                           </span>
                         </div>
@@ -733,7 +733,7 @@ export default function SearchPage() {
                         </span>
                       )}
                       {profile.subscriptionTier !== "FREE" && (
-                        <span className="bg-[rgba(201,151,44,0.8)] text-[#1a0505] text-[9px] font-semibold px-1.5 py-0.5 rounded-full">
+                        <span className="bg-[rgba(201,151,44,0.8)] text-[#ffffff] text-[9px] font-semibold px-1.5 py-0.5 rounded-full">
                           {profile.subscriptionTier}
                         </span>
                       )}
@@ -753,10 +753,10 @@ export default function SearchPage() {
                       </div>
                       <button
                         onClick={() => toggleWishlist(profile.id)}
-                        className={`p-2 rounded-full transition-colors cursor-pointer ${wishlist[profile.id] ? "bg-[rgba(201,151,44,0.2)] text-[#C9972C]" : "bg-white/5 text-muted hover:text-muted"}`}
+                        className={`p-2 rounded-full transition-colors cursor-pointer ${wishlist[profile.id] ? "bg-[rgba(201,151,44,0.2)] text-[#f78222]" : "bg-white/5 text-muted hover:text-muted"}`}
                         disabled={togglingWishlist === profile.id}
                       >
-                        <Heart size={20} className={wishlist[profile.id] ? "fill-[#C9972C]" : ""} />
+                        <Heart size={20} className={wishlist[profile.id] ? "fill-[#f78222]" : ""} />
                       </button>
                     </div>
                     
@@ -818,7 +818,7 @@ export default function SearchPage() {
                             disabled={interests[profile.id] || sendingInterest === profile.id}
                             loading={sendingInterest === profile.id}
                           >
-                            <Heart size={14} className={interests[profile.id] ? "fill-[#C9972C]" : ""} />
+                            <Heart size={14} className={interests[profile.id] ? "fill-[#f78222]" : ""} />
                             {interests[profile.id] ? "Interest Sent" : "Send Interest"}
                           </Button>
                           {profile.matchScore !== undefined && (
@@ -897,7 +897,7 @@ export default function SearchPage() {
             { title: "Real People", desc: "Admin-approved profiles only" },
           ].map((f) => (
             <div key={f.title} className="glass p-4 text-center">
-              <div className="text-[#C9972C] font-medium mb-1">{f.title}</div>
+              <div className="text-[#f78222] font-medium mb-1">{f.title}</div>
               <div className="text-muted text-xs">{f.desc}</div>
             </div>
           ))}
@@ -910,7 +910,7 @@ export default function SearchPage() {
           <div className="glass p-6 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <Sparkles size={20} className="text-[#C9972C]" />
+                <Sparkles size={20} className="text-[#f78222]" />
                 <h2 className="font-display text-xl font-bold text-foreground">Horoscope Match Details</h2>
               </div>
               <button onClick={() => setMatchModalOpen(false)} className="text-muted hover:text-foreground cursor-pointer">
@@ -923,7 +923,7 @@ export default function SearchPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-muted text-sm">Match Score</div>
-                  <div className="font-display text-3xl font-bold text-[#C9972C]">
+                  <div className="font-display text-3xl font-bold text-[#f78222]">
                     {selectedMatch.finalScore}/{selectedMatch.maxScore}
                   </div>
                   <div className="text-muted text-xs mt-1">{selectedMatch.percentage}% compatibility</div>
@@ -948,7 +948,7 @@ export default function SearchPage() {
                     <div className="text-muted text-xs">{value.description}</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-[#C9972C] font-semibold">{value.score}/{value.max}</div>
+                    <div className="text-[#f78222] font-semibold">{value.score}/{value.max}</div>
                   </div>
                 </div>
               ))}

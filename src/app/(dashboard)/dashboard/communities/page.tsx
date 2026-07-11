@@ -68,7 +68,7 @@ export default function CommunitiesPage() {
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2 mb-1">
-          <Users2 size={22} className="text-[#C9972C]" /> Communities
+          <Users2 size={22} className="text-[#f78222]" /> Communities
         </h1>
         <p className="text-muted text-sm">Connect with like-minded families across religion, region, and interests</p>
       </div>
@@ -104,11 +104,11 @@ export default function CommunitiesPage() {
               <div key={c.id} className="glass p-5 flex flex-col gap-4 hover:border-[rgba(201,151,44,0.2)] transition-colors">
                 {/* Header */}
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7B1D1D]/50 to-[#C9972C]/20 flex items-center justify-center shrink-0 overflow-hidden">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#7B1D1D]/50 to-[#f78222]/20 flex items-center justify-center shrink-0 overflow-hidden">
                     {c.imageUrl ? (
                       <img src={c.imageUrl} alt={c.name} className="w-full h-full object-cover" />
                     ) : (
-                      <Users size={20} className="text-[#C9972C]" />
+                      <Users size={20} className="text-[#f78222]" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">

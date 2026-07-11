@@ -118,7 +118,7 @@ export default function AdminEnquiriesPage() {
             <select
               value={status}
               onChange={(e) => { setStatus(e.target.value); setPage(1); }}
-              className="w-full px-3 py-2 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#C9972C]"
+              className="w-full px-3 py-2 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#f78222]"
             >
               {STATUS_OPTIONS.map((s) => (
                 <option key={s} value={s}>{s || "All Status"}</option>
@@ -242,7 +242,7 @@ export default function AdminEnquiriesPage() {
                     type="password"
                     value={accountForm.password}
                     onChange={(e) => setAccountForm({ ...accountForm, password: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#C9972C]"
+                    className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#f78222]"
                     placeholder="Min 6 characters"
                     required
                   />
@@ -253,7 +253,7 @@ export default function AdminEnquiriesPage() {
                   <select
                     value={accountForm.gender}
                     onChange={(e) => setAccountForm({ ...accountForm, gender: e.target.value as "MALE" | "FEMALE" })}
-                    className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#C9972C]"
+                    className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#f78222]"
                     required
                   >
                     <option value="MALE">Male</option>
@@ -267,7 +267,7 @@ export default function AdminEnquiriesPage() {
                     type="date"
                     value={accountForm.dateOfBirth}
                     onChange={(e) => setAccountForm({ ...accountForm, dateOfBirth: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#C9972C]"
+                    className="w-full px-4 py-2.5 rounded-lg bg-[rgba(255,255,255,0.05)] border border-border text-foreground focus:outline-none focus:border-[#f78222]"
                     required
                   />
                 </div>

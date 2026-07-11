@@ -87,7 +87,7 @@ export default function AdminCommunitiesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <Users2 size={22} className="text-[#C9972C]" /> Communities
+            <Users2 size={22} className="text-[#f78222]" /> Communities
           </h1>
           <p className="text-muted text-sm">{communities.length} communities</p>
         </div>
@@ -147,7 +147,7 @@ export default function AdminCommunitiesPage() {
               <Input label="Logo URL (optional)" placeholder="https://..." {...form.register("logo")} />
               <Input label="Banner URL (optional)" placeholder="https://..." {...form.register("banner")} />
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 accent-[#C9972C]" {...form.register("isActive")} />
+                <input type="checkbox" className="w-4 h-4 accent-[#f78222]" {...form.register("isActive")} />
                 <span className="text-muted text-sm">Active (visible to members)</span>
               </label>
 

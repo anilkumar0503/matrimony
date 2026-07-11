@@ -221,7 +221,7 @@ export default function GalleryPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground mb-1 flex items-center gap-2">
-            <Images size={22} className="text-[#C9972C]" /> My Gallery
+            <Images size={22} className="text-[#f78222]" /> My Gallery
           </h1>
           <p className="text-muted text-sm">{activeCount} of {MAX_IMAGES} photos used</p>
         </div>
@@ -358,7 +358,7 @@ export default function GalleryPage() {
                   <button
                     onClick={() => setPrimary(img.id)}
                     disabled={!!settingPrimaryId}
-                    className="p-2 rounded-full bg-[rgba(201,151,44,0.9)] hover:bg-[#C9972C] text-[#1a0505] transition-colors"
+                    className="p-2 rounded-full bg-[rgba(201,151,44,0.9)] hover:bg-[#f78222] text-[#ffffff] transition-colors"
                     title="Set as primary"
                   >
                     {settingPrimaryId === img.id
@@ -380,7 +380,7 @@ export default function GalleryPage() {
 
               {/* Primary badge */}
               {img.isPrimary && (
-                <div className="absolute top-1.5 left-1.5 bg-[rgba(201,151,44,0.95)] text-[#1a0505] text-[9px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-1">
+                <div className="absolute top-1.5 left-1.5 bg-[rgba(201,151,44,0.95)] text-[#ffffff] text-[9px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-1">
                   <Star size={8} className="fill-current" /> Primary
                 </div>
               )}
@@ -402,7 +402,7 @@ export default function GalleryPage() {
           <span className="flex items-center gap-1.5"><Clock size={11} className="text-amber-400" /> Pending review</span>
           <span className="flex items-center gap-1.5"><CheckCircle size={11} className="text-emerald-400" /> Approved & visible</span>
           <span className="flex items-center gap-1.5"><AlertTriangle size={11} className="text-red-400" /> Rejected — can be deleted</span>
-          <span className="flex items-center gap-1.5"><Star size={11} className="text-[#C9972C]" /> Set as primary (approved only)</span>
+          <span className="flex items-center gap-1.5"><Star size={11} className="text-[#f78222]" /> Set as primary (approved only)</span>
         </div>
       )}
 

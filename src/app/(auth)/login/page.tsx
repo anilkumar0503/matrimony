@@ -59,7 +59,7 @@ export default function LoginPage() {
               label="Email Address"
               type="email"
               placeholder="you@example.com"
-              icon={<Mail size={16} />}
+           
               error={errors.email?.message}
               {...register("email", {
                 required: "Email is required",
@@ -72,7 +72,7 @@ export default function LoginPage() {
                 label="Password"
                 type={showPw ? "text" : "password"}
                 placeholder="••••••••"
-                icon={<Lock size={16} />}
+               
                 error={errors.password?.message}
                 rightIcon={
                   <button type="button" onClick={() => setShowPw(!showPw)} className="text-muted hover:text-muted">
@@ -91,7 +91,7 @@ export default function LoginPage() {
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 rounded border-border bg-white/5 accent-[#C9972C]"
+                className="w-4 h-4 rounded border-border bg-white/5 accent-[#f78222]"
                 {...register("rememberMe")}
               />
               <span className="text-sm text-muted">Remember me for 7 days</span>

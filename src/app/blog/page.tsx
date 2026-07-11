@@ -52,7 +52,7 @@ export default async function BlogPage() {
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
                 <article className="glass overflow-hidden h-full flex flex-col hover:border-[rgba(201,151,44,0.25)] transition-colors p-0">
                   {/* Cover */}
-                  <div className="aspect-video bg-gradient-to-br from-[#7B1D1D]/30 to-[#C9972C]/10 overflow-hidden">
+                  <div className="aspect-video bg-gradient-to-br from-[#7B1D1D]/30 to-[#f78222]/10 overflow-hidden">
                     {post.coverImageUrl ? (
                       <img src={post.coverImageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     ) : (
@@ -86,7 +86,7 @@ export default async function BlogPage() {
 
                     <div className="mt-4 flex items-center justify-between">
                       <span className="text-muted text-xs">{post.author?.name}</span>
-                      <span className="text-[#C9972C] text-xs flex items-center gap-1 group-hover:gap-2 transition-all">
+                      <span className="text-[#f78222] text-xs flex items-center gap-1 group-hover:gap-2 transition-all">
                         Read more <ArrowRight size={12} />
                       </span>
                     </div>

@@ -9,7 +9,7 @@
   --color-maroon-900: #3d0a0a;
   --color-gold-300: #E8C76A;
   --color-gold-400: #D4A83C;
-  --color-gold-500: #C9972C;
+  --color-gold-500: #f78222;
   --color-gold-600: #B07D1A;
 
   --font-sans: var(--font-jakarta);
@@ -31,7 +31,7 @@
   --color-surface-hover: rgba(255,255,255,0.08);
   --color-border: rgba(255,255,255,0.09);
   --color-border-gold: rgba(201,151,44,0.35);
-  --btn-gold-from: #C9972C;
+  --btn-gold-from: #f78222;
   --btn-gold-via: #E8C76A;
   --btn-gold-text: #1a0505;
   --text-gold-color: #f78222;
@@ -53,7 +53,7 @@
 
 /* ─── Light theme: override hardcoded gold colour utilities ─────────────────── */
 
-html[data-theme="light"] .text-\[\#C9972C\] {
+html[data-theme="light"] .text-\[\#f78222\] {
   color: var(--text-gold-color) !important;
 }
 
@@ -185,7 +185,7 @@ html[data-theme="light"] body {
 }
 .blob-bg::after {
   width: 500px; height: 500px;
-  background: #C9972C;
+  background: #f78222;
   bottom: -100px; right: -100px;
   animation-delay: 4s;
 }
@@ -243,7 +243,7 @@ html[data-theme="light"] .glass-dark {
 /* ─── Buttons ───────────────────────────────────────────────────────────────── */
 
 .btn-gold {
-  background: linear-gradient(135deg, #C9972C 0%, #E8C76A 50%, #C9972C 100%);
+  background: linear-gradient(135deg, #f78222 0%, #E8C76A 50%, #f78222 100%);
   background-size: 200% auto;
   color: #1a0505;
   font-weight: 700;
@@ -481,8 +481,8 @@ html[data-theme="light"] .skeleton {
 
 /* ─── Step indicator ────────────────────────────────────────────────────────── */
 
-.step-active  { background: #C9972C; color: #1a0505; }
-.step-done    { background: rgba(201,151,44,0.3); border: 1px solid #C9972C; color: #E8C76A; }
+.step-active  { background: #f78222; color: #1a0505; }
+.step-done    { background: rgba(201,151,44,0.3); border: 1px solid #f78222; color: #E8C76A; }
 .step-pending { background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-muted); }
 
 /* ─── Page wrapper ──────────────────────────────────────────────────────────── */

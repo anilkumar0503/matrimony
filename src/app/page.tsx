@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
+import { HeroAuthForm } from "@/components/home/hero-auth-form";
 import { Heart, Shield, Star, Users, CheckCircle, ArrowRight, Crown, Lock } from "lucide-react";
 
 const features = [
@@ -43,35 +44,42 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative pt-20 pb-32 px-4 text-center overflow-hidden">
+      <section className="relative pt-20 pb-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#7B1D1D]/10 via-transparent to-transparent pointer-events-none" />
-        <div className="max-w-4xl mx-auto relative z-10 animate-fade-in">
-          <span className="badge-gold mb-6 inline-flex">
-            <Shield size={12} />
-            KYC-Verified Profiles Only
-          </span>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
-            Find Your Perfect{" "}
-            <span className="shimmer-text">Life Partner</span>
-          </h1>
-          <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-            India's most trusted verified matrimony platform. Every profile is admin-approved,
-            KYC-verified, and protected by DPDP Act 2023 compliance.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="gold" size="xl" asChild>
-              <Link href="/register">Create Free Profile <ArrowRight size={18} /></Link>
-            </Button>
-            <Button variant="glass" size="xl" asChild>
-              <Link href="/search">Browse Profiles</Link>
-            </Button>
+        <div className="max-w-6xl mx-auto relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left – copy */}
+          <div className="animate-fade-in text-center lg:text-left">
+            <span className="badge-gold mb-6 inline-flex">
+              <Shield size={12} />
+              KYC-Verified Profiles Only
+            </span>
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground mb-6 leading-tight">
+              Find Your Perfect{" "}
+              <span className="shimmer-text">Life Partner</span>
+            </h1>
+            <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed">
+              India's most trusted verified matrimony platform. Every profile is admin-approved,
+              KYC-verified, and protected by DPDP Act 2023 compliance.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Button variant="gold" size="xl" asChild>
+                <Link href="/register">Create Free Profile <ArrowRight size={18} /></Link>
+              </Button>
+              <Button variant="glass" size="xl" asChild>
+                <Link href="/search">Browse Profiles</Link>
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start mt-8">
+              {["DPDP Compliant", "256-bit Encrypted", "Admin Verified", "100% Genuine"].map((b) => (
+                <span key={b} className="badge-glass">
+                  <CheckCircle size={10} className="text-[#f78222]" /> {b}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-3 justify-center mt-8">
-            {["DPDP Compliant", "256-bit Encrypted", "Admin Verified", "100% Genuine"].map((b) => (
-              <span key={b} className="badge-glass">
-                <CheckCircle size={10} className="text-[#C9972C]" /> {b}
-              </span>
-            ))}
+          {/* Right – auth form */}
+          <div className="w-full max-w-md mx-auto lg:mx-0 lg:ml-auto">
+            <HeroAuthForm />
           </div>
         </div>
       </section>
@@ -101,7 +109,7 @@ export default function HomePage() {
             {features.map((f) => (
               <div key={f.title} className="glass p-6 hover:border-[rgba(201,151,44,0.25)] transition-colors group">
                 <div className="w-12 h-12 rounded-xl bg-[rgba(201,151,44,0.1)] border border-[rgba(201,151,44,0.2)] flex items-center justify-center mb-4 group-hover:bg-[rgba(201,151,44,0.15)] transition-colors">
-                  <f.icon size={22} className="text-[#C9972C]" />
+                  <f.icon size={22} className="text-[#f78222]" />
                 </div>
                 <h3 className="font-semibold text-foreground mb-2">{f.title}</h3>
                 <p className="text-muted text-sm leading-relaxed">{f.desc}</p>
@@ -139,7 +147,7 @@ export default function HomePage() {
                 <ul className="space-y-2.5 mb-8 flex-1">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-center gap-2 text-sm text-muted">
-                      <CheckCircle size={14} className="text-[#C9972C] shrink-0" />
+                      <CheckCircle size={14} className="text-[#f78222] shrink-0" />
                       {f}
                     </li>
                   ))}
@@ -172,7 +180,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Heart size={16} className="text-[#C9972C]" />
+                <Heart size={16} className="text-[#f78222]" />
                 <span className="font-display font-bold text-foreground">Jasmine Matrimony</span>
               </div>
               <p className="text-muted text-sm">India's most trusted verified matrimony platform.</p>

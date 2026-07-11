@@ -125,7 +125,7 @@ export default function InterestsPage() {
             return (
               <div key={interest.id} className={`glass p-5 flex items-start gap-4 ${interest.status === "PENDING" ? "border-[rgba(201,151,44,0.15)]" : ""}`}>
                 {/* Avatar placeholder */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#7B1D1D]/50 to-[#C9972C]/30 flex items-center justify-center shrink-0 text-foreground font-bold text-lg">
+                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#7B1D1D]/50 to-[#f78222]/30 flex items-center justify-center shrink-0 text-foreground font-bold text-lg">
                   {p?.profile?.fullName?.[0] || "?"}
                 </div>
 

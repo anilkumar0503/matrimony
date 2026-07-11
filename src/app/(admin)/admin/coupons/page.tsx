@@ -109,7 +109,7 @@ export default function AdminCouponsPage() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <Tag size={22} className="text-[#C9972C]" /> Coupons
+            <Tag size={22} className="text-[#f78222]" /> Coupons
           </h1>
           <p className="text-muted text-sm">{total} coupons</p>
         </div>
@@ -144,7 +144,7 @@ export default function AdminCouponsPage() {
             ) : coupons.map((c) => (
               <tr key={c.id} className="border-b border-border hover:bg-white/[0.02]">
                 <td className="py-3 px-4">
-                  <span className="font-mono text-[#C9972C] font-semibold text-xs bg-[rgba(201,151,44,0.1)] px-2 py-0.5 rounded">{c.code}</span>
+                  <span className="font-mono text-[#f78222] font-semibold text-xs bg-[rgba(201,151,44,0.1)] px-2 py-0.5 rounded">{c.code}</span>
                 </td>
                 <td className="py-3 px-4 text-muted">{discountLabel(c)}</td>
                 <td className="py-3 px-4 text-muted">
@@ -162,7 +162,7 @@ export default function AdminCouponsPage() {
                 </td>
                 <td className="py-3 px-4">
                   <button onClick={() => toggleActive(c.id, c.isActive)} className="text-muted hover:text-foreground transition-colors">
-                    {c.isActive ? <ToggleRight size={18} className="text-[#C9972C]" /> : <ToggleLeft size={18} />}
+                    {c.isActive ? <ToggleRight size={18} className="text-[#f78222]" /> : <ToggleLeft size={18} />}
                   </button>
                 </td>
               </tr>
@@ -236,7 +236,7 @@ export default function AdminCouponsPage() {
                         type="checkbox"
                         checked={form.planIds.includes(p.id)}
                         onChange={e => setForm(f => ({ ...f, planIds: e.target.checked ? [...f.planIds, p.id] : f.planIds.filter(id => id !== p.id) }))}
-                        className="accent-[#C9972C]"
+                        className="accent-[#f78222]"
                       />
                       {p.name}
                     </label>

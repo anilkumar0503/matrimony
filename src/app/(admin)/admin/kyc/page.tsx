@@ -86,7 +86,7 @@ export default function AdminKycPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground flex items-center gap-2">
-            <Shield size={22} className="text-[#C9972C]" /> KYC Queue
+            <Shield size={22} className="text-[#f78222]" /> KYC Queue
           </h1>
           <p className="text-muted text-sm">{total} {statusFilter.toLowerCase()} submissions</p>
         </div>
@@ -241,7 +241,7 @@ export default function AdminKycPage() {
                       key={img.id}
                       className={cn(
                         "w-20 h-20 rounded-lg overflow-hidden border shrink-0",
-                        img.isPrimary ? "border-[#C9972C] ring-1 ring-[rgba(201,151,44,0.3)]" : "border-border"
+                        img.isPrimary ? "border-[#f78222] ring-1 ring-[rgba(201,151,44,0.3)]" : "border-border"
                       )}
                     >
                       {img.signedUrl ? (

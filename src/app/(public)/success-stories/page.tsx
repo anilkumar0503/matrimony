@@ -34,20 +34,20 @@ export default async function SuccessStoriesPage() {
 
         {stories.length === 0 ? (
           <div className="glass p-16 text-center">
-            <Heart size={40} className="text-[#C9972C] mx-auto mb-4" />
+            <Heart size={40} className="text-[#f78222] mx-auto mb-4" />
             <p className="text-muted">Success stories coming soon. Be one of the first!</p>
             <Link href="/register" className="btn-gold mt-6 inline-block">Get Started</Link>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {stories.map((story: typeof stories[number]) => (
-              <div key={story.id} className={`glass p-6 ${story.isFeatured ? "ring-1 ring-[#C9972C]/40" : ""}`}>
+              <div key={story.id} className={`glass p-6 ${story.isFeatured ? "ring-1 ring-[#f78222]/40" : ""}`}>
                 <div className="flex items-start gap-4">
                   {story.photo ? (
                     <img src={story.photo} alt={story.coupleName}
-                      className="w-20 h-20 rounded-full object-cover ring-2 ring-[#C9972C]/30 shrink-0" />
+                      className="w-20 h-20 rounded-full object-cover ring-2 ring-[#f78222]/30 shrink-0" />
                   ) : (
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7B1D1D] to-[#C9972C] flex items-center justify-center shrink-0">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7B1D1D] to-[#f78222] flex items-center justify-center shrink-0">
                       <Heart size={24} className="text-foreground fill-white" />
                     </div>
                   )}
@@ -59,7 +59,7 @@ export default async function SuccessStoriesPage() {
                       )}
                     </div>
                     {story.community && (
-                      <p className="text-[#C9972C] text-xs mb-2">{story.community.name} Community</p>
+                      <p className="text-[#f78222] text-xs mb-2">{story.community.name} Community</p>
                     )}
                     {story.date && (
                       <p className="text-muted text-xs mb-3">Married {formatDate(story.date)}</p>
